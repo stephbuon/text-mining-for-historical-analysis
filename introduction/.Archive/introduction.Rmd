@@ -1,0 +1,231 @@
+---
+title: "First Time Set Up"
+output: pdf_document
+geometry: "left=1in,right=1in,top=2in,bottom=1in"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=FALSE, echo=FALSE, warning=FALSE}
+install.packages("tidyverse")
+install.packages("kableExtra")
+library(tidyverse)
+library(kableExtra)
+```
+
+# Preface
+
+Text is everywhere around us, in government and corporate reports, in newspapers and emails and blog entries, in the output of Artificial Intelligence. There are many ways of learning to code that will cause unnecessary delay to the user who cares about text as a route to understanding competing  ideas, culture, politics, and arguments.  For the user who principally approaches code as a means to a serious reckoning with these topics, many introductions to Python and R are unnecessarily slow. They begin with exercises in creating a virtual "calculator" and dwell on datasets composed of numbers, not words. The scholar who wants to understand text but begins with those other textbooks is liable to bemoan lost hours irrelevant to their studies. In an undertaking at the fringe of an established field, which initial instructor one meets is a parameter with enormous consequences. 
+
+At the time of writing, few resources offer to take a novice all the way to competency through a guided series of lessons tailored to scholars’ actual concerns. Over several years of teaching students of History and Computer Science to text mine for historical analysis, we came to the conclusion that it was vital that scholars wishing to learn these techniques have access to a deliberate, encompassing, soup-to-nuts series of lessons that apply the techniques of textual analysis to the concerns of History. We shared drafts of the manuscript and the accompanying code with our students, and these drafts have received the accolades of several cohorts of users for their transparency.  
+
+This book introduces text mining for historical analysis using the R programming language. Many of the exercises in this book are based on code samples from Jo Guldi’s _The Dangerous Art of Text Mining_ (2023) that have been rewritten with the purpose of offering an practical point of entry into the practice of digital history for those with no previous acquaintance with the basic methods of programming.
+
+The intended readership of _Text Mining for Historical Analysis_ are analysts, scholars, or students interested in learning about the methods used in digital history. Many of the coding exercises include material and explanation geared towards those who have never programmed before, or who have some programming experience but are new to R and its historical application. The first two chapters offer guided approaches to the programming concepts that are built on throughout this book.
+
+More than just a code cookbook, however, _Text Mining for Historical Analysis_ exemplifies the tenets of “critical search,” a framework for analysis that insists on performing strategic reading and implementing multiple methods of measurement. Any search through text illuminates various dimensions of a corpus while obfuscating others, and critical searching can enhance the analyst’s sense of the text measured by considering how certain vantage points share different information.
+
+This framework for analysis also encourages analysts to use quantitative measurements side-by-side with close reading techniques. Contextual, historical knowledge should inform our assessment of the linguistic trends belonging to historical structures of meaning such as discourses and contested concepts. 
+
+It is our hope that _Text Mining for Historical Analysis_ supplies its readers with the tools and perspective that incite a discerning sense of discovery and that enable readings of history that share the insight uniquely offered by computational analysis. 
+
+
+## Coding and Obsolescence
+
+How long might this book remain relevant?  Historians who contemplate assigning the book will doubtlessly come to our project with many similar concerns. They will want to know: is it worth committing weeks of a summer in preparation for a new course, if the landscape of code changes every year? Is it worthwhile to commit to R, when Computer Science majors usually learn Python? They will want to know: why should they purchase a two-hundred-page paper book, when so many lessons are available on the web already? Kindred worries troubled us when we ourselves began our journey into text mining. We too remember the weight of a commitment to an initial language and course of study, but also the delight at learning how rapidly a novice can progress through a course of study if they receive judicious advice about how to begin. In an undertaking at the fringe of an established field, which initial instructor one meets is a parameter with enormous consequences. Beginning with standard instruction in Computer Science puts off many humanists, who find themselves digesting code to create efficient calculators or beautiful webpages, bemoaning lost hours irrelevant to historical study. The piecemeal instructions on getting started published online in peer-reviewed academic spaces like The Programming Historian break down first steps into a digestible series of modules that other scholars have found useful, but it is hard to know where to get started – should I begin with cleaning my data, or learning the basics of command-line instructions, or counting words, and should I commit to the computer language Python or R? So many choices have to be made for an individual program of study. At this time in the development field, few are the resources that offer to take a novice all the way to competency through a guided series of lessons tailored to scholars’ actual concerns.
+
+Some readers may even weigh the stakes of committing to a new practice of teaching code in the classroom, given the rapid pace of technological advancement.  We observe from our current teaching positions in data-affiliated departments that even in an age of Large Language Models (LLM’s) like GPT, students are continue to learn to code. LLM’s give new users many options for shortcuts, but if anything, they only increase the number of scholars who are able to integrate code into their practice. 
+
+The question of obsolescence raises other questions about how long a book on text mining in R will remain relevant. We have chosen R Studio and R for their durability; the interface has not changed for a decade, and we expect our instructions to remain reliable for at least a decade to come, no matter what updates come to MacOS or what operating system a user adopts.  The collection of scripts we use from R – the “Tidyverse” – is relevant precisely because of its enormous adaptation. It remains in constant use, and this use makes regular updates and continued currency dependable over the next decade or more.  We anticipate that our choices around R, text mining, the lessons and methods here will remain relevant for at least a decade to come. 
+
+## The Language R & Using This Book as a Non-R Specialist
+
+After years of reading, publication, and teaching in this arena, we believe ourselves to be prudent counsels with shrewd opinions to share about the best and most efficient way to get started. Both authors have coded and taught in both R and Python. Our choice of programming language for this book was deliberate, as was the choice of creating a manuscript of several chapters and approaching Cambridge University Press for the publication of a book. 
+
+We chose R as our example language due to its greater accessibility compared to Python. Therefore, starting with R may be more useful to researchers just entering this domain of study, to whom we hope to reach. As teachers and coders who use both R and Python in practice and in the classroom, we debated the language of the book, and resolved for R on the basis of (a) the widespread adaptation of R among liberal arts practitioners in departments of economics, statistics, and literature, and (b) the robust, peer-reviewed set of software packages that are part of the R universe but not the Python universe.  In contrast to Python, R was specifically designed for analysis. It handles data in a universal way, limiting these compatibility errors common in Python. Coders know that translation errors often occur when moving from Python packages like textblob to another package, like NLTK. To give one concrete example of how R works better for text analysis: By using R and the “tidyverse” family of software packages, we ensure that our readers only have to think about their data through the “tidy” dataframe, where all analysis can be performed without extra steps “translating” the results back to a data format where the results can be further analyzed.
+
+Even in a classroom where Python is the major language, studying this volume will  still bear rewards. The instructions in the chapters that follow walk the student through a series of thought exercises in how to approach historical questions such as the issue of how the Reform Act of 1832 or the Civil Rights Voting Act of 1965 changed the kinds of debates that could happen in democratic institutions. The iterative engagement with data that they describe in prose is something that can be admired and replicated by scholars using a different programming language. 
+
+Certain constituencies of readers have already made commitments to Python and are more comfortable consuming books in Python. In the revision, we will explicitly address ourselves to these readers, advertising the present volume as a book whose major contribution is an approach to iterative problem-solving in the humanities.  In fact, both authors of this book code in Python and have taught courses in Python. Students of Python may enjoy consulting with the author's Jupyter Notebooks, which use the Python language to work through exercises similar to the ones in the textbook (see http://github.com/joguldi/digital_history/). 
+
+However, our experience as educators leads us to encourage most novice users who are interested in text anaalysis to learn R before Python wherever possible.  Python is a complex language because it was originally designed for software engineering and later adapted for analysis. The application of Python is still limited for humanities and social science analysis because these analytic packages are often incompatible with one-another. Some of the most important text mining packages used by scholars today were developed in the R language. The conventions of "tidy" programming in R -- where each data can be reduced to a simple dataframe two columns wide -- make it easy to manipulate complex datasets while navigating back to the original source and its context at any time.
+
+## Why We Organized These Lessons as a Book and How to Use It 
+
+For many first-time coders, is hard to know where to get started with text. They may find themselves googling instructions, all the while asking themselves, should I begin with cleaning my data, or learning the basics of command-line instructions, or counting words, and should I commit to the computer language Python or R? So many choices have to be made for an individual program of study. 
+
+Readers learning to code for the first time need a focused program of study that will equip them to perform exercises relevant to most scholars trying to make sense of change over time, not a series of disjoint lessons possibly irrelevant to their concern.  We have organized many of the main concerns that greet students of text into a simple series of lessons, choosing a language and software package that allow an analyst to become functionally competent in text mining for historical analysis without getting lost in questions of data type. 
+
+At the time of writing, few resources offer to take a novice all the way to competency through a guided series of lessons tailored to scholars’ actual concerns. Over several years of teaching students of History and Computer Science to text mine for historical analysis, we came to the conclusion that it was vital that scholars wishing to learn these techniques have access to a deliberate, encompassing, soup-to-nuts series of lessons that apply the techniques of textual analysis to the concerns of History. We shared drafts of the manuscript and the accompanying code with our students, and these drafts have received the accolades of several cohorts of users for their transparency.  
+
+A book-length publication solves the riddle that most beginners face when they wonder about when to clean their data, when to learn about their computer’s file systems, whether they should practice “scraping” new data from the cloud, the arcane question of “joins” and dataframes, and whether to aim for topic models or word embeddings. Designed to take the novice from meeting code for the first time through the deployment of the major algorithms that are used in digital history today, this book fills a gap left between the many individual lessons scattered around the internet today.  
+
+
+In an age where "learn-to-code bootcamps" are advertised in the margins of search engines, it may seem  old-fashioned to package coding instruction as a book. Yet books have definite advantages.  Physical textbooks have benefits in terms of material consistency, durability, and portability.  Instructions give on a webpage are easily lost in an ocean of tabs or in computer history. Physical books pose none of these difficulties. They offer a manual, durable touchstone. People hold on to and reference their touchstone books over time. 
+
+Text mining historical data can be resource intensive and may require all the memory available on a laptop, with the result that web pages can become nonfunctional while a computer is running code.  Researchers with lower-functioning laptops may be especially hampered in this respect.  This book, however, has no risk of crashing if a computer runs into trouble, nor will the reader's place be lost in the text.    For these reasons, many coders today still prefer to learn from a physical book while their computer screen is used to actually run code
+
+Printed books and ebooks are especially useful for readers with mobility concerns.  A printed book or ebook loaded onto a tablet can be used in places where a laptop is inconvenient. Digital publications can limit the reader's mobility. Print editions (whether literature, novels, or technical books) are designed to be enjoyed anywhere, like outdoors or on an airplane, and can easily fit into a backpack for a commute.  Ebooks also serve a function for readers who need to be able to vary the  print size of the document.
+
+Best practices in teaching code typically provide both a print copy of a book, an ebook version, as well as a digital copy of the code that users are learning about.  Some users prefer the durability of books while other users will prefer to open a tablet or extra screen with an ebook nearby their laptop while they code.  While books are mobile and durable, digital code also offers benefits, such as the ability to copy/paste code. Therefore, authors of textbooks on code frequently furnish students with both print and ebook editions of their textbooks, as well as an online source where students can cut and paste from sample code. 
+
+To facilitate learning code with this book, we recommend that readers open both a web page with the code we’re discussing, a programming environment, and a physical or electronic copy of the book at the same time. To support this usage, we will provide an online Github page with sample code that matches the examples in our chapters. 
+
+
+
+## The Data in this Book
+
+The experiments in this book all concern one dataset, commonly known as "Hansard," which contains the official record of the debates of Britain's House of Lords and House of Commons, 1803-1899. It is a highly interesting data set because the debates cover the transformations of the Industrial Revolution, the abolition of the trans-Atlantic slave trade by the British navy, the struggle for women's rights, and many other debates of general interest to readers of modern history. 
+
+As we will explore in the chapters that follow, Hansard is in many ways an imperfect data set. The Hansard data dates from a moment in history before the advent of modern technologies of transcription, including shorthand and electronic recording. Instead, it was compiled from press reports and notes, highly edited for what journalists assumed would be of interest to contemporary readers, and sometimes paraphrased to keep pace with the speaker.  Nonetheless, even in the early versions of the reports, a great deal of data about the social, economic, and political realities facing parliament remain preserved.  Though far from a verbatim transcript of the records of parliament, it is nevertheless an important historical source that has served generations of historians, many of them working with concerns social and cultural as well as political and intellectual. 
+
+Part of what the data set contains is a record of the bias of an earlier age: an age where the vote was limited to a tiny portion of the aristocracy (before 1832) and the middle class (to 1867).  The record is also almost exclusively male, as women could not vote in Britain before 1918.  Britain of course controlled a global empire, and many of the speakers expressed disdainful attitudes towards their Roman Catholics, Indians, Africans, and Irish subjects; indeed, historians have reasoned that it was the British willingness to fabricate arguments about racial superiority and the necessity of violence that allowed the empire to exist.  The techniques in this volume allow the student of history to examine British attitudes about gender, race, and class for themselves.
+
+Many practitioners of text mining in the humanities and social sciences have expressed the importance of the role of critical thinking when working with data. Indeed, the scholar of text mining who takes a naive position on the data in Hansard is likely to conclude, as some of our students have, that the upward tick of the phrase "ignorant women" across the nineteenth century means that there were actually more ignorant women over time.  In fact, the phrase indicates the formation of what historians call a "discourse," that is, an increasingly accepted representation of reality.  A representation, however, is not the same as reality.  In the nineteenth century, speakers in parliament found that talking about the ignorance of women was useful as a tool to justify the much of the legislation they were trying to pass, especially in the era of the Contagious Disease Acts (1864-69). Parliamentary speakers -- again almost exclusively male -- blamed women for the spread of venereal disease through the British navy. The habit of blaming women had profoundly negative consequences for contemporary women, who lost important liberties during this period.  Because of political habits of blaming women, the laws were written in such a way that it was women who were arrested in the attempt to stem the spread of disease.
+
+The point of this example is that an intelligent, reflective process of text mining requires more than the skills of counting words.  One must know a little about the history.  One must also have the power of reflection on where language operates as a game where assertions are made that might not reflect the truth of reality, and where the spread of those assertions, or their formation into a discourse composed of many apparent facts, can have real-world consequences in history.  Counting words and phrases gives us hints about how discourses changed, but it is not in itself sufficient to produce understanding.  In one recent book on text mining for the social sciences, Brandon Stewart and his collaborators stress the importance of iterative engagements with the data, validating each conclusion with extensive reading of the original texts.  We too advise that part of the skill of text mining is the power of navigating from big-picture overviews of how discourse changed back to the original speeches, and again to some knowledge of the time period from secondary sources, without which the student of text mining is navigating a cave with only a book of matches.  Accordingly, the chapters in this book alternate between practical instruction in code -- for instance, instructions on how to count two-word phrases -- and exercises designed to model a reflective and critically-aware point of view.  These exercises guide the reader through the process of "validation," or checking what the content of the model means, by moving from an over view to individual speeches.  They also ask the student of text mining to reflect on the meaning of particular trends visible in the data given some knowledge of the history of the delimitation of voting in Britain, the politics of slavery, and the political use of claims about gender. 
+
+What if you aren't a historian of nineteenth-century British parliament?  By the book's end, we will offer advice to those working on the Congressional debates of twentieth-century America.  More importantly, however, we submit that the exercises will still be in principle interesting, as they are formed around the problem of counting words. The tools of word count and analysis from this book can be applied to different data sets as soon as they are learned. New data sets are constantly coming into use, and scholars of practically any moment in history may find data to which the following lessons can be applied with relatively minor adjustments such as matching the names of columns where speaker, date, and speech data are held.  
+
+
+### First Time Set Up for R and RStudio
+
+Analysts of historical data often collaborate with skilled code practitioners or use out-of-the-box search interfaces to conduct their work, but working hands-on with a programming language gives the analyst direct control over every aspect of the data quality, its analysis and visualization.  This introduction is designed to introduce you to the language R with no prior experience required.
+
+Analysts of historical data sometimes use other languages than R, although at present, the languages Python and R are the most frequently consulted for text mining.  In general, R is more frequently taught in economics and statistics departments, while Python is more frequently used in Computer Science.  Both are legitimate interfaces for analyzing historical data.  Certain text-mining processes might be more suited to Python, for example named entity recognition, a process discussed in the __Dangerous Art of Text Mining__ but not here, or the scraping of text from Twitter or websites.  We urge those curious about these techniques to consult Melanie Klein's wonderful introduction to cultural analytics in Python.  
+
+In general, the learning curve on R is less steep for new comers, while giving users direct access to functional tools for dealing with language.  R's packages are, at the moment of writing, more dependable for many kinds of textual analysis, thanks to the existence of certain software packages developed by the text mining community for the purpose of analyzing words and phrases in various configurations. A lively community of R users practices a high standard of peer review for software packages on R, which ensures that software updates are almost always kept in a state of compatibility with each other.  This trustworthy community makes R an ideal choice for those who want to focus their primary efforts on analysis, as those learning R will not face many of the questions about version compatibility that face users of certain versions of Python.  
+
+The first step is to make sure that you have access to a computer that is set up to use the R programming language. The steps that follow explain how to install R on a Mac or PC (Windows machine).
+
+We also recommend installing a desktop app called RStudio designed to make working with R as intuitive as possible.  RStudio is a "code editor" that makes it easy to interact with the R language and your data as it undergoes transformations. A code editor is to the language R what Microsoft Word is to writing a document: there are ultimately many applications which one could use to write a document, but Microsoft word is a standard because it makes outlining, drafting, printing, and footnotes easy to manage.  Just so, RStudio will be our preferred app for accessing R.  
+
+Afterwards, the R interface may alert the user of occasional updates to the software, which is important to keep up-to-date. When these updates are necessary, the R interface will provide its own instructions, and for the most part, it is sufficient to simply type whatever is indicated on the computer screen, perhaps restarting the computer if the user encounters difficulty.  
+
+If you have already installed R and RStudio (or a comparable development environment of your choosing), you should skip to section "Loading Libraries" below. 
+
+### System Requirements
+
+Using a programming language and processing data requires some amount of computer resources. We suggest the following minimum system requirements to run the code examples in this book: 
+
+- Operating System: Windows 7 or macOS 10.12 
+- Available Disk Space: 6GB
+- Memory: 8G 
+
+### Installing the R Language
+
+If you are using Mac go to the R project at https://cran.r-project.org/bin/macosx/. You will have two options of the R language to choose from: a R.pkg file and a R-arm64.pkg file. The R.pkg file is for Macs with Intel processors. The arm64 version is for Macs with arm processors. If you do not know the processor of your Mac, go to the apple menu and click on "About This Mac." Your computer's processor will be listed. 
+
+If you are using Windows go to the R project at https://cran.r-project.org/bin/windows/base/. Click "Download R for Windows" at the top of the page. 
+
+If you are using Linux your steps for installation may be different depending on your distribution. If you have Ubuntu, one of the most popular distributions, you can start by follow the instructions here: https://cloud.r-project.org/bin/linux/ubuntu/fullREADME.html.
+
+### Installing RStudio
+
+Go to https://posit.co/download/rstudio-desktop/#download. You will have the option to download the correct version of RStudio for your operating system. 
+
+### Running Your First Line of Code
+
+When you start RStudio for the first time you will be presented with a screen divided into four parts, each of which represents one portion of R's coding environment.  
+
+The first place to look is the lower left-hand quadrant of the RStudio interface, where you'll see the word "Console."  The panel in question is known as the "Console Tab Panel." A "console" is a window that allows the computer's user to send code directly to the computer. You may be familiar with consoles from other places on the computer: PC users use the Command Line Prompt -- another name for the Console. Mac users use a console when they open the "Terminal" app to run command-line commands. In RStudio, the console panel is one of two ways that allow you to write R code interactively. 
+
+To see RStudio's console in action, inside RStudio's console panel, position your cursor at the prompt (">"). Type this simple line of code: `print("Hello World")` and press Enter/Return. The console will return "Hello World."  You have just run your first line of code.
+
+In RStudio you have the option of typing all of your code into the Console.  However, running code line-by-line at the console makes it difficult to save, edit, and revisit. This is why RStudio provides another panel specifically for editing R scripts, the "text editor." The text editor panel is directly above the Console Tab panel in the upper left-hand quadrant of Rstudio. 
+
+The Text Editor in RStudio is to R code what Microsoft Word is to text files: it offers a software environment that makes it easy to write, save, revise, and annotate code.  There are many other coding programs that would work, and coders comfortable with these programs may adapt our instructions.  This textbook, however, recommends that first-time programmers write their code in RStudio by default.
+
+To use the Text Editor in RStudio, you must first open a new file.  Go to "File," "New File," and then "R Script."  A new tab will open where you can draft multiple lines of code to be run later. For now, in your new R Script tab, type the same command as you typed into the Console: type `print("Hello World")`. 
+
+Next, you will want to "run" the line of code that you just typed.  To run a line of code from the Text Editor, you will click the "Run" button at upper-right-hand corner of the Text Editor panel.  You can also use your keyboard (try this too).  Position your cursor anywhere in the line of code in the Text Editor, and hit the keys `CTRL + Enter` (on PCS) or 'COMMAND + Return' (on Macs). To see what you did, look at the Console again, which will continue to keep track of the computer's response to all lines of code sent to the computer.  In the Console, R will return "Hello World."
+
+### Loading Libraries
+
+The "datasets" library is a set of quantitative data sets that are frequently used to teach code, although because this book is about text, we will only consult them once for the purpose of teaching.  
+
+```{r}
+library(datasets)
+```
+
+When a software package is called by the command 'library', its data and commands are available for you to use with R. R keeps track of which packages have been installed and loaded in the 'Packages' tab, which is one of the tabs available in the lower right-hand quadrant of RStudio.  
+
+In the lower-right-hand quadrant of Rstudio, click on the "Packages" tab now, and you'll see a list of software packages that came pre-loaded with R.  Notice that some of these packages are checked, meaning that they are already loaded and ready for use.  
+
+Scroll down until you see the package "datasets."  It should have a check mark next to it -- the result of your loading the package with the command above.  You can uncheck it and re-check the box next to datasets: the "Package" panel offers you another way to load a software library.  Make sure that the box next to "datasets" is checked before you move on.
+
+One thing to remember: if you've perfectly typed a command that you expect to run, and R gives you an error message, one thing to check is whether all the libraries needed for a particular exercise are checked.  
+
+It is important to note that packages only need to be installed once but libraries need to be reloaded every time you start a new RStudio session.
+
+### Loading Data
+
+Because we've turned on the package "datasets", we can next call the dataset "iris".  
+
+The command "data" tells R to load a data set from one of the available software libraries.  Back in the Text Editor panel, type in the following line of code, then run it using the "Run" button or CNTRL+Enter / COMMAND+Return:
+
+```{r}
+data(iris)
+```
+
+To see what you've done, look in the upper right-hand quadrant of RStudio, known as the "Workplace Browser" panel.  By default, you will be looking at the "Environment" tab.  
+
+In the Environment Tab, you will see that there is only one data set currently listed: "iris."  The Environment Panel tells us what data and variables are loaded.  It is useful for checking what data is available and what it looks like.  The Environment Panel lists "iris" as having 150 "obs" or "observations" of "5 variables," which is another way of saying that there is data that could be displayed in a spreadsheet of five rows and 160 columns, or 150 rows and 5 columns. 
+
+Click on the blue and white arrow button near iris to see a sample of the content of the data set.
+
+When you run code, you may periodically want to check what your data looks like.  Knowing how to inspect data in the "Environment" tab is a useful skill.
+
+#### A Simple Visualization
+
+Next, we'll make a simple visualization.  First, find the lower right-hand quadrant in Rstudio, where we formerly inspected software packages. Click on the "Plots" tab in this quadrant, which is where visualizations are displayed and temporarily stored.  It should be blank.
+
+Back in the Text Editor, type the following line of code and run it:
+
+```{r}
+hist(iris$Sepal.Width)
+```
+
+The '$' marker tells R to select from the iris data set just the data in the column labeled "Sepal Width."  If you're working with data that looks like a spreadsheet, for instance a data set with columns and rows, you can call the columns with the same marker. In R, these columns are known as "facets" of the data, and as we shall see, there are multiple ways of accessing them.  We will only rarely see the dollar-sign marker in the future, since we will be working with another set of commands known as "tidy" commands, which make it easy to work with data that takes the form of rows and columns.  
+
+Our first visualization command, "hist," is also not one that we'll see frequently in this book, but we use it here because it's fast.  The "hist" command makes a "histogram" or bar chart of frequencies for each variable in a list.  In this case, the "iris" data set has a list of the width of sepals of various kinds of irises.  The histogram shows us that irises with the sepal width of 3 are by far the most common of all iris kinds.  Notice that R has automatically attempted to make the resulting visualization as elegant and transparent as possible, even without our providing much by way of information.  The visualization has a title and its axes are labeled.  In this book, we will make many more complex visualizations which have custom axis labels and captions describing the data sets' content in detail.  
+
+The "Plots" tab temporarily stores all of the visualizations you make in an R session.  To store these visualizations, you can pull down the "Export" menu (just below Plots/Packages/Help/Viewer).  You'll see options to export the visualization as a pdf, to the clipboard, or to another format.  Choose one and save the histogram somewhere on your computer.
+
+In Chapter 1, we will meet the "Hansard" data set which includes a century of parliamentary debates, and we will begin counting words and visualizing them.  
+
+### Working with Historical Data
+
+The data samples chosen for this book are large for an instuctional textbook. One reason the samples are larger than typical is because we often work with full, decades-worth of data at a time, comparing them against one-another. The size of this data more closely resembles the kinds of data sets and computer requirements needed for serious historical research. One way we deal with the largness of our data is by designing steps that process the data in such a way as to make it small enough to run on a computer with the above mentioned minimum specifications. Even still, we encourage the reader to clear the Global Environment (and remove all saved variables) before proceeding to a new chapter. To do this, click on the broom icon in the Global Environment panel and confirm you wish to remove all objects from the environment. Next, click on the disk icon in the Global Environment panel and select "Free Unused R Memory." You may also remove specific objects from the environment using `rm()`.
+
+```{r}
+rm(iris)
+```
+
+### The Errors We All Face And How to Learn
+
+This book is designed to be accessible to first-time coders.  It assumes that you have mastered the skills of installing packages, loading packages, inspecting data, and saving visualizations described in this introduction.  
+
+One route of learning is working through the code in the chapters that follow. The reader will type each line of console-type font in to the Text Editor panel of RStudio, running one line of code from beginning to end. 
+
+In the process of typing in code, first-time programmers are likely to commit errors, and indeed even advanced programmers make typos.  In programming languages, a typo will produce an error message or cause the program to perform with unintended results.  For an example, try typing the following line into the R console and pressing 'enter':
+
+```
+print("hello world)
+```
+
+This line will result in an error, because a close quotation mark is missing on the other side of the phrase "hello world."  
+
+As you learn to code, whatever your level of experience, you are almost certain to have typos and errors that stop the program from performing as you expect.  We advise you to ask yourself what went wrong when you inevitably get error messages or unexpected results.  Through closely following the examples in the book and paying attention to any error messages that result, you will gradually learn to recognize common errors like missing parentheses or quotation marks.  
+
+What can you do as a first-time coder of the R language for analyzing historical text? The book's authors assume that you will proceed by following each line of instruction, typing in the given lines of code, and running them.  If you follow these instructions, you will soon enough find yourself capable of adjusting the lines of code in certain ways, for instance, making a bigger visualization or showing a different sample of the data. At least one of us learned to code this way by working through the exercises in literary text mining from Silge and Robinson; together, we have guided many analysts with no background in code through the basics of text mining.  We believe that by working through the recipes in this volume, inexperienced coders can become digital historians, capable of detecting many previously invisible patterns in the archive.  
+
+Can you teach this book to others if you've never coded before?  Yes, you can, and rapidly, with some provisos.  Our experience was learning R in a series of weekly, 3-hr private tutorials with a Statistics Department graduate student one summer.  The graduate student was paid an hourly rate out of a research grant, and the mini-seminar was attended by Prof. Guldi and two of her humanities graduate students.  In the following semester, the same Statistics graduate student was paid an hourly rate to help teach a small, pilot introductory course on Digital History. The professor remained responsible for discussions of how quantitative and text-analysis tools are being used in History, and for the grading of all assignments.  The graduate student was available during class meeting times to help oversee the installation of RStudio, to troubleshoot troublesome code, and to add mini-lectures explaining the more technical dimensions of the code.  In this way, one professor went from novice to teacher of code in half a year, given an institutional investment of well under five digits.  
+
+We also believe that it is possible to begin with the exercises here, working on the British parliamentary debates, and move to other data sets from different historical periods or voices, even though that material is not covered in this book.  Scholars of history usually come to the digital humanities with pre-formed commitments to particular times and places.  If a data set exists from that time and place, it can be "swapped" for our data set in any of the exercises in this chapter. 
+
+Text books offer an excellent resource for scholars who have questions about programming beyond the practical introduction in this book. If you have never programmed before you might find _Hands-On Programming with R_ by Grolemund (2014) or _R for Data Science_ by Wickham & Grolemund (2016) to be a useful supplement to this book. If you are new to text mining and want to learn more you might look into _Text Mining in R_ by Silge and Robinson (2017) for its Tidyverse R implementation, or Quanteda (https://quanteda.io/) for a comprehensive natural language processing (NLP) tool set.  
+
+__Text Mining for Historical Analysis__ is a preliminary text book for practical text mining, and it was intended as a survey of the individual techniques we have found most useful in our own research.  It is not a programming manual, nor is it a book of theory.  In the course of using these exercises, some learners of text mining will want to explore the rules of code syntax. It was written with the idea of offering a practical companion to the theory of text mining for history offered in __The Dangerous Art of Text Mining__, and in the appendix we include a sample syllabus showing how chapters from the two books might form compatible assignments for an undergraduate-level course.   
