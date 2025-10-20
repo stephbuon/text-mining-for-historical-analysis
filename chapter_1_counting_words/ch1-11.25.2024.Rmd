@@ -2,11 +2,11 @@
 title: 'Chapter 1: Counting Words in the 19th-Century British Parliamentary Debates'
 output:
   pdf_document:
-    latex_engine: lualatex
-geometry: "left=1in,right=1in,top=2in,bottom=1in"
+    latex_engine: xelatex
+    keep_tex: true
 header-includes:
-  - \usepackage{tcolorbox}
-  - \tcbuselibrary{listingsutf8}
+  - \usepackage{fontspec}
+  - \setmainfont{DejaVu Serif}
 ---
 
 ```{r setup, include=FALSE}
@@ -196,14 +196,21 @@ As you inspect the arguments of each function, consider the fact that those argu
 
 Next, let's inspect the results of our unnesting using `head()`, which returns just the first rows of a data frame.
 
-```{r, echo=FALSE}
+```{r}
 # show the first few rows of our tokenized data
 head(tokenized_hansard)
 ```
 
+However, we have a preference for looking at more data since that can give us a fuller picture of the data. 
+
+```{r}
+# show the first fifteen rows of our tokenized data
+head(tokenized_hansard, n=15)
+```
+
 `unnest_tokens()` did a lot of heavy lifting for us! 
 
-As part of our data transformation, the output data has a column named "word" for each individual token of the corpus. Notice that the words in `tokenized_hansard` look just like the words in the first sentence of the first speech in `hansard_1850`. Those speeches have been split into individual words, but the words are still in the same order. Notice that the command `unnest_tokens()` has also transformed all the words to lower-case and removed punctuation marks such as commas and periods.  This transformation will make the words easier to count.  
+As part of our data transformation, the output data has a column named "word" for each individual token of the corpus. Notice that the words in `tokenized_hansard` look just like the words in the first sentence of the first speech in `hansard_1850`. Those speeches have been split into individual words, but the words are still in the same order. Notice that the command `unnest_tokens()` has also transformed all the words to lower-case and removed punctuation marks such as commas and periods. This transformation, often called "data cleaning" will make the words easier to count because the computer will not treat words differently based on capitalization or the presence of symbols. 
 
 As we inspect the results of unnesting, one might note that the input to `unnest_tokens()` was "tidy" in format -- that is, it had two columns, one for "sentence_id" and one for "text". After working with `unnest_tokens()`, the resulting output, `tokenized_hansard`, also is "tidy" in format.  That is, it has two columns, one for `sentence_id` and one for `word`.  This tidy format is both easily human readable and also easy to process and count. 
 
@@ -229,7 +236,7 @@ head(tokenized_hansard_counts)
 
 We now have a frequency count of every word recorded in the speeches of Hansard, 1850-59. The initial results are unimpressive.  In our dataset, as with most textual datasets, the most common words are also often the least interesting.  For this reason, analysts compile lists of the most common words, called "stop words." Analysts often remove stop words from their results before analysis.  
 
-The `tidytext` package comes with a prepared list of stop words.  We can remove them from our results by loading the "stop_words" dataset and then passing the dataset as an argument to the `anti_join()` function. 
+The `tidytext` package comes with a prepared list of stop words.  We can remove them from our results by loading the "stop_words" dataset and then passing the dataset as an argument to the `anti_join()` function. `anti_join()` keeps all the rows in the first dataset that do not have a match in the second dataset. Using `anti_join()` we can remove words we do not want in our analysis from our data. 
 
 ```{r, echo=FALSE}
 # load tidytext's dataset of common stop words
@@ -530,6 +537,8 @@ When is collocate analysis the right method? Researchers of conceptual history f
 With collocate analysis alone, we cannot trace discourses over time -- a crucial step in understanding the construction of political and cultural positions. But we can begin to tease apart the meanings of closely-related ideas at various points in the past. We can recreate Ro's approach in miniature here, asking the question: how did British members of parliament in the 1850s talk about foreigners and colonial subjects?
 
 In the following code we create a function for filtering the Hansard data for a keyword, and visualizing the top 20 words. These are the same series of steps we have performed already, but here we are using our function to produce a series of related graphs in succession without writing out the same instructions multiple times.  
+
+Creating a function will allow us to automatically create a series of graphs for the keywords we wish to analyze. Producing many graphs in succession is good practice for exploratory data analysis (EDA), the stage of research where we look at the data to understand its basic patterns, structure, and possible meanings before doing formal interpretation or modeling. Performing a comparative analysis of graphs side-by-side is one of the main skills digital humanists use when considering the subtle structures of meaning and difference that define cultural and political conversations. A careful comparison between the charts above offers the beginnings of a nuanced analysis of overlapping terms used by British members of parliament to refer to people and forces from beyond Britain.
 
 ```{r, message=FALSE}
 # define a function to generate a bar plot of top words that co-occur with a given keyword
