@@ -171,7 +171,7 @@ Now that we have defined this function, we can call upon it whenever we need to 
 print(add_numbers(2, 3))
 ```
 
-To count words in Hansard, we will use a different function, the `unnest_tokens()` function from `tidytext`. While there are many ways to count words over time, one way to do this--that is also very human readable--is to put our data into a format where each word of the text is on a separate row. These individual words are called "tokens." The process of splitting chunks of text into individual units is called "tokenization." While singular words are often called "tokens," a common term used to instead describe multi-word phrases is "n-gram" (such as using the term "bigrams" to describe two word units). 
+To count words in Hansard, we will use a different function, the `unnest_tokens()` function from `tidytext`. While there are many ways to count words over time, one way to do this--that is also very human readable--is to put our data into a format where each word of the text is on a separate row. These individual words are called "tokens." The process of splitting chunks of text into individual units is called "tokenization." While singular words are often called "tokens," a common term used to instead describe multi-word phrases is "n-gram" (such as using the term "bigrams" to describe sequential, two-word phrases). 
 
 In this one-token-per-row format we can easily process our data. This approach to data processing is common in the humanities and handles text using the "Bags of Words" (BoW) approach, where text data is treated as a collection (or "bag") of individual words without regard to grammar, order, or context (Jockers 2015). The focus is instead on word frequency or occurrence.
 

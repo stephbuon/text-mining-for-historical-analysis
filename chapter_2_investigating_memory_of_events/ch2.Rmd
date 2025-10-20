@@ -181,7 +181,7 @@ Accordingly, in the sections below, we will begin by counting phrases, but that 
 
 ### Finding Bigrams
 
-While there are several approaches to finding multiword phrases, we will demonstrate this by tokenizing the text into bigrams, or sequential, two-word phrases.  
+While there are several approaches to finding multiword phrases, we will demonstrate this by tokenizing the text into bigrams. 
 
 The following code filters the speeches of the 1860s for the first months of 1867 before the vote on the Second Reform Act, which gave Britain's urban working-class men the right to vote.  
   
