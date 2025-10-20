@@ -301,6 +301,8 @@ Silge, Julia, and David Robinson. tidytext: Text Mining Using 'dplyr', 'ggplot2'
 
 Spinu, Vitalie, Garrett Grolemund, and Hadley Wickham. lubridate: Make Dealing with Dates a Little Easier. Version 1.9.2, 2023. R package, https://CRAN.R-project.org/package=lubridate.
 
+University of Virginia Library. "APIs for Scholarly Research." LibGuides at UVA Library, University of Virginia, https://guides.lib.virginia.edu/c.php?g=515084&p=10046079&utm_source
+
 Wickham, Hadley. rvest: Easily Harvest (Scrape) Web Pages. Version 1.0.3, 2022, https://CRAN.R-project.org/package=rvest.
 
 Wickham, Hadley. httr: Tools for Working with URLs and HTTP. Version 1.4.7, 2023, https://CRAN.R-project.org/package=httr.

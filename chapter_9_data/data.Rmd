@@ -1,12 +1,66 @@
 ---
 title: "Chapter 7: Data"
-output: pdf_document
-
-
+output:
+  pdf_document:
+    latex_engine: xelatex
+    includes:
+      in_header: preamble.tex
+    df_print: tibble
+md_extensions: -smart
 ---
+
+
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+# Only set root.dir when knitting a file
+input <- knitr::current_input()
+if (!is.null(input)) {
+  knitr::opts_knit$set(root.dir = dirname(input))
+}
+
+# Ensure preamble exists next to the Rmd (belt & suspenders)
+if (!file.exists("preamble.tex")) {
+  writeLines(c(
+    "\\usepackage{textcomp}",
+    "\\providecommand{\\textquoteleft}{`}",
+    "\\providecommand{\\textquoteright}{'}",
+    "\\providecommand{\\textquotedblleft}{``}",
+    "\\providecommand{\\textquotedblright}{''}",
+    "\\providecommand{\\ae}{æ}",
+    "\\providecommand{\\AE}{Æ}",
+    "\\providecommand{\\dh}{ð}",
+    "\\providecommand{\\DH}{Ð}",
+    "\\providecommand{\\th}{þ}",
+    "\\providecommand{\\TH}{Þ}",
+    "\\providecommand{\\o}{ø}",
+    "\\providecommand{\\O}{Ø}",
+    "\\providecommand{\\ss}{ß}"
+  ), "preamble.tex")
+}
+
+# Sanitize printed output from chunks (tibbles, scraped text, etc.)
+hook_out <- knitr::knit_hooks$get("output")
+knitr::knit_hooks$set(output = function(x, options) {
+  # Smart quotes → ASCII
+  x <- gsub("\u2019|\u2018", "'", x, useBytes = TRUE)
+  x <- gsub("\u201C|\u201D", "\"", x, useBytes = TRUE)
+  # Pandoc macro that sometimes leaks
+  x <- gsub("\\\\textquoteright", "'", x, perl = TRUE)
+  # Legacy LaTeX letter macros → Unicode
+  x <- gsub("\\\\ae", "æ", x, perl = TRUE)
+  x <- gsub("\\\\AE", "Æ", x, perl = TRUE)
+  x <- gsub("\\\\dh", "ð", x, perl = TRUE)
+  x <- gsub("\\\\DH", "Ð", x, perl = TRUE)
+  x <- gsub("\\\\th", "þ", x, perl = TRUE)
+  x <- gsub("\\\\TH", "Þ", x, perl = TRUE)
+  x <- gsub("\\\\o(?![a-zA-Z])", "ø", x, perl = TRUE)  # avoid \over etc.
+  x <- gsub("\\\\O(?![a-zA-Z])", "Ø", x, perl = TRUE)
+  x <- gsub("\\\\ss", "ß", x, perl = TRUE)
+  if (is.function(hook_out)) hook_out(x, options) else x
+})
 ```
 
 
@@ -245,6 +299,28 @@ ggplot(top_words, aes(x = reorder(word, n), y = n)) +
   theme_minimal()
 ```
 
+#### APIs for Scholarly Research
+
+Here we present a list of APIs for scholarly researcher derived from the University of Virginia Library with description provided by the authors of this book (University of Virginia).
+
+| Source | Description |
+|--------|-------------|
+| [AM Digital](https://www.amdigital.co.uk/) | Adam Matthew Digital is a major publisher of digitized primary source archives used in humanities and social science research. The company partners with libraries, archives, and museums to digitize rare historical materials—such as manuscripts, letters, maps, colonial records, newspapers, and ephemera—and curates them into themed online collections for scholarly use. |
+| [Coherent Digital](https://coherentdigital.net/) | Coherent Digital is a U.S.-based digital publisher and aggregator that specializes in building digital collections of "hidden, lost, and endangered materials" — grey literature, non-traditional sources, web-only or at-risk content, and materials from underrepresented communities (especially in the Global South). |
+| [Dewey Data](https://www.deweydata.io/) | Dewey Data is a platform designed to provide access to curated datasets from third-party premium providers that have traditionally been difficult for scholars to obtain. It aggregates people, place, and company data—such as foot-traffic, real estate, spending, web analytics, and points of interest. By negotiating licensing and integration on behalf of researchers, the platform makes commercially controlled datasets more accessible for scholarly work under academic-friendly terms. |
+| [Edinburgh University Press](https://www.euppublishing.com/customer-services/librarians/text-and-data-mining-tdm) | Edinburgh University Press supports text and data mining through a licensed crawler-based system that provides institutional researchers with access to full-text XML of books, chapters, and journal articles for non-commercial academic use. It does not offer a public-facing API but rather a web crawler that once enabled, researchers can systematically harvest the XML corpus, making the platform suitable for large-scale linguistic, historical, or computational text analysis while maintaining compliance with publisher licensing terms. |
+| [Elsevier](https://dev.elsevier.com/) | Elsevier provides a suite of research APIs that give programmatic access to citation data, metadata, abstracts, and in some cases full text from its major platforms, including Scopus, ScienceDirect, Reaxys, PharmaPendium, and Engineering Village. These APIs support a wide range of scholarly workflows, from bibliometrics and literature reviews to chemical data retrieval and research evaluation. Most APIs are available at no cost for non-commercial academic users, provided their institution already subscribes to the underlying products. |
+| [HathiTrust](https://babel.hathitrust.org/cgi/mb) | HathiTrust is a large-scale digital library that provides access to millions of digitized books and archival materials from research libraries, with strong coverage of public-domain works and U.S. government documents. For text and data mining, it offers the HathiTrust Research Center (HTRC), which provides computational access to full text through curated datasets and a Data Capsule environment that allows large-scale analysis while protecting copyrighted material. Researchers can download public-domain corpora directly or use controlled infrastructure to analyze in-copyright texts, making HathiTrust one of the most important platforms for scholarly text mining in the humanities and social sciences. |
+| [IEEE Xplore](https://developer.ieee.org/) | Institute of Electrical and Electronics Engineers (IEEE) offers the IEEE Xplore API, a developer toolkit that enables programmatic access to its digital library of engineering, computer science, and technology content. Through this API users can query metadata, abstracts and, in certain cases, full-text articles. Access requires registration and an API key. It supports automated workflows like automated literature discovery and citation analysis. |
+| [New York Times API](https://developer.nytimes.com/apis) | The New York Times API is a set of publicly documented web APIs that allow developers and researchers to access structured data from the NYT, including articles, metadata, archives, books, reviews, and topical tags. It provides access to the Article Search API (historical and current articles with metadata), Books API (bestsellers and reviews), Archive API (full monthly issue metadata back to 1851), Movie Reviews API, and Top Stories API. Most endpoints return JSON and are designed for metadata-level access rather than full article text, though headlines, abstracts, keywords, and URLs are included. The API is widely used in digital humanities, journalism studies, and computational media research for building corpora, trend analysis, and topic modeling against news metadata, while full-text mining typically requires separate licensed access through ProQuest or NYT institutional agreements. |
+| [Taylor & Francis](https://taylorandfrancis.com/our-policies/textanddatamining/) | Taylor & Francis hosts a very large corpus of scholarly journals and books across the humanities and social sciences as well as STEM fields, with particularly deep coverage in cultural studies, history, education, media studies, and the social sciences. It also includes both contemporary and historical materials and supports programmatic large-scale analysis of full text, which makes it useful for trend analysis, discourse studies, topic modeling, and longitudinal claims about scholarly language or concepts. Because its platform encompasses many influential journals across multiple disciplines. |
+| [Springer / BMC](https://www.biomedcentral.com/getpublished/indexing-archiving-and-access-to-data) | Springer offers a public RESTful API (via the BMC platform) that provides structured access to open-access journal content in JSON or PAM formats, making it easy to integrate into computational workflows in R. The platform also maintains rich article-level metadata and real-time usage and citation metrics, which are especially useful for bibliometrics, scholarly communication research, and longitudinal studies of academic impact. |
+| [Library of Congress](https://www.loc.gov/collections/world-digital-library/about-this-collection/) | The Library of Congress is one of the most valuable resources for large-scale text and data mining because it serves as both a national library and a long-term digital preservation infrastructure with extensive open collections spanning newspapers, manuscripts, maps, recordings, photographs, and government documents. Many of its holdings are digitized and made available through platforms like Congress.gov, Chronicling America, and the LoC Digital Collections, with rich metadata and machine-readable formats that support computational analysis. Its breadth across U.S. history, law, politics, culture, and media — combined with stable hosting and long-term stewardship — makes it a foundational corpus for humanities, social science, and civic-data research, especially for longitudinal or historically grounded projects. |
+| [ERIC](https://eric.ed.gov/?faq) | ERIC (the Education Resources Information Center) is a major open-access index of research in education, sponsored by the U.S. Department of Education, and it is one of the strongest resources for text and data mining in the learning sciences, education policy, and pedagogy. It offers structured metadata for journal articles, reports, dissertations, curricula, and grey literature from government and nonprofit education organizations, much of it available in full text. Because ERIC aggregates both peer-reviewed research and practitioner-oriented materials, it supports both scholarly analysis and policy-oriented studies, making it ideal for large-scale text analysis of educational trends, terminology shifts, interventions, and discourse over time. |
+| [Chronicling America](https://www.loc.gov/collections/chronicling-america/about-this-collection/technical-information/) | Chronicling America is a major open-access newspaper portal operated by the Library of Congress in partnership with the National Endowment for the Humanities, and it is one of the most important historical text corpora available for large-scale humanities research. It provides digitized U.S. newspapers spanning 1777–1963 along with rich bibliographic metadata and OCR text, making it well-suited for computational analysis of language, place-based reporting, public discourse, and cultural change over time. Because the platform is built for long-term preservation and public access, it is widely used for projects in digital history, media studies, and historical linguistics, particularly those requiring geographically and temporally broad sources. |
+| [Unpaywall](https://unpaywall.org/products/api) | Unpaywall is a powerful resource for large-scale scholarly research because it provides open, programmatic access to metadata about which versions of over 54 million academic articles are freely available on the web. It maintains a massive database of OA copies harvested from repositories, preprint servers, and publisher pages, and its API allows researchers to look up open versions of paywalled articles using DOIs. Rather than hosting the articles itself, Unpaywall acts as a discovery layer for legal open-access versions, which makes it especially useful for building large corpora of scholarly texts without needing direct publisher agreements or subscriptions. |
+| [JSTOR](https://www.jstor.org/ta-support) | JSTOR is one of the largest digital libraries of scholarly journals, books, and primary sources spanning the humanities and social sciences, with particular strength in older journal runs (deep backfiles) and historically oriented scholarship. For computational text analysis, JSTOR provides Data for Research (DfR), a service that allows researchers to obtain structured metadata, n-grams, and full-text datasets derived from its corpus. It enables bulk export of data in machine-readable formats such as JSON or XML. Because JSTOR's core holdings are largely in-copyright, access to full text is controlled: researchers typically begin with n-gram or metadata-level exports, then may apply for privileged access upon IRB-style justification or institutional agreement. This model makes JSTOR valuable for linguistic, conceptual, and discourse analysis over time, especially in fields like history, literature, cultural studies, anthropology, philosophy, feminist theory, political thought, and other disciplines where journals preserved by JSTOR often represent the canonical scholarly record across the 19th–21st centuries. |
+
 ## RSS Feeds 
 
 RSS feeds are a simpler alternative to APIs for data extraction. For example, BBC News offers an RSS feed that returns content in XML format, which can be parsed to extract relevant information. 
@@ -430,6 +506,8 @@ tidy_egils_saga_with_metadata <- tidy_egils_saga %>%
 This metadata helps an analyst keep track of key information about the book. However, because each row in the author, book, and date columns contains the same values, the metadata is redundantly stored in the data frame. 
 
 ```{r}
+library(gt)
+
 gt(head(tidy_egils_saga_with_metadata))
 ```
 
@@ -487,16 +565,12 @@ cat(paste(html_preview, collapse = "\n"))
 
 ```
 #### Understanding HTML Code and Finding the Content 
+
 To make practical use of webscraping, the analyst first needs to become aware of the components of the HTML code that structures a website.  On a webpage, each element of HTML code gives the computer specific information about what to display, for instance headers, paragraphs, and links. This information is given in a specific structure in the HTML document, which has a tree-like branching structure.  
 
 There are two main features of HTML code: 
 * CSS selectors, derived from web design conventions, identify elements based on tags (e.g., "`p`" for paragraphs), classes (e.g., "`.title`"), IDs (e.g., "`#main`"), or structural relationships (e.g., "`div > p`" for paragraph tags directly nested in a `div`). 
 * In contrast, XPath offers a more expressive syntax for specifying paths through the HTML tree, enabling selection based on element attributes, positions, or nested hierarchies (e.g., "`//div[@class='content']/p`" selects all paragraph tags within div elements that have the class content).
-
-
-
-
-
 
 # Data Cleaning
 
@@ -681,7 +755,7 @@ typeof(my_number)
 
 Because the the variable my_number is a character-type object, not a number-type object, we cannot add it to another number without producing an error.
 
-```{r}
+```{r, error=TRUE}
 my_number + 2
 ```
 
@@ -690,7 +764,6 @@ However, we can use the base R function as.numeric() to tell R to treat my_numbe
 ```{r}
 my_number <- as.numeric(my_number) 
 my_number + 2
-
 ```
 
 The functions as.character(), as.date(), and as.numeric() are all useful for converting datatypes from one type to the next. When working with hansardr, some of us have struggled with deep confusion in our inability to work with the year, until we realized that at some point the year had been converted to a string object, not a numeric or date object. 
@@ -942,6 +1015,12 @@ library(gt)
 library(tibble)
 library(dplyr)
 
+md_col <- function(tbl, col) {
+  # Safely convert a single column's markdown to gt::md()
+  col <- rlang::ensym(col)
+  tbl %>% mutate(!!col := gt::md(!!col))
+}
+
 # --- Quanteda ---
 quanteda_tbl <- tibble(
   Task = c(
@@ -958,13 +1037,11 @@ quanteda_tbl <- tibble(
   )
 )
 
-print(quanteda_tbl %>%
+quanteda_tbl %>%
+  md_col(`What to do`) %>%
   gt() %>%
-  tab_header(title = "✅ Quanteda (tokens, dfm, etc.)") %>%
-  fmt_markdown(columns = everything()))
-
-cat("### \n\n", sep = "\n")
-
+  tab_header(title = "Quanteda (tokens, dfm, etc.)") %>%
+  cols_label(`What to do` = "What to do")
 
 # --- tm ---
 tm_tbl <- tibble(
@@ -981,9 +1058,10 @@ tm_tbl <- tibble(
 )
 
 tm_tbl %>%
+  md_col(`What to do`) %>%
   gt() %>%
-  tab_header(title = "✅ tm (Corpus, DocumentTermMatrix)") %>%
-  fmt_markdown(columns = everything())
+  tab_header(title = "tm (Corpus, DocumentTermMatrix)") %>%
+  cols_label(`What to do` = "What to do")
 
 # --- text2vec ---
 text2vec_tbl <- tibble(
@@ -999,10 +1077,11 @@ text2vec_tbl <- tibble(
   )
 )
 
-print(text2vec_tbl %>%
+text2vec_tbl %>%
+  md_col(`What to do`) %>%
   gt() %>%
-  tab_header(title = "✅ text2vec (itoken, dtm, etc.)") %>%
-  fmt_markdown(columns = everything()))
+  tab_header(title = "text2vec (itoken, dtm, etc.)") %>%
+  cols_label(`What to do` = "What to do")
 
 # --- topicmodels / stm ---
 stm_tbl <- tibble(
@@ -1018,10 +1097,11 @@ stm_tbl <- tibble(
   )
 )
 
-print(stm_tbl %>%
+stm_tbl %>%
+  md_col(`What to do`) %>%
   gt() %>%
-  tab_header(title = "✅ topicmodels / stm (LDA/STMs)") %>%
-  fmt_markdown(columns = everything()))
+  tab_header(title = "topicmodels / stm (LDA/STMs)") %>%
+  cols_label(`What to do` = "What to do")
 
 # --- Sparse matrices ---
 sparse_tbl <- tibble(
@@ -1037,10 +1117,11 @@ sparse_tbl <- tibble(
   )
 )
 
-print(sparse_tbl %>%
+sparse_tbl %>%
+  md_col(`What to do`) %>%
   gt() %>%
-  tab_header(title = "✅ Sparse matrices (e.g., dgCMatrix)") %>%
-  fmt_markdown(columns = everything()))
+  tab_header(title = "Sparse matrices (e.g., dgCMatrix)") %>%
+  cols_label(`What to do` = "What to do")
 
 # --- Tidyverse Tools ---
 tidyverse_tools_tbl <- tibble(
@@ -1060,10 +1141,10 @@ tidyverse_tools_tbl <- tibble(
   )
 )
 
-print(tidyverse_tools_tbl %>%
+tidyverse_tools_tbl %>%
+  md_col(Use) %>%
   gt() %>%
-  tab_header(title = "🧰 Helpful Tidyverse-Compatible Tools") %>%
-  fmt_markdown(columns = everything()))
+  tab_header(title = "Helpful Tidyverse-Compatible Tools")
 
 ```
 
