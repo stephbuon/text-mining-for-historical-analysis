@@ -208,7 +208,7 @@ When working with large-scale historical data, researchers often adapt their que
 
 Throughout _Text Mining for Historical Analysis_ we have attempted to limit barriers to processing a dataset as large as Hansard through our data organization scheme that breaks each decade of text and related metadata files into their own files, and presents readers with an order of intermediary data processing that is more efficient for working with historical data in R. 
 
-The following code uses the `unnest_tokens()` function, which we previously used to split text into individual words. This time, we adjust the function to extract pairs of consecutive words instead. To do this, we set the token argument to `n-grams`, instructing R to create sequences of consecutive words, and the `n` argument to `2`, specifying that each sequence should consist of two words. These two arguments work together to extract two-word phrases, also known as `bigrams`.
+The following code uses the `unnest_tokens()` function, which we previously used to split text into individual words. This time, we adjust the function to extract pairs of consecutive words instead. To do this, we set the token argument to `n-grams`, instructing R to create sequences of consecutive words, and the `n` argument to `2`, specifying that each sequence should consist of two words. These two arguments work together to extract bigrams. 
 
 ```{r}
 # Generate bigrams (two-word sequences) from the 'text' column of the hansard_1867 data
@@ -238,7 +238,7 @@ Note that the bigrams extracted overlap, as if the same sentence had been subdiv
 
 #### Counting Bigrams 
 
-Now we can count the top bigrams and remove any that contain stop words. As mentioned in Chapter 1, we remove stop words to focus on word pairs that might be more meaningful for our analysis.
+Now we can count the top bigrams and remove any that contain stop words. We remove stop words to focus on word pairs that might be more meaningful for our analysis.
 
 ```{r}
 # remove bigrams that contain any stop words
@@ -328,7 +328,9 @@ head(my_reading$text)
 
 A cursory reading of the sentences suggests that members of parliament were well aware of massive public meetings where more than a thousand members of the public showed up support the vote for working-class people.  We read of demonstrations around British Empire, even in Nova Scotia.  We read of members of parliament challenging each other to meet the demands of the public: "Have you not heard or read what has been said?"  We have only skimmed a few sentences, but the material in these 126 rows gives us what we need to understand how members of parliament talked about public protests in these crucial months of 1867.
 
-#### Counting multiword Phrases
+Bigrams, however, have limitations. A bigram only looks at one preceding word, but meaning often depends on words far apart in a sentence. Observing longer utterances—such as by moving beyond bigrams to multiword phrases—allows us to capture linguistic meaning that depends on more distant context than just the immediately preceding word.
+
+#### Counting Multiword Phrases
 
 Text mining also allows us to look for multiword phrases beyond bigrams.  We can look at 5-word phrases from the year 1867. We can also add a line to filter the n-grams for the presence of the word "people," looking for voices that refer to democracy, for instance, "the will of the people," an important concept in the years leading up to 1867, when working-class men in cities got the right to vote for the first time.  The results will allow us to ask the question: What are the most frequently-invoked phrases involving "the people"?
 

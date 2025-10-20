@@ -1,0 +1,48 @@
+---
+title: "Appendix C"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Appendix C 
+## Troubleshooting
+
+## Troubleshooting Code with Chatbots
+
+ChatGPT 
+
+Add to book:
+
+Help if R is not working -- put R down, troubleshooting
+we ask openAI or gemini in the past stack overflow
+
+
+## Restarting R Before Installing a Package
+
+
+
+When R asks you to restart before installing a package
+
+Sometimes, when installing a new package (especially one that depends on system libraries, compiles code, or updates an existing package currently in use), RStudio may show a prompt such as:
+
+“A restart of R is required to complete this install.”
+
+This simply means that R needs a fresh session so the package can be installed without conflicts from packages already loaded.
+
+What to do:
+
+Save your work (any scripts or documents you are editing).
+
+Click “Yes” or “Restart R” when prompted.
+
+RStudio will restart the session (you may see the Console clear).
+
+Re-run the install.packages("package_name") command after the restart if it did not complete automatically.
+
+Once installed, load the package using library(package_name).
+
+Why this happens:
+R cannot overwrite a package that is currently loaded into memory. Restarting ensures the old version is unloaded so the new version can be installed cleanly.
