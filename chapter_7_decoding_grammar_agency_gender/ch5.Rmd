@@ -280,7 +280,7 @@ filtered_nouns <- nouns %>%
 
 # Count occurrences of each noun and sort in descending order
 top_nouns <- filtered_nouns %>%
-  count(token, sort = TRUE)
+  count(token, sort = TRUE) 
 
 # View the top nouns
 head(top_nouns, 20)
