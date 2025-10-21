@@ -30,7 +30,14 @@ Importantly, the techniques presented in this chapter have both promise and limi
 
 ## Running a Line of Code 
 
-The first step in learning R is understanding how to run a line of code. You can type a command directly into the Console pane and press Enter, or you can write it in an R script (or an R Markdown code chunk) and execute it from there. In RStudio, place your cursor on the line you want to run and press Ctrl + Enter on Windows or Linux (or Cmd + Enter on a Mac) to send it to the Console automatically. You can also highlight one or more lines of code and click the green Run button at the top of the script editor. Try it now by typing the following into your Console and pressing Enter, or by highlighting it and clicking Run:
+The first step in learning R is understanding how to run a line of code. 
+
+Here are some exercises to learn how to run code on your computer. Try each and decide which ones feel most comfortable to you:
+- You can type a command directly into the Console pane and press Enter.
+- You can write it in an R script and execute it by placing your curser on the line you want to run and press `Ctrl + Enter` on Windows or Linux (or `Cmd + Enter` on a Mac).
+- You can also highlight one or more lines of code and click the green Run button at the top of the script editor. 
+
+Try to run the code now by typing the following into your Console and pressing Enter, or by highlighting it and clicking Run:
 
 ```{r}
 print("Hello World")

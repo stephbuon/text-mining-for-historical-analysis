@@ -32,8 +32,7 @@ looking_glass_text <- readLines(looking_glass_url, encoding = "UTF-8", warn = FA
 # Download and save The Tale of Peter Rabbit
 peter_text <- readLines(peter_url, encoding = "UTF-8", warn = FALSE)
 
-cat("Texts downloaded successfully.\n")
-
+print("Texts downloaded successfully.")
 ```
 
 #### Vectorising as Preparation for Measurement
@@ -101,32 +100,38 @@ filtered_tfidf <- tfidf_table %>%
 ```
 
 ```{r}
-# Create side-by-side tables with style
-library(htmltools)
+# (REPLACES L103–L128) — tidyverse conventions, LaTeX/PDF-safe
+library(dplyr)
+library(knitr)
 library(kableExtra)
+library(purrr)
+library(glue)
 
-# Ensure tf-idf values print in decimal, not scientific notation
-filtered_tfidf <- filtered_tfidf %>%
-  mutate(tf_idf = format(tf_idf, scientific = FALSE, digits = 6))
+left_tab <- filtered_tfidf %>%
+  slice(1:6) %>%
+  mutate(tf_idf = round(as.numeric(tf_idf), 6)) %>%
+  kable(format = "latex", booktabs = TRUE,
+        caption = "Some Beatrix Potter Words", escape = TRUE) %>%
+  kable_styling(latex_options = c("hold_position")) %>%
+  as.character()
 
-# Create styled tables as HTML strings
-table_left <- kable(filtered_tfidf[1:6, ], format = "html",
-                    caption = "<span style='font-size:18pt; font-weight:bold;'>Some Beatrix Potter Words</span>",
-                    escape = FALSE) %>%
-  kable_styling(full_width = FALSE)
+right_tab <- filtered_tfidf %>%
+  slice(7:12) %>%
+  mutate(tf_idf = round(as.numeric(tf_idf), 6)) %>%
+  kable(format = "latex", booktabs = TRUE,
+        caption = "Some Lewis Carroll Words", escape = TRUE) %>%
+  kable_styling(latex_options = c("hold_position")) %>%
+  as.character()
 
-table_right <- kable(filtered_tfidf[7:12, ], format = "html",
-                     caption = "<span style='font-size:18pt; font-weight:bold;'>Some Lewis Carroll Words</span>",
-                     escape = FALSE) %>%
-  kable_styling(full_width = FALSE)
-
-browsable(
-  tagList(
-    div(HTML(table_left), style = "float: left; width: 48%; margin-right: 2%;"),
-    div(HTML(table_right), style = "float: right; width: 48%; margin-left: 2%;"),
-    div(style = "clear: both;")
-  )
-)
+glue(
+"\\begin{{minipage}}[t]{{0.48\\textwidth}}
+{left_tab}
+\\end{{minipage}}\\hfill
+\\begin{{minipage}}[t]{{0.48\\textwidth}}
+{right_tab}
+\\end{{minipage}}"
+) %>%
+  knitr::asis_output()
 
 ```
 
@@ -245,7 +250,6 @@ While there are different mathematical formulas for measuring distinctiveness or
 As we will show, these methods of measurement allow analysts to answers questions like: which words are characteristic of one speaker and not another? Which words are most symptomatic of the 1860s, a decade characterized by an economic crisis related to the cotton industry as well as labor disputes, and what can we learn about the 1860s from applying this method? 
 
 We will first demonstrate TF-IDF to compare multiple decades back-to-back to surface the words that are most unique to one decade and not the others. We will then use JSD to explore the lexical features of debates surrounding the use of the word "cotton" measured against other decades. The results will demonstrate how changes in the way in which difference is measured reveal different dimensions of a corpus. We will encourage readers to reflect on these differences, using them as a way of expanding their insight into the nature of difference, the use of comparable algorithms as different tools in a process of analysis, and the beginning of a process of critically thinking about data, algorithm, and historical truth. 
-
 
 ## Distinctiveness applied to History
 
@@ -413,55 +417,62 @@ top_hansard_tf_idf <- hansard_tf_idf %>%
 Let's make a fancy table to inspect the data.
 
 ```{r}
-### Create tables
+# (REPLACES YOUR BLOCK) — tidyverse + gt, PDF-safe two-column layout
+library(dplyr)
 library(purrr)
+library(gt)
+library(glue)
+library(knitr)
+library(kableExtra)  # not strictly required, but often loaded elsewhere
 
-# Function to create a gt table with decade-specific subtitle
+# 1) Make a LaTeX-friendly gt table (no HTML/md in headers)
 make_gt_table <- function(df) {
-  gt(df %>% 
-       select(word, tf_idf) 
-     ) %>%
+  df %>%
+    select(word, tf_idf) %>%
+    gt() %>%
     tab_header(
-      title = md(paste0("<span style='font-size:16pt; font-weight:bold;'>Top TF-IDF Words – ", unique(df$decade), "</span>"))
+      title = "Top TF-IDF Words",
+      subtitle = paste0("Decade: ", unique(df$decade))
     ) %>%
     cols_label(
       word = "Word",
       tf_idf = "TF-IDF Score"
     ) %>%
-    fmt_number(columns = tf_idf, decimals = 6, use_seps = FALSE) %>%
-    tab_style(
-      style = cell_text(size = "10pt"),
-      locations = cells_body(columns = tf_idf)
-    )
+    fmt_number(columns = tf_idf, decimals = 6, use_seps = FALSE)
 }
 
-
-
-# Create individual tables per decade
+# 2) Build one gt table per decade
 gt_tables <- top_hansard_tf_idf %>%
-  group_split(decade) %>%
+  group_by(decade) %>%
+  group_split() %>%
   map(make_gt_table)
 
-# Create HTML-wrapped tables in 2-column layout
-html_columns <- map(gt_tables, ~
-  div(HTML(as_raw_html(.x)), style = "width: 48%; float: left; margin: 1%;")
-)
+# 3) Global heading (LaTeX text, not HTML)
+glue("\\section*{{The Words Most Distinctive of the 1830s and 1860s}}
+When the decades are compared with each other.
 
-# Global title and subtitle across full span
-global_title_block <- div(
-  style = "width: 100%; text-align: center; margin-bottom: 20px;",
-  HTML("<div style='font-size:22pt; font-weight:bold;'>The Words Most Distinctive of the 1830s and 1860s</div>"),
-  HTML("<div style='font-size:13pt;'>When the decades are compared with each other</div>")
-)
+") %>% knitr::asis_output()
 
-# Combine title and tables
-browsable(
-  tagList(
-    global_title_block,
-    html_columns,
-    div(style = "clear: both;")
-  )
-)
+# 4) Emit tables in a 2-column LaTeX layout
+idx_pairs <- split(seq_along(gt_tables),
+                   ceiling(seq_along(gt_tables) / 2))
+
+walk(idx_pairs, function(ix) {
+  left  <- as.character(gt_tables[[ix[1]]])
+  right <- if (length(ix) == 2) as.character(gt_tables[[ix[2]]]) else ""
+
+  glue(
+"\\begin{{minipage}}[t]{{0.48\\textwidth}}
+{left}
+\\end{{minipage}}\\hfill
+\\begin{{minipage}}[t]{{0.48\\textwidth}}
+{right}
+\\end{{minipage}}
+
+"
+  ) %>% knitr::asis_output()
+})
+
 ```
 
 Words that were distinctive in the 1830s, compared to later decades, often reference the Carlist Wars—a series of civil wars in Spain that began in 1833 over the dispute regarding the rightful successor to the throne. Portugal, France and the United Kingdom supported the regency, and even intervened in the conflict by sending forces to confront the Carlist army. Subsequently, the reference to "Carlist" can possibly explain the number of Spanish names/words listed in the bar plot, including "Miguel," "Pedro," and "Terceira."
