@@ -183,7 +183,11 @@ Accordingly, in the sections below, we will begin by counting phrases, but that 
 
 While there are several approaches to finding multiword phrases, we will demonstrate this by tokenizing the text into bigrams. 
 
-The following code filters the speeches of the 1860s for the first months of 1867 before the vote on the Second Reform Act, which gave Britain's urban working-class men the right to vote.  
+The following code filters the speeches of the 1860s for the first months of 1867 before the vote on the Second Reform Act, which gave Britain's urban working-class men the right to vote. We also introduce a new package, `lubridate`, which can be installed in the usual way using `install.packages()`.
+
+```{r}
+install.packages("lubridate")
+```
   
 ```{r}
 # load packages for tokenization and date handling
@@ -477,6 +481,10 @@ top_events_1867_w_speech_metadata <- top_events_1867 %>%
 
 ```{r}
 head(top_events_1867_w_speech_metadata)
+```
+
+```{r}
+install.packages("viridis")
 ```
 
 ```{r, fig.fullwidth=TRUE, fig.asp = 0.8, fig.width = 7}

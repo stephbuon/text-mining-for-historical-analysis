@@ -46,7 +46,15 @@ The authors developed a data package to go with this book, `hansardr`, to give r
 
 Functions are an important characteristic of the R language. Unlike other popular programming languages--such as Python--R is a functional language, which means it emphasizes processing data using these functions rather than relying on complex programming syntax. In R, a function is a block of code that performs a specific task. It can take inputs, called "arguments", that serve as instructions for how the function should behave, process data, or return an output. Functions are like the verbs of the R language in the sense that they say what should be done to the data. We will use functions throughout this book to perform data processing. 
 
-To use a function from another package, one must first install the package with `install.packages()` or, if downloading from a code sharing repository like GitHub, `install_github()`. As shown by the following code, we can install `hansardr` directly from our GitHub repository. 
+To use a function from another package, you must first install the package with `install.packages().` Here is how you would install the packages used in this chapter with `install.packages()` before loading them with `library()`, which we demonstrate later in the chapter:
+
+```{e}
+install.packages("tidyverse")
+install.packages("tidytext")
+install.packages("quanteda")
+```
+
+When installing code or data from a repository such as GitHub, we can use the `install_github()` function. For example, the `hansardr` package can be installed directly from its GitHub repository, as shown below.
 
 If RStudio prompts you to restart R while installing a package, click Yes to allow the restart, and then re-run the installation command so the package loads into the fresh session.
 
