@@ -1,4 +1,3 @@
-
 ---
 title: "Chapter 3: Investigating Speakers and Change Over Time Using Grouped Data"
 output: pdf_document
@@ -45,13 +44,17 @@ To address the hurdles around analysis of speakers, we added a "suggested_speake
 
 In the following code we will make our data set smaller and easier to work with by just selecting the "speaker," "suggested_speaker," and "text" fields before tokenizing the data into individual words. 
 
+```{r}
+install.packages("textstem")
+```
+
 ```{r, warning=FALSE, message=FALSE}
 library(tidytext)
 library(tidyverse)
 library(lubridate)
+library(textstem)
 
 data("hansard_1830")
-library(textstem)
 
 words_1830 <- hansard_1830 %>% 
   left_join(speaker_metadata_1830) %>%
@@ -372,8 +375,6 @@ ggplot(graph_ready, aes(x = word, y = n_per_speaker_per_year, fill = class)) +
 
   
 ```{r}
-library(lubridate)
-
 data("hansard_1860")
 data("hansard_1870")
 
