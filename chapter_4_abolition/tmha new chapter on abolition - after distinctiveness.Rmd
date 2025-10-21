@@ -67,6 +67,10 @@ In a previous chapter, we looked into the top speakers in parliament in a given 
 
 If you are new to code, take a moment to notice how changing only one line in the code below produces a totally different angle of analysis.  The code below is similar to the code in the previous chapters. One of the great pleasures of writing code is the facility with which a few skills can quickly become powerful in the hands of an analyst who has many questions.
 
+```{r}
+install.packages("ggrepel")
+```
+
 ```{r, message = F}
 # load the R libraries
 library(tidyverse)

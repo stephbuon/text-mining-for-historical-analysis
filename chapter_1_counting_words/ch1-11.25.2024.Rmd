@@ -54,6 +54,8 @@ install.packages("tidytext")
 install.packages("quanteda")
 ```
 
+In RStudio, you can also verify whether a package is already installed by checking the Packages tab in the lower-right panel. This tab displays all packages currently available in your R library. If a package appears in that list, it is already installed; if not, you can install it using `install.packages()`. You can also load an installed package by checking the box next to its name in this tab, which is equivalent to calling `library()` in your script.
+
 When installing code or data from a repository such as GitHub, we can use the `install_github()` function. For example, the `hansardr` package can be installed directly from its GitHub repository, as shown below.
 
 If RStudio prompts you to restart R while installing a package, click Yes to allow the restart, and then re-run the installation command so the package loads into the fresh session.
