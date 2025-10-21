@@ -293,7 +293,15 @@ Ooms, Jeroen. pdftools: Text Extraction, Rendering and Converting of PDF Documen
 
 Ooms, Jeroen, Duncan Temple Lang, and Lloyd Hilaiel. jsonlite: A Simple and Robust JSON Parser and Generator for R. R package version 1.8.8, 2023, https://CRAN.R-project.org/package=jsonlite.
 
+Programming Historian. "Lesson Index: APIs." _The Programming Historian_. Accessed October 20, 2025. https://programminghistorian.org/en/lessons/?topic=api
+
+Programming Historian. "Lesson Index: Web Scraping." _The Programming Historian_. Accessed October 20, 2025. https://programminghistorian.org/en/lessons/?topic=web-scraping
+
 Reddit. “API Documentation.” https://www.reddit.com/dev/api/.
+
+Roued-Cunliffe, Henriette. “Open Heritage Data and APIs.” Chapter. In Participatory Heritage, edited by Henriette Roued-Cunliffe and Andrea Copeland, 195–204. Facet, 2017.
+
+Ries, Thorsten. "Digital History and Born-Digital Archives: The Importance of Forensic Methods." _Journal of the British Academy_ 10 (2022): 157–185.
 
 Silge, Julia, and Robinson, David. (2016). "tidytext: Text mining and analysis using tidy data principles in R." _Journal of Open Source Software_, 1(3), 37. https://doi.org/10.21105/joss.00037
 
@@ -302,6 +310,8 @@ Silge, Julia, and David Robinson. tidytext: Text Mining Using 'dplyr', 'ggplot2'
 Spinu, Vitalie, Garrett Grolemund, and Hadley Wickham. lubridate: Make Dealing with Dates a Little Easier. Version 1.9.2, 2023. R package, https://CRAN.R-project.org/package=lubridate.
 
 University of Virginia Library. "APIs for Scholarly Research." LibGuides at UVA Library, University of Virginia, https://guides.lib.virginia.edu/c.php?g=515084&p=10046079&utm_source
+
+Wachowiak, Mark P. "Archives, Museums, and Other GLAM Institutions." Contemporary Digital Humanities, 2022, https://ecampusontario.pressbooks.pub/nudh1/chapter/archives-museums-and-other-glam-institutions/.
 
 Wickham, Hadley. rvest: Easily Harvest (Scrape) Web Pages. Version 1.0.3, 2022, https://CRAN.R-project.org/package=rvest.
 

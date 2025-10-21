@@ -9,9 +9,6 @@ output:
 md_extensions: -smart
 ---
 
-
-
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
@@ -95,10 +92,19 @@ Our hope is to guide readers' imaginations without limiting them. The concepts w
 
 Through a series of exercises, the following chapter will introduce high-level concepts and best practices that will put the analyst on the way to data fluency. 
 
+# APIs 
 
-# Creating a Dataset from an API Endpoint 
+Although vast quantities of cultural and historical materials are now available online through APIs (Application Programming Interfaces, or mechanisms that allow one piece of software to request and receive data from another), the ability to actually retrieve and work with these materials remains unevenly distributed. This matters because an increasing share of cultural production is "born digital," meaning the digital record is the original form rather than a later digitized copy (Ries 2022). 
 
-An API, or Application Programming Interface, is a set of rules and protocols that allows one piece of software to interact with another. An API endpoint is a specific web address that a program can use to access data stored on another server. Analysts can connect to an API endpoint in two main ways: by sending standard HTTP requests directly from an R script, or by using an R package designed to interact with the API, which simplifies the connection and data retrieval process. This section will demonstrate both approaches.
+In our experience, collecting data from the web is not a routine skill — even among graduating seniors in data-science programs. Computer science students who are otherwise proficient at data wrangling can still struggle when confronted with unfamiliar file formats, download endpoints, or web-based collection workflows.
+
+Part of the problem is that very few instructional materials teach these practices in a systematic way. Several works exist that outline the history of APIs, conceptualize them as a scholarly artifact, or discuss their significance to digital scholarship (Roued-Cunliffe 2017, Wachowiak 2022). However, they do not demonstrate how to use an API. 
+
+Most textbooks treat data as if it were already neatly stored on a local machine, while archivists’ how-to guides tend to focus on individual platforms one at a time without offering a transferable workflow. This piecemeal approach may leave analysts adept at navigating a single repository but unprepared to ingest larger, more heterogeneous collections of digital sources at scale. Lessons on accessing one digital archive at a time rarely arms the analyst with the skills they need to feel comfortable ingesting large amounts of data from diverse sources (_Programming Historian_, "Lesson Index: APIs"; _Programming Historian_), "Lesson Index: Web Scraping").
+
+## Creating a Dataset from an API Endpoint 
+
+An API is a set of rules and protocols that allows one piece of software to interact with another. An API endpoint is a specific web address that a program can use to access data stored on another server. Analysts can connect to an API endpoint in two main ways: by sending standard HTTP requests directly from an R script, or by using an R package designed to interact with the API, which simplifies the connection and data retrieval process. This section will demonstrate both approaches.
 
 ## Direct Connection to an API using an HTTP Request
 
