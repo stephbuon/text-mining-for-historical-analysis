@@ -98,12 +98,18 @@ filtered_tfidf <- tfidf_table %>%
   filter(term %in% target_words) %>%
   arrange(document, desc(tf_idf)) %>%
   select(term, tf_idf)
+```
 
+```{r}
 # Create side-by-side tables with style
 library(htmltools)
 library(kableExtra)
 
-##  Create styled tables as HTML strings
+# Ensure tf-idf values print in decimal, not scientific notation
+filtered_tfidf <- filtered_tfidf %>%
+  mutate(tf_idf = format(tf_idf, scientific = FALSE, digits = 6))
+
+# Create styled tables as HTML strings
 table_left <- kable(filtered_tfidf[1:6, ], format = "html",
                     caption = "<span style='font-size:18pt; font-weight:bold;'>Some Beatrix Potter Words</span>",
                     escape = FALSE) %>%
@@ -118,10 +124,9 @@ browsable(
   tagList(
     div(HTML(table_left), style = "float: left; width: 48%; margin-right: 2%;"),
     div(HTML(table_right), style = "float: right; width: 48%; margin-left: 2%;"),
-    div(style = "clear: both;")  # clears the floats
+    div(style = "clear: both;")
   )
 )
-
 
 ```
 
