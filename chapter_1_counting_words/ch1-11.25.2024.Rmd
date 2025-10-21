@@ -28,6 +28,16 @@ The data processing techniques we foreground will lead to our first visualizatio
 
 Importantly, the techniques presented in this chapter have both promise and limits.  As our companion volume, _The Dangerous Art of Text Mining_ (2023), makes clear, simple word counts are almost never sufficient on their own to support an in-depth analysis of culture.  Nevertheless, knowing how to count words and compare the context with which different concepts are used is a first step to using text as data. Recognizing that langauge contains keywords that can, for example, be chosen by an analyst to guide data processing is a first step towards producing meaning from text data. 
 
+## Running a Line of Code 
+
+The first step in learning R is understanding how to run a line of code. You can type a command directly into the Console pane and press Enter, or you can write it in an R script (or an R Markdown code chunk) and execute it from there. In RStudio, place your cursor on the line you want to run and press Ctrl + Enter on Windows or Linux (or Cmd + Enter on a Mac) to send it to the Console automatically. You can also highlight one or more lines of code and click the green Run button at the top of the script editor. Try it now by typing the following into your Console and pressing Enter, or by highlighting it and clicking Run:
+
+```{r}
+print("Hello World")
+```
+
+This should display the phrase “Hello World” beneath your code, confirming that R executed the command.
+
 ## Loading the Hansard Data
 
 First we will load the data we wish to analyze. Analysts, programmers, researchers, and the like routinely import software packages developed by others to expand the range of tools available to them.  
@@ -36,7 +46,9 @@ The authors developed a data package to go with this book, `hansardr`, to give r
 
 Functions are an important characteristic of the R language. Unlike other popular programming languages--such as Python--R is a functional language, which means it emphasizes processing data using these functions rather than relying on complex programming syntax. In R, a function is a block of code that performs a specific task. It can take inputs, called "arguments", that serve as instructions for how the function should behave, process data, or return an output. Functions are like the verbs of the R language in the sense that they say what should be done to the data. We will use functions throughout this book to perform data processing. 
 
-To use a function from another package, one must first install the package with `install.packages()` or, if downloading from a code sharing repository like GitHub, `install_github()`. As shown by the following code, we can install `hansardr` directly from our GitHub repository:
+To use a function from another package, one must first install the package with `install.packages()` or, if downloading from a code sharing repository like GitHub, `install_github()`. As shown by the following code, we can install `hansardr` directly from our GitHub repository. 
+
+If RStudio prompts you to restart R while installing a package, click Yes to allow the restart, and then re-run the installation command so the package loads into the fresh session.
 
 ```{r, eval=FALSE}
 # load the 'devtools' package, which allows installation of R packages from GitHub
@@ -54,6 +66,8 @@ library(hansardr)
 ```
 
 `hansardr` is now ready for use. It is conventional to load the software packages that will be use at the beginning of each new session. However, for the sake of demonstrating computational historical thinking, we will regularly load packages throughout a chapter so the reader can more easily see which functions relate back to different packages. 
+
+When working with functions in R, it is important to remember that code must be run in order, because each step often depends on what came before it. For example, if we plan to use a package such as hansardr, we must first load it with `library(hansardr)` before calling any of its functions. If we skip this step, R will not know where the hansardr functions come from and will return an error such as "could not find function," even if the code is correct. Similar errors can also occur when data is not processed in the proper sequence, since later steps may rely on datasets or data transformations that have not yet been created.
 
 ### Navigating the `hansardr` Data
 
