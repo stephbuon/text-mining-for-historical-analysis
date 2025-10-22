@@ -471,7 +471,8 @@ tidy_egils_saga <- tibble(page = seq_along(pdf_text_raw),
 The result is a data frame (specifically, a tibble) named `tidy_egils_saga`, which has two columns: one column contains the page numbers, and the other contains the corresponding body text from each page.
 
 ```{r}
-head(tidy_egils_saga)
+tidy_egils_saga %>%
+  slice(50:60)
 ```
 
 With just a few lines of code to locate, download, and scrape the PDF file, it is now easy to count the top words in _Egil's Saga_.
@@ -522,7 +523,7 @@ gt(head(tidy_egils_saga_with_metadata))
 
 The foregoing exmaple used a deliberately simple-to-read PDF to demonstrate a process.  However, in real life, the PDFs collected by analysts or digitalized by museums, archives, corporations, or government institutions may or may not have been prepared for computer readability. 
 
-One rule of thumb for deciding whether a PDF is machine readable is to open the document in a computer application like Adobe or Preview, designed for examining PDFs. If the text on the page of the PDF can be highlighted by the user of an app, then the text is ready for digital processing, i.e. it has already been "OCR'd," or subjected to an algorithm called "optical character recognition," which uses visual pattern detection to recognize the text on the page.  
+One rule of thumb for deciding whether a PDF is machine readable is to open the document in a computer application like Adobe or Preview, designed for examining PDFs. If the text on the page of the PDF can be highlighted by the user of an app, then the text is ready for digital processing, i.e. it has already been "OCR'd," or provided to an algorithm called "optical character recognition," which uses visual pattern detection to recognize the text on the page.  
 
 In the past, analysts typically paid for proprietary software when they wanted to apply OCR to PDF files, and the OCR was of varying quality, with OCR packages from twenty years ago producing many errors, and more recent OCR showing a marked improvement and occasionally the ability to identify handwritten scripts from the past, especially when the OCR program had been trained on many examples of the script translated by patient scholars.
 
