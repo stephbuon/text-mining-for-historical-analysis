@@ -399,11 +399,11 @@ hansard_tf_idf %>%
 ```
 
 Please note that the output of `bind_tf_idf()` includes the component calculations we mentioned:
-* one row for each decade in which each word appears
-* the total number of times each word appears in this decade (given in `word_count_per_decade`, the product of our calculation to produce the `words_per_decade` dataframe)
-* the "term frequency" calculation, a metric of how often each word appears per decade, normalized against the total number of words in each decade. A high TF means that the word appears frequently in a given decade.
-* the "inverse document frequency" metric, a calcuation of how uncommon the word is across the entire corpus. A high IDF means that a word is rare across the corpus.
-* the tf_idf score -- the most important score for interpreting the results.  A high tf-idf score means that a word is highly distinctive of a decade, i.e., it scarcely appears in the other decade(s) of a corpus.  
+- one row for each decade in which each word appears
+- the total number of times each word appears in this decade (given in `word_count_per_decade`, the product of our calculation to produce the `words_per_decade` dataframe)
+- the "term frequency" calculation, a metric of how often each word appears per decade, normalized against the total number of words in each decade. A high TF means that the word appears frequently in a given decade.
+- the "inverse document frequency" metric, a calcuation of how uncommon the word is across the entire corpus. A high IDF means that a word is rare across the corpus.
+- the tf_idf score -- the most important score for interpreting the results.  A high tf-idf score means that a word is highly distinctive of a decade, i.e., it scarcely appears in the other decade(s) of a corpus.  
 
 Now that we have a tf-idf metric for each word-decade pair, we can use these scores to interpret the differences between the 1830s and 1860s.
 
@@ -415,74 +415,49 @@ top_hansard_tf_idf <- hansard_tf_idf %>%
   arrange(decade, desc(tf_idf)) %>%
   ungroup()
 ```
+
 Let's make a fancy table to inspect the data.
 
-```{r}
+```{r, results='asis'}
+# libs you need
+
+
+# ---- chunk header example ----
+# ```{r, echo=FALSE}
+# (put the code below in a chunk like this)
+# ```
+
+# ---- chunk header: {r, echo=FALSE} ----
 library(dplyr)
-library(purrr)
 library(knitr)
 library(kableExtra)
-library(glue)
-library(stringr)
 
-# 1) Helper: make a raw LaTeX tabular (no floating table env)
-make_kable_tabular <- function(df) {
-  k <- df %>%
+make_kable <- function(df, dec_label) {
+  df %>%
     select(word, tf_idf) %>%
-    mutate(tf_idf = round(tf_idf, 6)) %>%
-    knitr::kable(
-      format = "latex",
-      booktabs = TRUE,
-      col.names = c("Word", "tf-idf Score"),
-      align = c("l", "r")
+    arrange(desc(tf_idf)) %>%
+    mutate(tf_idf = round(as.numeric(tf_idf), 6)) %>%
+    kbl(
+      format    = "latex",
+      booktabs  = TRUE,
+      col.names = c("Word", "TF--IDF Score"),
+      align     = c("l", "r"),
+      caption   = paste0("Top TF--IDF Words — ", dec_label),
+      escape    = TRUE
     ) %>%
-    kable_styling() %>%
-    as.character()
-
-  # Strip the outer \begin{table}...\end{table} so it's minipage-safe
-  k <- sub(".*?\\\\begin\\{tabular\\}", "\\\\begin{tabular}", k, perl = TRUE)
-  k <- sub("\\\\end\\{tabular\\}.*$", "\\\\end{tabular}", k, perl = TRUE)
-  k
+    kable_styling(full_width = FALSE)
 }
 
-# 2) Build a kable tabular per decade
-tabs <- top_hansard_tf_idf %>%
+# Pick decades (auto-match type)
+target_decades <- if (is.numeric(top_hansard_tf_idf$decade)) c(1830, 1860) else c("1830s", "1860s")
+
+# Optional sanity check:
+# print(dplyr::distinct(top_hansard_tf_idf, decade))
+
+top_hansard_tf_idf %>%
+  filter(decade %in% target_decades) %>%
   group_by(decade) %>%
-  group_split() %>%
-  map(function(df) {
-    list(
-      decade = unique(df$decade),
-      tabular = make_kable_tabular(df)
-    )
-  })
-
-# 3) Global heading (LaTeX-safe)
-knitr::asis_output("\\section*{The Words Most Distinctive of the 1830s and 1860s}\nWhen the decades are compared with each other.\n\n")
-
-# 4) Emit side-by-side in 2 columns using minipage
-idx_pairs <- split(seq_along(tabs), ceiling(seq_along(tabs) / 2))
-
-walk(idx_pairs, function(ix) {
-  left  <- tabs[[ix[1]]]
-  right <- if (length(ix) == 2) tabs[[ix[2]]] else NULL
-
-  left_block <- glue(
-"\\begin{{minipage}}[t]{{0.48\\textwidth}}
-\\textbf{{Top tf-idf Words — {left$decade}}}\\\\[0.5ex]
-{left$tabular}
-\\end{{minipage}}"
-  )
-
-  right_block <- if (!is.null(right)) glue(
-"\\hfill
-\\begin{{minipage}}[t]{{0.48\\textwidth}}
-\\textbf{{Top tf-idf Words — {right$decade}}}\\\\[0.5ex]
-{right$tabular}
-\\end{{minipage}}"
-  ) else ""
-
-  knitr::asis_output(paste0(left_block, "\n", right_block, "\n\n"))
-})
+  group_walk(~ print(make_kable(.x, unique(.x$decade))))
 
 
 ```
@@ -580,73 +555,41 @@ most_dist_hansard_words <- hansard_words_1830_to_1870 %>% # start with merged wo
 ```
 
 ```{r}
+# ---- chunk header: {r, echo=FALSE} ----
 library(dplyr)
-library(purrr)
 library(knitr)
 library(kableExtra)
-library(glue)
 
-# ---- Helper: build a raw LaTeX tabular (no float wrapper) ----
-make_kable_tabular <- function(df) {
-  k <- df %>%
+make_kable <- function(df, dec_label) {
+  df %>%
     select(word, tf_idf) %>%
-    mutate(tf_idf = round(tf_idf, 6)) %>%
-    knitr::kable(
-      format = "latex",
-      booktabs = TRUE,
-      col.names = c("Word", "tf-idf Score"),
-      align = c("l", "r")
+    arrange(desc(tf_idf)) %>%
+    mutate(tf_idf = round(as.numeric(tf_idf), 6)) %>%
+    kbl(
+      format    = "latex",
+      booktabs  = TRUE,
+      col.names = c("Word", "TF--IDF Score"),
+      align     = c("l", "r"),
+      caption   = paste0("Top TF--IDF Words — ", dec_label),
+      escape    = TRUE
     ) %>%
-    kable_styling() %>%
-    as.character()
-
-  # Strip surrounding \begin{table}...\end{table} so it can live in a minipage
-  k <- sub(".*?\\\\begin\\{tabular\\}", "\\\\begin{tabular}", k, perl = TRUE)
-  k <- sub("\\\\end\\{tabular\\}.*$", "\\\\end{tabular}", k, perl = TRUE)
-  k
+    kable_styling(full_width = FALSE)
 }
 
-# ---- 1) Build one kable tabular per decade ----
-tabs <- most_dist_hansard_words %>%
-  group_split(decade) %>%
-  map(function(df) {
-    list(
-      decade  = unique(df$decade),
-      tabular = make_kable_tabular(df)
-    )
-  })
+# Optional: pick specific decades; otherwise render all present
+# target_decades <- c("1830s","1860s")  # or c(1830,1860) if numeric
+# df_in <- most_dist_hansard_words %>% filter(decade %in% target_decades)
 
-# ---- 2) Global title & subtitle (LaTeX-safe) ----
-knitr::asis_output(
-"\\section*{The Words Most Distinctive of the 1830s to the 1870s}
-\\noindent\\textit{When the decades are compared with each other}\\\\[1ex]
-"
-)
+df_in <- most_dist_hansard_words
 
-# ---- 3) Emit tables in a 2-column LaTeX layout ----
-idx_pairs <- split(seq_along(tabs), ceiling(seq_along(tabs) / 2))
+# If you want a specific order, set a factor:
+# df_in <- df_in %>%
+#   mutate(decade = factor(decade, levels = sort(unique(decade))))
 
-walk(idx_pairs, function(ix) {
-  left  <- tabs[[ix[1]]]
-  right <- if (length(ix) == 2) tabs[[ix[2]]] else NULL
-
-  left_block <- glue(
-"\\begin{{minipage}}[t]{{0.48\\textwidth}}
-\\textbf{{Top tf-idf Words — {left$decade}}}\\\\[0.5ex]
-{left$tabular}
-\\end{{minipage}}"
-  )
-
-  right_block <- if (!is.null(right)) glue(
-"\\hfill
-\\begin{{minipage}}[t]{{0.48\\textwidth}}
-\\textbf{{Top tf-idf Words — {right$decade}}}\\\\[0.5ex]
-{right$tabular}
-\\end{{minipage}}"
-  ) else ""
-
-  knitr::asis_output(paste0(left_block, "\n", right_block, "\n\n"))
-})
+# Print one table per decade (no list() artifact)
+df_in %>%
+  group_by(decade) %>%
+  group_walk(~ print(make_kable(.x, unique(.x$decade))))
 
 ```
 
