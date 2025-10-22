@@ -388,7 +388,6 @@ The code performs a series of steps: first it filters for adjectives with the de
 adjective_noun_pair_counts_woman <- adjective_noun_pairs_woman %>%
   count(adjective_noun_pair, name = "count") %>%
   arrange(desc(count))
-
 ```
 
 ```{r}
@@ -448,8 +447,7 @@ grid.arrange(tableGrob(adjective_noun_pair_counts_man[1:15, ]),
              ncol = 3)
 ```
 
-To compare the words used of each gender, the appropriate next step is to make a list of just the adjectives and to subtract the counts for one gender from the counts for the other.  This step, known as "vector subtraction," will reveal the words that are most distinctive of each gender.  
-
+To compare the words used of each gender, the appropriate next step is to make a list of just the adjectives and to subtract the counts for one gender from the counts for the other.  This step, known as "vector subtraction," will reveal the words that are most distinctive of each gender.
 
 ```{r fig.height=12, fig.width=8}
 library(forcats)
@@ -569,6 +567,7 @@ table3 <- make_gt_table(filtered_df %>% slice(201:300))
 
 # Combine side by side
 library(htmltools)
+
 browsable(
   tagList(
     tags$div(style = "display: flex; gap: 20px;",
@@ -718,7 +717,6 @@ In this exercise, we see that many of the most prevelant SVO phrases have to do 
 We read many sentences in this chart where gender and rights are foregrounded, including "woman have vote," "woman hae right," and "woman have knowledge." They seem to indicate that some members of parliament are talking about the empowerment of women -- a different perspective than that suggested by our previous exercises. 
 
 We could perform different kinds of analyses with our extracted triples. We could compare times in which women and men are imagined to have the vote. But perhaps the first thing we should do is to call up some context for the handful of phrases alluding to women having rights or the vote.  
-
 ```{r}
 svo_triples_context_1870 <- hansard_woman_1870 %>%
   filter(str_detect(text, 
@@ -733,7 +731,6 @@ svo_out1 <- head(svo_triples_context_1870, 5)
 
 gt(svo_out1)
 ```
-
 
 What we see is mainly parliament entertaining a series of propositions about the circumstnaces under which women gain or lose rights through marriage or naturalization. In one case, a debate is taking place on empowering women through removing the "electoral disabilities of women," but it does not seem to have gone very far -- in fact, the last excerpt contains a speaker wondering why so few members of parliament are speaking up for women's rights.   
 
@@ -813,6 +810,16 @@ Analysts must remain critically attuned to how tools mediate knowledge. Technica
 Such a problem also extends to the type of model we use to analyze the data. Using `spaCy` we are able to transition fluidly between analyzing the words "woman" and "man" using the same functions, and by using `spaCy`'s pre-trained language models (LMs), we prioritize linguistic analysis over the computationally intensive task of training our own model on the Hansard data. This methodological choice allows the analyst to transition directly into research, but also constrains the kinds of questions we can ask, and how reliably we can answer them. 
 
 We are able to transition so fluidly between an analysis of the words "woman" and "man" by using the same function and using `spaCy`'s pre-trained language model we can prioritize linguistic analysis over the computationally intensive task of model training. However, the results of these models must be examined critically, as they may reflect biases or inaccuracies, particularly when applied to historical corpora. Pre-trained models are typically trained on contemporary language data, which can differ substantially from sources like the 19th-century Hansard debates. This mismatch often results in parsing errors. In such cases, researchers must choose between manually correcting these errors or retraining the model on domain-specific data. Given the time and resource demands of retraining, manual correction is frequently the more practical approach.
+
+When relying on a language model to perform part-of-speech extraction, we have to remember that the model is not actually parsing the sentence in the linguistic sense. It is predicting the most statistically likely tags, based on a distribution of training examples. That distinction matters a great deal in historical work.
+
+For contemporary, conversational English, the model's internal priors line up fairly well with the grammatical structures it sees. But once we shift into syntactically dense prose—Victorian parliamentary rhetoric, nineteenth-century religious writing, or the elaborate hypotactic style that stacks clause upon clause—the model’s assumptions begin to misfire. A statistical model trained mostly on contemporary language is far more likely to prematurely assign a tag based on surface cues than to actually follow the logic of the syntactic construction.
+
+This limitation is not about vocabulary but structure. A model can recognize the word "whereupon" or "therewith" or "henceforward," but it does not internalize the rhetorical function those connectives play in a multi-clausal construction. The tagging becomes especially fragile in passages where subject and predicate are separated by highly ornamented dependent clauses—a defining stylistic trait of Victorian prose.
+
+From a diigtal history perspective, this matters because part-of-speech data is never just a neutral preprocessing step. It shapes what becomes legible downstream: topic modelling, collocations, sentiment arcs, the mapping of agency and attribution—each of these can shift meaningfully depending on whether the model correctly identified a subject, object, or modifier. If the parser constantly reinterprets earlier portions of a sentence through a modern syntactic lens, the interpretive terrain is already tilted before analysis even begins.
+
+This is why corpus-linguistic methods built for historical language typically rely on rule-based or hybrid parsing architectures, often supplemented by domain-specific grammars or custom training data, rather than statistical next-token prediction. A language model can approximate grammatical structure, but approximation may not always be enough when grammatical nuance is the object of interpretation.
 
 ## Exercises
 
