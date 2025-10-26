@@ -19,7 +19,9 @@ In this chapter, we will explore questions such as these:  In the lead-up to the
 
 This chapter builds upon a sense of how to leverage computational historical thinking to create insight about history. It introduces counting n-grams, or multiword phrases. It also introduces the use of a "controlled vocabulary," that is, a historian-curated list of important words and phrases, to explore which events were spoken about in parliament during the 1830s. 
 
-This chapter builds on the previous to introduce analysts to fundamental data processing techniques in R, commonly used for preparing data for analysis. A key task in data analysis is summarizing a dataset's characteristics to gain insights into the features of the corpus. Scholars have drawn attention to how th immediacy of computational text analysis--its perceived automation in transforming a raw, messy corpus into a curated object of analysis--masks the degree of transformation that is enacted on the text's "original" and intermediary data structures (Palermo 2017). In this chapter, we draw attention to each step in data processing, emphasizing how intermediary data wrangling steps contributes to the creation of new knowledge. One essential concept in data processing is "joining" datasets. A join combines two datasets into one, enabling analysts to analyze parliamentary texts alongside metadata such as speaker information, dates, and significant events. Additionally, this chapter teaches readers how to work with event-based data, including years, months, and dates. By moving through the data processing steps one-by-one, we draw on Paul Fyfe’s framing of “data mining” as “data archaeology,” shifting attention away from analysis as a final product and instead foregrounding the transformational work of data processing as a central part of the analytical process (Fyfe 2016).
+This chapter builds on the previous to introduce analysts to fundamental data processing techniques in R, commonly used for preparing data for analysis. A key task in data analysis is summarizing a dataset's characteristics to gain insights into the features of the corpus. Scholars have drawn attention to how th immediacy of computational text analysis--its perceived automation in transforming a raw, messy corpus into a curated object of analysis--masks the degree of transformation that is enacted on the text's "original" and intermediary data structures (Palermo 2017). In this chapter, we draw attention to each step in data processing, emphasizing how intermediary data wrangling steps contributes to the creation of new knowledge. 
+
+One essential concept in data processing is "joining" datasets. A join combines two datasets into one, allowing us to analyze parliamentary texts alongside metadata such as speaker information, dates, and significant events. Additionally, this chapter teaches readers how to work with event-based data, including years, months, and dates. By moving through the data processing steps one-by-one, we draw on Paul Fyfe’s framing of “data mining” as “data archaeology,” shifting attention away from analysis as a final product and instead foregrounding the transformational work of data processing as a central part of the analytical process (Fyfe 2016).
 
 As with the previous chapter, this chapter will emphasize the skills of moving from analyzing text as data to performing a close reading of historical speeches in context. It models the iterative process of working with a controlled vocabulary and reading words in context with the idea of demonstrating a method of inquiry about how and why events happen. This approach provides analysts with the tools of deciding for themselves how the patterns identified throughout text mining relate back to their primary sources, that is, the full Hansard debates. As we had previously discussed, this process is iterative, emphasizing that researchers transition from data processing to counting words to applying metrics on those word counts to visualizing trends, and then repeating this deductive process. Throughout this process, it may prove valuable to inspect and re-evaluate the intermediary steps that were taken to arrive at any conclusions about the corpus. This cyclical process may lead to additional historical questions and associations, which may mean more measuring, more visualization, and more guided reading in pursuit of a historical analysis.  
 
@@ -31,7 +33,7 @@ First we can load the text data from the 1860s speeches, recalling that one of t
  
 ```{r, warning=FALSE, message=FALSE}
 # Use the hansardr library to load the debate text
-library('hansardr')
+library("hansardr")
 
 data("hansard_1860")
 ```
@@ -39,9 +41,9 @@ data("hansard_1860")
 ```{r, results='asis', warning=FALSE, message=FALSE, echo=FALSE}
 # This code does not show, just the table
 
-library('dplyr')
-library('knitr')
-library('kableExtra')
+library("dplyr")
+library("knitr")
+library("kableExtra")
 
 df_head <- hansard_1860 %>% 
   slice_head(n = 5)
@@ -143,7 +145,7 @@ kbl(df_head, format = "latex",
               latex_valign = "top")
 ```
 
-We have chosen to store the debate text (`hansard_1860`) separately from the contextual information about each speech (`debate_metadata_1860`, `speaker_metadata_1860`), as well as the information about each hard copy file containing the speeches (`file_metadata_1860`). We subsetted the data into these individual files because the data for each decade is quite large. Processing such a large dataset can exceed a computer's resources, such as its memory. In other cases, we chose to exclude certain fields from processing if they were not immediately relevant to our analysis, as doing so reduces memory usage and improves overall processing speed so that we can focus on our research instead of waiting too long for any intermediary processing step to complete. Furthermore, many operations in this book -- for instance, counting words per decade -- require just a few datasets loaded at a time. 
+We have chosen to store the debate text (`hansard_1860`) separately from the contextual information about each speech (for example, `debate_metadata_1860` or `speaker_metadata_1860`), as well as the information about each hard copy file containing the speeches (`file_metadata_1860`). We subsetted the data into these individual files because the data for each decade is quite large. Processing such a large dataset can exceed a computer's resources, such as its memory. In other cases, we chose to exclude certain fields from processing if they were not immediately relevant to our analysis, as doing so reduces memory usage and improves overall processing speed so that we can focus on our research instead of waiting too long for any intermediary processing step to complete. Furthermore, many operations in this book -- for instance, counting words per decade -- require just a few datasets loaded at a time. 
 
 As a result of this organization scheme, many kinds of analyses will require working with multiple datasets from `hansardr` joined together. We will use the function `left_join()` to join the annotated information about speech context with each of the speech text. A left join returns every record from the data frame specified by the left-most argument, and all the matched records from the data frame on the right. 
 
@@ -154,9 +156,7 @@ library('tidyverse')
 # Join the Hansard debate text with the debate metadata into a single dataframe
 # left_join() will automatically detect that both datasets share the sentence_id 
 hansard_1860 <- left_join(hansard_1860, debate_metadata_1860)
-```
 
-```{r}
 # Show the first few rows of the 1860 Hansard debate text
 head(hansard_1860)
 ```
@@ -186,6 +186,7 @@ While there are several approaches to finding multiword phrases, we will demonst
 The following code filters the speeches of the 1860s for the first months of 1867 before the vote on the Second Reform Act, which gave Britain's urban working-class men the right to vote. We also introduce a new package, `lubridate`, which can be installed in the usual way using `install.packages()`.
 
 ```{r}
+# Install lubridate
 install.packages("lubridate")
 ```
   
@@ -212,7 +213,7 @@ When working with large-scale historical data, researchers often adapt their que
 
 Throughout _Text Mining for Historical Analysis_ we have attempted to limit barriers to processing a dataset as large as Hansard through our data organization scheme that breaks each decade of text and related metadata files into their own files, and presents readers with an order of intermediary data processing that is more efficient for working with historical data in R. 
 
-The following code uses the `unnest_tokens()` function, which we previously used to split text into individual words. This time, we adjust the function to extract pairs of consecutive words instead. To do this, we set the token argument to `n-grams`, instructing R to create sequences of consecutive words, and the `n` argument to `2`, specifying that each sequence should consist of two words. These two arguments work together to extract bigrams. 
+The following code uses the `unnest_tokens()` function, which we previously used to split text into individual words. This time, we adjust the function to extract pairs of consecutive words instead. To do this, we set the token argument to n-grams, instructing R to create sequences of consecutive words, and the `n` argument to `2`, specifying that each sequence should consist of two words. These two arguments work together to extract bigrams. 
 
 ```{r}
 # Generate bigrams (two-word sequences) from the 'text' column of the hansard_1867 data
@@ -222,7 +223,6 @@ bigrams_1867 <- hansard_1867 %>% # create a new dataset
 
 ```{r, results='asis', warning=FALSE, message=FALSE, echo=FALSE}
 # This code does not show, just the table 
-
 df_head <- bigrams_1867 %>% 
   slice_head(n = 5)
 
@@ -251,12 +251,10 @@ clean_bigrams_1867 <- bigrams_1867 %>%
   filter(!str_detect(bigram, 
                      paste0("\\b(", paste(stop_words$word, collapse = "|"), ")\\b"))) %>% # remove stop words
   filter(str_detect(bigram, "^[a-z]+ [a-z]+$")) # keep only two-word lowercase alphabetic bigrams
-
 ```
 
 ```{r, results='asis', warning=FALSE, message=FALSE, echo=FALSE}
 # This code does not show, just the table 
-
 df_head <- clean_bigrams_1867 %>% 
   slice_head(n = 5)
 
@@ -264,10 +262,8 @@ kbl(df_head, format = "latex",
     booktabs = TRUE, 
     linesep = "",
     caption = "Clean Hansard Bigrams with Metadata.") %>%
-  kable_styling(
-    latex_options = c("scale_down", "striped", "repeat_header"),
-    table.envir = FALSE
-  ) %>%
+  kable_styling(latex_options = c("scale_down", "striped", "repeat_header"),
+                table.envir = FALSE) %>%
   column_spec(which(colnames(df_head) == "text"), 
               latex_column_spec = "p{12cm}", 
               latex_valign = "top")
@@ -300,7 +296,6 @@ top_bigrams_1867 <- clean_bigrams_1867 %>%
 
 ```{r, results='asis', warning=FALSE, message=FALSE, echo=FALSE}
 # This code does not show, just the table 
-
 df_head <- top_bigrams_1867 %>% 
   slice_head(n = 5)
 
@@ -308,9 +303,8 @@ kbl(df_head, format = "latex",
     booktabs = TRUE, 
     linesep = "",
     caption = "Top Hansard Bigrams for 1867.") %>%
-  kable_styling(
-    latex_options = c("scale_down", "striped", "repeat_header"),
-    table.envir = FALSE) %>%
+  kable_styling(latex_options = c("scale_down", "striped", "repeat_header"),
+                table.envir = FALSE) %>%
   column_spec(which(colnames(df_head) == "text"), 
               latex_column_spec = "p{12cm}", 
               latex_valign = "top")
@@ -414,9 +408,7 @@ clean_bigrams_1867 <- bigrams_1867 %>% # create a new dataset
   filter(!str_detect(bigram, paste0("\\b(", 
                                     paste(stop_words$word, collapse = "|"), ")\\b"))) %>% # remove bigrams containing stop words
   filter(str_detect(bigram, "^[a-z]+ [a-z]+$")) # keep only two-word lowercase alphabetic bigrams
-```
 
-```{r}
 head(clean_bigrams_1867)
 ```
 
@@ -433,9 +425,7 @@ events_1867 <- clean_bigrams_1867 %>%
   filter(str_detect(bigram, 
                     paste0("\\b(", paste(controlled_vocab, collapse = "|"), ")\\b"))) %>% # keep bigrams with event-related terms
   select(bigram, speechdate) # select bigram and date only
-```
 
-```{r}
 head(events_1867)
 ```
 
@@ -462,9 +452,7 @@ top_events_1867 <- events_1867 %>%
   group_by(bigram) %>% # group by event phrase
   summarize(total = n()) %>% # count occurrences
   top_n(10) # keep top 10 events
-```
 
-```{r}
 head(top_events_1867)
 ```
 
@@ -477,9 +465,6 @@ top_events_1867_w_speech_metadata <- top_events_1867 %>%
   count(bigram, speechdate) %>% # count mentions by date
   ungroup() # remove grouping
 
-```
-
-```{r}
 head(top_events_1867_w_speech_metadata)
 ```
 
@@ -551,9 +536,7 @@ eventslist <- events %>% # create a new dataset
   filter(!scholar_assigned_date > 1840) %>% # exclude post-1840 events
   mutate(event_name = tolower(event_name)) %>% # lowercase event names
   select(event_name, scholar_assigned_date) # keep only name and date
-```
 
-```{r}
 head(eventslist)
 ```
 
@@ -583,9 +566,7 @@ bigrams_1830 <- hansard_1830 %>% # create a new dataset
 # - Keeps only rows with a match, linking bigram use to historical context
 events_1830 <- bigrams_1830 %>% # create a new dataset
   inner_join(eventslist, by = c("ngram" = "event_name")) # join the bigrams and events
-```
 
-```{r}
 head(events_1830)
 ```
 
@@ -601,9 +582,7 @@ counted_events <- events_1830 %>% # create a new dataset
   group_by(ngram, year, speechdate, scholar_assigned_date) %>% # group data
   summarize(n = n()) %>% # count mentions
   ungroup() # remove grouping
-```
 
-```{r}
 head(counted_events)
 ```
 
@@ -616,9 +595,7 @@ cleaned_events <- counted_events %>%
   summarize(total = sum(n)) %>% # sum total mentions
   ungroup() %>% # remove grouping
   arrange(scholar_assigned_date) # sort by historical date
-```
 
-```{r}
 head(cleaned_events)
 ```
 
@@ -633,9 +610,7 @@ indexed_events <- cleaned_events %>%
   filter(total == max(total)) %>% # keep most mentioned event in each bin
   ungroup() %>% # remove grouping
   left_join(counted_events, by = c("ngram", "scholar_assigned_date")) # join data
-```
 
-```{r}
 head(indexed_events)
 ```
 
@@ -991,10 +966,8 @@ kbl(df_head, format = "latex",
     booktabs = TRUE, 
     linesep = "",
     caption = "Excerpt from Hansard 1850") %>%
-  kable_styling(
-    latex_options = c("scale_down", "striped", "repeat_header"),
-    table.envir = FALSE
-  ) %>%
+  kable_styling(latex_options = c("scale_down", "striped", "repeat_header"),
+                table.envir = FALSE) %>%
   column_spec(which(colnames(df_head) == "text"), 
               latex_column_spec = "p{12cm}", 
               latex_valign = "top")
