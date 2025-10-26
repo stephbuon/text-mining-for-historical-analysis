@@ -166,9 +166,9 @@ Please note the following components of the API call:
 * The `flatten = TRUE` argument is necessary for simplifying any nested JSON structures into flat, readable columns suitable for analysis in R.
 
 ```{r, warning=FALSE, message=FALSE}
-library('tidyverse')
-library('httr')
-library('jsonlite')
+library("tidyverse")
+library("httr")
+library("jsonlite")
 
 # Define the JSON API endpoint
 url <- "https://www.dallasopendata.com/resource/7h2m-3um5.json"
