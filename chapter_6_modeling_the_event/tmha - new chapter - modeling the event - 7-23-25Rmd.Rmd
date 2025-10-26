@@ -1,18 +1,14 @@
 ---
-title: "Modeling_1832"
-author: "Jo Guldi"
-date: "2024-07-09"
+title: "Chapter 6: Pursing the Event"
 output:
   pdf_document: default
-  html_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-# Chapter N: Pursuing the Event
 
-Powerful research questions can be unpacked as soon as we have the tools for counting mentions of words over time. Previously, we've been unpacking resarch questions that stem from the tools we have -- like the ability to follow particular speakers or words through time. But another approach, which leverages the power of historical analysis, is to start with the *event* and ask: what can these approaches teach us about history that we previously did not know?
+Powerful research questions can be unpacked as soon as we have the tools for counting mentions of words over time. Previously, we've been unpacking research questions that stem from the tools we have -- like the ability to follow particular speakers or words through time. But another approach, which leverages the power of historical analysis, is to start with the event and ask: what can these approaches teach us about history that we previously did not know?
 
 In the history of parliament, one of the most important events is the Reform Act of 1832, which granted the middle class the right to vote, and the Reform Act of 1867, which granted the right to vote to most working-class men living in cities.  
 
@@ -22,7 +18,7 @@ To analyze how the reform acts changed parliament, we can compare the speakers a
 
 In previous chapters, we worked with datasets that were intentionally scaled down to work on most entry-level laptops. This chapter is an intentional exception.
 
-Because we will ask the computer to store data from three decades at a time, *the following exercise may crash smaller computers.* If this happens, do not be alarmed. Power users of data sometimes need to upgrade their machines or work on university-provided servers to accomplish their research; you can make inquiries about using a more powerful computer with your IT services department. For the purposes of the rest of the chapter, you may regard the code that follows as an example of a process, recognizing how the tools we have previously used are deployed in what follows.
+Because we will ask the computer to store data from three decades at a time, the following exercise may crash smaller computers. If this happens, do not be alarmed. Power users of data sometimes need to upgrade their machines or work on university-provided servers to accomplish their research; you can make inquiries about using a more powerful computer with your IT services department. For the purposes of the rest of the chapter, you may regard the code that follows as an example of a process, recognizing how the tools we have previously used are deployed in what follows.
 
 Users with more modern laptops may find that the code runs, but it runs extremely slowly. The following block of text, for example, may well take an hour to run on some machines. It is worthwhile; the results merit patience. 
 

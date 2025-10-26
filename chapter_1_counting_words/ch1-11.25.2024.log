@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.10.20)  20 OCT 2025 20:12
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.10.20)  23 OCT 2025 14:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1057,25 +1057,21 @@ LaTeX Font Info:    Font shape `TU/DejaVuSerif(0)/m/it' will be
 LaTeX Font Info:    Font shape `TU/DejaVuSerif(0)/b/n' will be
 (Font)              scaled to size 12.0pt on input line 204.
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 218.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 222.
 
-Overfull \hbox (21.97935pt too wide) in paragraph at lines 259--264
+Overfull \hbox (21.97935pt too wide) in paragraph at lines 263--268
 []\TU/DejaVuSerif(0)/m/n/10 To use a function from another package, you must first install the package with \TU/lmtt/m/n/10 install.packages().
  []
 
 
 
 [2]
-Overfull \hbox (2.45982pt too wide) in paragraph at lines 281--285
-[]\TU/DejaVuSerif(0)/m/n/10 When installing code or data from a repository such as GitHub, we can use the \TU/lmtt/m/n/10 install_github()
- []
-
 LaTeX Font Info:    Font shape `TU/DejaVuSerif(0)/b/n' will be
-(Font)              scaled to size 10.0pt on input line 330.
+(Font)              scaled to size 10.0pt on input line 353.
 
 
 [3]
-Overfull \hbox (76.24498pt too wide) in paragraph at lines 362--362
+Overfull \hbox (76.24498pt too wide) in paragraph at lines 385--385
 []\TU/lmtt/m/n/10 ## i Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors[] 
  []
 
@@ -1083,21 +1079,21 @@ Overfull \hbox (76.24498pt too wide) in paragraph at lines 362--362
 
 [4]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 8.42989pt on input line 478.
+(Font)              scaled to size 8.42989pt on input line 501.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 6.02135pt on input line 478.
+(Font)              scaled to size 6.02135pt on input line 501.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 12.04391pt on input line 478.
+(Font)              scaled to size 12.04391pt on input line 501.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 8.43074pt on input line 478.
+(Font)              scaled to size 8.43074pt on input line 501.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 6.02196pt on input line 478.
+(Font)              scaled to size 6.02196pt on input line 501.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 12.04147pt on input line 478.
+(Font)              scaled to size 12.04147pt on input line 501.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 8.42903pt on input line 478.
+(Font)              scaled to size 8.42903pt on input line 501.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 6.02074pt on input line 478.
+(Font)              scaled to size 6.02074pt on input line 501.
 
 
 [5]
@@ -1115,45 +1111,45 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 [11]
 
 [12]
-Overfull \hbox (653.74498pt too wide) in paragraph at lines 1095--1095
+
+[13]
+Overfull \hbox (653.74498pt too wide) in paragraph at lines 1118--1118
 []\TU/lmtt/m/n/10 ## [1] "The manufacturers of this country relied on their capital, and their command of coal and iron, for a continuance of their prosperity; but, again, let them cast their eyes on the other side of the Atlantic."[] 
  []
 
 
-Overfull \hbox (265.24498pt too wide) in paragraph at lines 1095--1095
+Overfull \hbox (265.24498pt too wide) in paragraph at lines 1118--1118
 []\TU/lmtt/m/n/10 ## [2] "Mines, also, except coal, clay pits, slate quarries, and other descriptions even of real property escaped the operation of the Act."[] 
  []
 
 
-Overfull \hbox (254.74498pt too wide) in paragraph at lines 1095--1095
+Overfull \hbox (254.74498pt too wide) in paragraph at lines 1118--1118
 []\TU/lmtt/m/n/10 ## [3] "One class of offences which was more particularly adverted to in this part of the Bill, was that of the offence of coal stealing."[] 
  []
 
 
-Overfull \hbox (249.49498pt too wide) in paragraph at lines 1095--1095
+Overfull \hbox (249.49498pt too wide) in paragraph at lines 1118--1118
 []\TU/lmtt/m/n/10 ## [4] "A coal-owner told him that he was plundered of many tons of coal per week, owing to the difficulty of prosecuting the offenders."[] 
  []
 
 
-Overfull \hbox (1194.49498pt too wide) in paragraph at lines 1095--1095
+Overfull \hbox (1194.49498pt too wide) in paragraph at lines 1118--1118
 []\TU/lmtt/m/n/10 ## [5] "They were subjected to great loss by the theft of small articles of coal, and they submitted from time to time to the injury rather than prosecute; till, at last, they found themselves compelled to proceed against some person for the theft of an article not amounting, perhaps, to more than a penny in value."[] 
  []
 
 
-Overfull \hbox (249.49498pt too wide) in paragraph at lines 1095--1095
+Overfull \hbox (249.49498pt too wide) in paragraph at lines 1118--1118
 []\TU/lmtt/m/n/10 ## [6] "Here, perhaps, is one county abounding in coal and stone—the latter advantageous for the construction of houses for all classes."[] 
  []
 
 
 
-[13]
-
 [14]
+
+[15]
 File: ch1-11.25.2024_files/figure-latex/unnamed-chunk-29-1.pdf Graphic file (type pdf)
 <ch1-11.25.2024_files/figure-latex/unnamed-chunk-29-1.pdf>
 
-
-[15]
 
 [16]
 File: ch1-11.25.2024_files/figure-latex/unnamed-chunk-32-1.pdf Graphic file (type pdf)
@@ -1163,37 +1159,37 @@ File: ch1-11.25.2024_files/figure-latex/unnamed-chunk-32-1.pdf Graphic file (typ
 [17]
 
 [18]
-Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1433--1433
+Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1456--1456
 []\TU/lmtt/m/n/10 ##                                                                                                                                                                                                                                                                                                                                                                                                                                                          text[] 
  []
 
 
-Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1433--1433
+Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1456--1456
 []\TU/lmtt/m/n/10 ## 1                                                                                                                                                                                                                       , which had been prorogued successively from the 1st of August to the 9th of October, from thence to the 20th of November, thence to the 16th of January, and from thence to the 31st January, met this day for despatch of business.[] 
  []
 
 
-Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1433--1433
+Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1456--1456
 []\TU/lmtt/m/n/10 ## 2                                                                                                                                             The Parliament was opened by Commission, the LORDS COMMISSIONERS present being the LORD CHANCELLOR; the LORD PRESIDENT OF THE COUNCIL (the Marquess of Lansdowne); the LORD PRIVY SEAL (the Earl of Minto); the LORD CHAMBERLAIN OF THE HOUSEHOLD (the Marquess of Breadalbane); and the LORD BISHOP OF LONDON.[] 
  []
 
 
-Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1433--1433
+Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1456--1456
 []\TU/lmtt/m/n/10 ## 3                                                                                                                                                                                                                                                                                 called attention to a great omission of their duty on the part of Ministers, with respect to the privileges of their Lordships, which might and ought to have been avoided.[] 
  []
 
 
-Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1433--1433
+Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1456--1456
 []\TU/lmtt/m/n/10 ## 4                                                                                                                                                                                                                                                                                                      At pre-sent there were two vacancies in the representative Peers of Scotland, in consequence of the deaths of the Earl of Airlie and of Lord Colville.[] 
  []
 
 
-Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1433--1433
+Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1456--1456
 []\TU/lmtt/m/n/10 ## 5 Although the Act of Parliament directed that the proclamation should issue forthwith for the election of representative Peers to fill up any vacancies which might occur, by death or otherwise, no such proclamation had yet taken place in the case of the two vacancies he had just mentioned, and the consequence was, that for twenty-four days after the meeting of Parliament it was not possible for any Scotch representative Peers to be elected.[] 
  []
 
 
-Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1433--1433
+Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1456--1456
 []\TU/lmtt/m/n/10 ## 6                                                                                                                                                                                                                                                                                                                                                           The Peerage of Scotland was not therefore represented in Parliament at present as it ought to be.[] 
  []
 
@@ -1202,11 +1198,10 @@ Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1433--1433
 [19]
 
 [20]
-File: ch1-11.25.2024_files/figure-latex/unnamed-chunk-41-1.pdf Graphic file (type pdf)
-<ch1-11.25.2024_files/figure-latex/unnamed-chunk-41-1.pdf>
-
 
 [21]
+File: ch1-11.25.2024_files/figure-latex/unnamed-chunk-41-1.pdf Graphic file (type pdf)
+<ch1-11.25.2024_files/figure-latex/unnamed-chunk-41-1.pdf>
 File: ch1-11.25.2024_files/figure-latex/unnamed-chunk-42-1.pdf Graphic file (type pdf)
 <ch1-11.25.2024_files/figure-latex/unnamed-chunk-42-1.pdf>
 
@@ -1214,11 +1209,11 @@ File: ch1-11.25.2024_files/figure-latex/unnamed-chunk-42-1.pdf Graphic file (typ
 [22]
 File: ch1-11.25.2024_files/figure-latex/unnamed-chunk-43-1.pdf Graphic file (type pdf)
 <ch1-11.25.2024_files/figure-latex/unnamed-chunk-43-1.pdf>
-File: ch1-11.25.2024_files/figure-latex/unnamed-chunk-44-1.pdf Graphic file (type pdf)
-<ch1-11.25.2024_files/figure-latex/unnamed-chunk-44-1.pdf>
 
 
 [23]
+File: ch1-11.25.2024_files/figure-latex/unnamed-chunk-44-1.pdf Graphic file (type pdf)
+<ch1-11.25.2024_files/figure-latex/unnamed-chunk-44-1.pdf>
 File: ch1-11.25.2024_files/figure-latex/unnamed-chunk-45-1.pdf Graphic file (type pdf)
 <ch1-11.25.2024_files/figure-latex/unnamed-chunk-45-1.pdf>
 
@@ -1226,47 +1221,49 @@ File: ch1-11.25.2024_files/figure-latex/unnamed-chunk-45-1.pdf Graphic file (typ
 [24]
 
 [25]
-Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1757--1757
+Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1780--1780
 []\TU/lmtt/m/n/10 ##                                                                                                                                                                                                                                                                                                                                                                                                                                                          text[] 
  []
 
 
-Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1757--1757
+Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1780--1780
 []\TU/lmtt/m/n/10 ## 1                                                                                                                                                                                                                       , which had been prorogued successively from the 1st of August to the 9th of October, from thence to the 20th of November, thence to the 16th of January, and from thence to the 31st January, met this day for despatch of business.[] 
- []
-
-
-Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1757--1757
-[]\TU/lmtt/m/n/10 ## 2                                                                                                                                             The Parliament was opened by Commission, the LORDS COMMISSIONERS present being the LORD CHANCELLOR; the LORD PRESIDENT OF THE COUNCIL (the Marquess of Lansdowne); the LORD PRIVY SEAL (the Earl of Minto); the LORD CHAMBERLAIN OF THE HOUSEHOLD (the Marquess of Breadalbane); and the LORD BISHOP OF LONDON.[] 
- []
-
-
-Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1757--1757
-[]\TU/lmtt/m/n/10 ## 3                                                                                                                                                                                                                                                                                 called attention to a great omission of their duty on the part of Ministers, with respect to the privileges of their Lordships, which might and ought to have been avoided.[] 
- []
-
-
-Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1757--1757
-[]\TU/lmtt/m/n/10 ## 4                                                                                                                                                                                                                                                                                                      At pre-sent there were two vacancies in the representative Peers of Scotland, in consequence of the deaths of the Earl of Airlie and of Lord Colville.[] 
- []
-
-
-Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1757--1757
-[]\TU/lmtt/m/n/10 ## 5 Although the Act of Parliament directed that the proclamation should issue forthwith for the election of representative Peers to fill up any vacancies which might occur, by death or otherwise, no such proclamation had yet taken place in the case of the two vacancies he had just mentioned, and the consequence was, that for twenty-four days after the meeting of Parliament it was not possible for any Scotch representative Peers to be elected.[] 
- []
-
-
-Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1757--1757
-[]\TU/lmtt/m/n/10 ## 6                                                                                                                                                                                                                                                                                                                                                           The Peerage of Scotland was not therefore represented in Parliament at present as it ought to be.[] 
  []
 
 
 
 [26]
+Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1780--1780
+[]\TU/lmtt/m/n/10 ## 2                                                                                                                                             The Parliament was opened by Commission, the LORDS COMMISSIONERS present being the LORD CHANCELLOR; the LORD PRESIDENT OF THE COUNCIL (the Marquess of Lansdowne); the LORD PRIVY SEAL (the Earl of Minto); the LORD CHAMBERLAIN OF THE HOUSEHOLD (the Marquess of Breadalbane); and the LORD BISHOP OF LONDON.[] 
+ []
+
+
+Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1780--1780
+[]\TU/lmtt/m/n/10 ## 3                                                                                                                                                                                                                                                                                 called attention to a great omission of their duty on the part of Ministers, with respect to the privileges of their Lordships, which might and ought to have been avoided.[] 
+ []
+
+
+Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1780--1780
+[]\TU/lmtt/m/n/10 ## 4                                                                                                                                                                                                                                                                                                      At pre-sent there were two vacancies in the representative Peers of Scotland, in consequence of the deaths of the Earl of Airlie and of Lord Colville.[] 
+ []
+
+
+Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1780--1780
+[]\TU/lmtt/m/n/10 ## 5 Although the Act of Parliament directed that the proclamation should issue forthwith for the election of representative Peers to fill up any vacancies which might occur, by death or otherwise, no such proclamation had yet taken place in the case of the two vacancies he had just mentioned, and the consequence was, that for twenty-four days after the meeting of Parliament it was not possible for any Scotch representative Peers to be elected.[] 
+ []
+
+
+Overfull \hbox (1882.24498pt too wide) in paragraph at lines 1780--1780
+[]\TU/lmtt/m/n/10 ## 6                                                                                                                                                                                                                                                                                                                                                           The Peerage of Scotland was not therefore represented in Parliament at present as it ought to be.[] 
+ []
+
+
 
 [27]
 
 [28]
+
+[29]
 
 ! LaTeX Error: Environment tcolorbox undefined.
 
@@ -1274,7 +1271,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.2026 \begin{tcolorbox}
+l.2049 \begin{tcolorbox}
                         [colback=blue!5!white, colframe=blue!75!black, title...
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -1284,9 +1281,9 @@ or  <return>  to continue without it.
 Here is how much of TeX's memory you used:
  19092 strings out of 470405
  349200 string characters out of 5486140
- 936662 words of memory out of 5000000
+ 935662 words of memory out of 5000000
  47176 multiletter control sequences out of 15000+600000
  634741 words of font info for 102 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  90i,12n,116p,523b,515s stack positions out of 10000i,1000n,20000p,200000b,200000s
-Output written on ch1-11.25.2024.pdf (28 pages).
+Output written on ch1-11.25.2024.pdf (29 pages).

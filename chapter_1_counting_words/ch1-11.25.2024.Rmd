@@ -55,7 +55,7 @@ Functions are an important characteristic of the R language. Unlike other popula
 
 To use a function from another package, you must first install the package with `install.packages().` Here is how you would install the packages used in this chapter with `install.packages()` before loading them with `library()`, which we demonstrate later in the chapter:
 
-```{e}
+```{r}
 install.packages("tidyverse")
 install.packages("tidytext")
 install.packages("quanteda")

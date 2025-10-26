@@ -204,14 +204,18 @@ producing meaning from text data.
 \subsection{Running a Line of Code}\label{running-a-line-of-code}
 
 The first step in learning R is understanding how to run a line of code.
-You can type a command directly into the Console pane and press Enter,
-or you can write it in an R script (or an R Markdown code chunk) and
-execute it from there. In RStudio, place your cursor on the line you
-want to run and press Ctrl + Enter on Windows or Linux (or Cmd + Enter
-on a Mac) to send it to the Console automatically. You can also
-highlight one or more lines of code and click the green Run button at
-the top of the script editor. Try it now by typing the following into
-your Console and pressing Enter, or by highlighting it and clicking Run:
+
+Here are some exercises to learn how to run code on your computer. Try
+each and decide which ones feel most comfortable to you: - You can type
+a command directly into the Console pane and press Enter. - You can
+write it in an R script and execute it by placing your curser on the
+line you want to run and press \texttt{Ctrl\ +\ Enter} on Windows or
+Linux (or \texttt{Cmd\ +\ Enter} on a Mac). - You can also highlight one
+or more lines of code and click the green Run button at the top of the
+script editor.
+
+Try to run the code now by typing the following into your Console and
+pressing Enter, or by highlighting it and clicking Run:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -264,11 +268,36 @@ in the chapter:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{install.packages(}\StringTok{"tidyverse"}\NormalTok{)}
-\NormalTok{install.packages(}\StringTok{"tidytext"}\NormalTok{)}
-\NormalTok{install.packages(}\StringTok{"quanteda"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"tidyverse"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+## Installing package into '/home/stephbuongiorno/R/x86_64-pc-linux-gnu-library/4.5'
+## (as 'lib' is unspecified)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"tidytext"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Installing package into '/home/stephbuongiorno/R/x86_64-pc-linux-gnu-library/4.5'
+## (as 'lib' is unspecified)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"quanteda"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Installing package into '/home/stephbuongiorno/R/x86_64-pc-linux-gnu-library/4.5'
+## (as 'lib' is unspecified)
+\end{verbatim}
 
 In RStudio, you can also verify whether a package is already installed
 by checking the Packages tab in the lower-right panel. This tab displays
@@ -279,9 +308,7 @@ checking the box next to its name in this tab, which is equivalent to
 calling \texttt{library()} in your script.
 
 When installing code or data from a repository such as GitHub, we can
-use the \texttt{install\_github()} function. For example, the
-\texttt{hansardr} package can be installed directly from its GitHub
-repository, as shown below.
+use a special installation script that we created for this book.
 
 If RStudio prompts you to restart R while installing a package, click
 Yes to allow the restart, and then re-run the installation command so
@@ -289,11 +316,7 @@ the package loads into the fresh session.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# load the \textquotesingle{}devtools\textquotesingle{} package, which allows installation of R packages from GitHub}
-\FunctionTok{require}\NormalTok{(}\StringTok{"devtools"}\NormalTok{)}
-
-\CommentTok{\# install the \textquotesingle{}hansardr\textquotesingle{} package directly from the author\textquotesingle{}s GitHub repository}
-\FunctionTok{install\_github}\NormalTok{(}\StringTok{"stephbuon/hansardr"}\NormalTok{)}
+\FunctionTok{source}\NormalTok{(}\StringTok{"https://raw.githubusercontent.com/Democracy{-}Lab/hansardr/master/tools/install\_hansardr.R"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
