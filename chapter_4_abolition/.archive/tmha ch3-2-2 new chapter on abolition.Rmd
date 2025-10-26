@@ -73,14 +73,14 @@ If you are new to code, take a moment to notice how changing only *one line* in 
 
 ```{r, message = F}
 # load software packages
-library(dplyr)
-library(tidytext)
-library(hansardr)
-library(ggrepel)
-library(stringr)
-library(lubridate)
-library(textstem)
-library(kableExtra)
+library('dplyr')
+library('tidytext')
+library('hansardr')
+library('ggrepel')
+library('stringr')
+library('lubridate')
+library('textstem')
+library('kableExtra')
 
 # load data
 data("hansard_1830")
@@ -297,11 +297,21 @@ most_distinctive_words_per_abolition_speaker <- tfidf_per_top_slavery_speaker_18
   select(index, word, tf_idf, n, speaker) # drop all columns except these
 
 # create a series of smaller datasets reflecting the top speakers
-speaker1 <- most_distinctive_words_per_abolition_speaker %>% filter(speaker == pattern1[1]) %>% select(word, tf_idf)
-speaker2 <- most_distinctive_words_per_abolition_speaker %>% filter(speaker == pattern1[2]) %>% select(word, tf_idf)
-speaker3 <- most_distinctive_words_per_abolition_speaker %>% filter(speaker == pattern1[3])%>% select(word, tf_idf)
-speaker4 <- most_distinctive_words_per_abolition_speaker %>% filter(speaker == pattern1[4])%>% select(word, tf_idf)
-speaker5 <- most_distinctive_words_per_abolition_speaker %>% filter(speaker == pattern1[5])%>% select(word, tf_idf)
+speaker1 <- most_distinctive_words_per_abolition_speaker %>% 
+  filter(speaker == pattern1[1]) %>% 
+  select(word, tf_idf)
+speaker2 <- most_distinctive_words_per_abolition_speaker %>% 
+  filter(speaker == pattern1[2]) %>% 
+  select(word, tf_idf)
+speaker3 <- most_distinctive_words_per_abolition_speaker %>% 
+  filter(speaker == pattern1[3])%>% 
+  select(word, tf_idf)
+speaker4 <- most_distinctive_words_per_abolition_speaker %>% 
+  filter(speaker == pattern1[4])%>% 
+  select(word, tf_idf)
+speaker5 <- most_distinctive_words_per_abolition_speaker %>% 
+  filter(speaker == pattern1[5])%>% 
+  select(word, tf_idf)
 ```
 
 Next, let's create a series of small tables displaying each speaker, their most distinctive words, and the tf_idf score of that word-speaker combination. 
@@ -648,7 +658,8 @@ buckingham_sentences5[5]
 The id of Sentence #5 is S3V0018P0_8993. Since we understand the gist of Buckingham's arguments about slavery, we might first try looking at the sentences immediately preceding this passage. The sentences are numbered chronologically, so all we have to do is to pull a few sentence numbers starting with S3V0018P0_8990.
 
 ```{r}
-missing_context <- hansard_1830 %>% filter(sentence_id %in% c("S3V0018P0_8990", "S3V0018P0_8991", "S3V0018P0_8992", "S3V0018P0_8993"))
+missing_context <- hansard_1830 %>% 
+  filter(sentence_id %in% c("S3V0018P0_8990", "S3V0018P0_8991", "S3V0018P0_8992", "S3V0018P0_8993"))
 
 missing_context$text
 ```
