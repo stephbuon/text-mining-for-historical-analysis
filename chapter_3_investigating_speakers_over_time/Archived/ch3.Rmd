@@ -32,7 +32,7 @@ Our first exercise is finding the most "wordy" Parliamentarians from 1830--that 
 To analyze speakers in Hansard, we will first need to import a new category of data from hansardr: "speaker_metadata." 
 
 ```{r, message = F}
-library(hansardr)
+library('hansardr')
 
 data("speaker_metadata_1830")
 ```
@@ -60,9 +60,9 @@ The curators of the dataset -- a team of historians and datascientists run by th
 In the following code, we will make our data set smaller and easier to work with by just selecting the "speaker," "suggested_speaker," and "text" fields before tokenizing the data into individual words. 
 
 ```{r, warning=FALSE, message=FALSE}
-library(tidytext)
-library(tidyverse)
-library(lubridate)
+library('tidytext')
+library('tidyverse')
+library('lubridate')
 
 data("hansard_1830")
 data("speaker_metadata_1830")
@@ -188,7 +188,9 @@ chancellor_of_the_exchequeur <- words_1830 %>%
    ungroup()
 
 
-chancellor_of_the_exchequeur %>% sample_n(5) %>% head()
+chancellor_of_the_exchequeur %>% 
+  sample_n(5) %>% 
+  head()
 ```
 
 Note that in the table above, the 'word' is annotated with information about the speaker. This is to prevent confusion about what is being counted; we're not just counting how many times a word appears, but how many times each speaker said it.
@@ -251,14 +253,16 @@ We will use the `year()` function from lubridate with `mutate()` to create a new
 
 ```{r, message = F}
 data("debate_metadata_1830")
-library(kableExtra)
+library('kableExtra')
 
 hansard_1830_w_year <- hansard_1830 %>% 
   left_join(debate_metadata_1830) %>%
   mutate(year = year(speechdate))
 
-hansard_1830_w_year %>% head() %>% select(speechdate, text, year) %>% kable() #look at the first few columns of the dataset
-
+hansard_1830_w_year %>% 
+  head() %>% 
+  select(speechdate, text, year) %>% 
+  kable() #look at the first few columns of the dataset
 ```
 
 Notice that the resulting dataset has a new field, "year."
@@ -272,7 +276,10 @@ words_1830_w_year <- hansard_1830_w_year %>%
   unnest_tokens(word, text)
 
 
-words_1830_w_year %>% head() %>% select(speaker, word, year) %>% kable() #look at the first few columns of the dataset
+words_1830_w_year %>% 
+  head() %>% 
+  select(speaker, word, year) %>% 
+  kable() #look at the first few columns of the dataset
 ```
 Now that we have a field for the year of each speech, we can return to "grouping" data to execute a faceted count where we count words by speaker and year.  When we used the command `group_by()` above, we used it with one argument.  But `group_by()` can take multiple arguments, allowing the analyst to perform grouped counts that involve multiple dimensions of the dataset.  Next, we will use `group_by()` on two data fields at the same time -- the "speaker" and "year" columns of as the arguments of `group_by()`, as in `group_by(speaker, year)`.
 
@@ -354,7 +361,7 @@ ggplot(data = mrs_walrand_top_words,
 We can further explore how the role of women manifested in Parliament. First, count the total number of words women spoke in Parliament. To do this, refer to the table below, which visualizes the women in Parliament and the year in which they spoke. Can you find a pattern across the kinds of topics women are brought to Parliament to speak on? 
 
 ```{r, echo = F, message = F}
-library(kableExtra)
+library('kableExtra')
 
 name <- c("Mrs. (Mary Ann) Clark", 
                   "Mrs. Bridgeman", 
