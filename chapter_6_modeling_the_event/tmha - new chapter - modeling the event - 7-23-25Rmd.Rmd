@@ -30,9 +30,9 @@ Users with more modern laptops may find that the code runs, but it runs extremel
 ```{r, echo=FALSE}
 # load some data (hansardr version needed)
 # dates 1822-1842
-library(readr)
-library(hansardr)
-library(tidyverse)
+library('readr')
+library('hansardr')
+library('tidyverse')
 
 data("hansard_1820")
 data("hansard_1830")
@@ -70,12 +70,12 @@ hansard <- bind_rows(annotated_1820, annotated_1830) %>%
 ## (needs to be adjusted for hansardr)
 
 # load some useful packages
-library(lubridate)
-library(tidyverse)
-library(kableExtra)
-library(hansardr)
-library(stringr)
-library(ggplot2)
+library('lubridate')
+library('tidyverse')
+library('kableExtra')
+library('hansardr')
+library('stringr')
+library('ggplot2')
 ```
 
 
@@ -145,7 +145,7 @@ both_periods_word_count_totals <- both_periods_word_count %>%
 
 
 # create a bar chart
-library(scales) # a library useful for formatting numbers
+library('scales') # a library useful for formatting numbers
 
 ggplot(both_periods_word_count_totals, aes(x = period, y = total)) +
   geom_col((aes(fill = period))) +
@@ -175,7 +175,7 @@ top_words <- both_periods_word_count %>%
   slice_max(order_by = wordcount, # put the words in descending order by "wordcount," the column for the count
             n = 10) # the argument "n" for the function "slice_max" takes the number of positions from the top to retain
 
-library(gt)
+library('gt')
 # make a table
 top_words %>%
   gt() %>% # we're using the "great tables" package to make an elegant table
@@ -293,7 +293,9 @@ prereform_only_speakers <- prereform_speakers_wordcount %>%
   mutate(class = "prereform only") 
 
 # inspect the data
-prereform_only_speakers %>% sample_n(10) %>% head()
+prereform_only_speakers %>% 
+  sample_n(10) %>% 
+  head()
 ```
 How many speakers are there in our dataset? To answer the question, we just need to know the number of rows, given that the dataset lists one distinct speaker for each row. The function *nrow()* will provide an answer to how many rows there are in any dataset.
 
@@ -472,7 +474,8 @@ speaker_key <- hansard %>%
 
 
 # inspect the data
-speaker_key %>% filter(str_detect(suggested_speaker, "peel_")) 
+speaker_key %>% 
+  filter(str_detect(suggested_speaker, "peel_")) 
 
 ```
 The results may not be impressive for the vast majority of speakers who spoke very little. But for major speakers like Robert Peel, this *speaker_key* dataset will help us reconcile the many names with which they appeared in the text with one numeric id number, then reconciling that numeric id with one recognizable name from the Hansard transcription.
@@ -518,7 +521,7 @@ If you are new to visualization with *ggplot()*, we encourage you to play around
 
 ```{r, echo=FALSE}
 # graph it 
-library(ggrepel) # load a useful package for labeling a dense plot
+library('ggrepel') # load a useful package for labeling a dense plot
 
 ggplot(speakers_w_top_and_speaker_key, aes(x = year, y = wordcount_per_speaker_per_year, color = class, shape = class)) +
   geom_jitter( # it's worth replacing the geom_jitter with geom_point here and in the next line to see the stakes of diff representations
@@ -563,8 +566,8 @@ By using tf-idf as our tool for understanding, we will privilege a strict filter
 ## Which words are most distinctive of the period before and after 1832?
 
 # load some software
-library(textstem) # a useful software package for lemmatizing words
-library(dhmeasures)
+library('textstem') # a useful software package for lemmatizing words
+library('dhmeasures')
 
 # clean up the data 
 all_words_cleaned <- rbind(prereform_words, postreform_words) %>%
@@ -874,7 +877,7 @@ The code will also allow us to vary the cutoff number to see if doing so changes
 # Applying Tf-idf with a Different Data Architecture Part 3:
 # For comparing postreform and prereform speech, does it matter whether we only look at the speakers who spoke a lot? 
 
-library(textstem)
+library('textstem')
 
 major_prereform_speakers <- prereform_only_speakers_wordcount %>%
   filter(wordcount >= 10000) # <--- here is the cutoff. Change it and see if the results differ!
@@ -971,7 +974,7 @@ most_distinctive_speakers_top_words <- most_distinctive_speakers_top_words %>%
 #        y = "word count")
 
 #install.packages("gt")
-library(tidyr)
+library('tidyr')
 
 # Pivot the data to wider format
 most_distinctive_speakers_top_words_wide <- most_distinctive_speakers_top_words %>%
@@ -1164,7 +1167,7 @@ graph_ready <- all_speakers_annotated %>%
   left_join(top_speakers) %>%
     left_join(speaker_key) 
 
-library(ggrepel)
+library('ggrepel')
 # graph it 
 ggplot(graph_ready, aes(x = year, y = wordcount, color = class, shape = class)) +
   geom_jitter( # it's worth replacing the geom_jitter with geom_point here and in the next line to see the stakes of diff representations
@@ -1186,7 +1189,7 @@ ggplot(graph_ready, aes(x = year, y = wordcount, color = class, shape = class)) 
   
 
 ```{r}
-library(textstem)
+library('textstem')
 
 all_words_cleaned <- rbind(prereform_words, postreform_words) %>%
   filter(!str_detect(word,"^\\s*[0-9]*\\s*$")) %>% # remove all numbers 
@@ -1381,7 +1384,7 @@ hist(postreform_only_speakers_wordcount$wordcount)
 
 #***** STeph - not working -- attempt to model top speakers against others -- no new results
 ```{r}
-library(textstem)
+library('textstem')
 
 major_prereform_speakers <- prereform_only_speakers_wordcount %>%
   filter(wordcount >= 50000)
@@ -1519,7 +1522,7 @@ most_distinctive_speakers_top_words <- most_distinctive_speakers_top_words %>%
 #        y = "word count")
 
 #install.packages("gt")
-library(tidyr)
+library('tidyr')
 
 # Pivot the data to wider format
 most_distinctive_speakers_top_words_wide <- most_distinctive_speakers_top_words %>%
