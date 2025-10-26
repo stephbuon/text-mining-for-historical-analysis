@@ -31,7 +31,7 @@ First we can load the text data from the 1860s speeches, recalling that one of t
  
 ```{r, warning=FALSE, message=FALSE}
 # Use the hansardr library to load the debate text
-library(hansardr)
+library('hansardr')
 
 data("hansard_1860")
 ```
@@ -39,9 +39,9 @@ data("hansard_1860")
 ```{r, results='asis', warning=FALSE, message=FALSE, echo=FALSE}
 # This code does not show, just the table
 
-library(dplyr)
-library(knitr)
-library(kableExtra)
+library('dplyr')
+library('knitr')
+library('kableExtra')
 
 df_head <- hansard_1860 %>% 
   slice_head(n = 5)
@@ -149,7 +149,7 @@ As a result of this organization scheme, many kinds of analyses will require wor
 
 ```{r, warning=FALSE,message=FALSE}
 # Load the tidyverse
-library(tidyverse)
+library('tidyverse')
 
 # Join the Hansard debate text with the debate metadata into a single dataframe
 # left_join() will automatically detect that both datasets share the sentence_id 
@@ -191,8 +191,8 @@ install.packages("lubridate")
   
 ```{r}
 # load packages for tokenization and date handling
-library(tidytext)   
-library(lubridate)  
+library('tidytext')   
+library('lubridate')  
 
 # create a new dataframe 'hansard_1867' from 'hansard_1860' that contains
 # data for 1867 
@@ -489,7 +489,7 @@ install.packages("viridis")
 
 ```{r, fig.fullwidth=TRUE, fig.asp = 0.8, fig.width = 7}
 # Load the viridis color palette library for colorblind-friendly colors
-library(viridis)
+library('viridis')
 
 # Create a bubble plot showing how often specific events were mentioned over time
 ggplot(top_events_1867_w_speech_metadata, 
@@ -978,9 +978,9 @@ new_matched_events <- hansard_1860 %>%
 ```
 
 ```{r, results='asis', warning=FALSE, message=FALSE, echo=FALSE}
-library(dplyr)
-library(knitr)
-library(kableExtra)
+library('dplyr')
+library('knitr')
+library('kableExtra')
 
 # Show top 5 rows
 df_head <- new_matched_events %>% 
