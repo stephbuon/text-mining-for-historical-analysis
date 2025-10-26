@@ -166,9 +166,9 @@ Please note the following components of the API call:
 * The `flatten = TRUE` argument is necessary for simplifying any nested JSON structures into flat, readable columns suitable for analysis in R.
 
 ```{r, warning=FALSE, message=FALSE}
-library(tidyverse)
-library(httr)
-library(jsonlite)
+library('tidyverse')
+library('httr')
+library('jsonlite')
 
 # Define the JSON API endpoint
 url <- "https://www.dallasopendata.com/resource/7h2m-3um5.json"
@@ -261,7 +261,7 @@ Numerous R packages have been developed to simply interactions with APIs. These 
 `usdoj` provides more intuitive access to data from the U.S. Department of Justice's API by wrapping complex API interactions into simple R functions. It can be installed direclty from the rOpenGov universe. To do this, we first need to tell R to check the rOpenGov repository, and then we can install the package using `install.packages("usdoj")` as usual. By default, R installs packages from CRAN (the Comprehensive R Archive Network), but by adding this additional repository, we can access a wider range of packages.
 
 ```{r, echo=FALSE}
-library(usdoj)
+library('usdoj')
 ```
 
 ```{r, warning=FALSE, eval=FALSE}
@@ -269,7 +269,7 @@ options(repos = c(ropengov = 'https://ropengov.r-universe.dev'))
 
 install.packages("usdoj")
 
-library(usdoj)
+library('usdoj')
 ```
 
 We can now use `usdoj` functions to collect data from the U.S. Department of Justice. The following code will extract just 10 blog entries from the U.S. Department of Justice. Specifying the search direction as `DESC` instructs `usdoj` to extract the most recent blog entries. 
@@ -284,8 +284,8 @@ head(blog_entries$teaser, 5)
 From this point, it is easy to analyze words. 
 
 ```{r}
-library(tidyverse)
-library(tidytext)
+library('tidyverse')
+library('tidytext')
 
 # Tokenize, remove stop words, and count word frequency
 top_words <- blog_entries %>%
@@ -334,9 +334,9 @@ RSS feeds are a simpler alternative to APIs for data extraction. For example, BB
 In the following example, only the titles of the news articles and their associated hyperlinks are retrieved from the feed.
 
 ```{r}
-library(rvest)
-library(tidyverse)
-library(xml2)
+library('rvest')
+library('tidyverse')
+library('xml2')
 
 rss_url <- "https://feeds.bbci.co.uk/news/rss.xml"
 
@@ -344,9 +344,11 @@ rss_page <- read_xml(rss_url)
 
 articles <- tibble(
   title = rss_page %>% 
-    xml_find_all("//item/title") %>% xml_text(),
+    xml_find_all("//item/title") %>% 
+    xml_text(),
   link = rss_page %>% 
-    xml_find_all("//item/link") %>% xml_text())
+    xml_find_all("//item/link") %>% 
+    xml_text())
 
 print(head(articles, 5))
 ```
@@ -394,7 +396,7 @@ In cases where large dataset has not been partitioned, it is often necessary to 
 Below is an example of code for reading a large dataset in 1000 row chunks. For this sake of this practice, we will not download a large dataset onto our computers. We are simply offering a code example. 
 
 ```{r, eval=FALSE}
-library(data.table)
+library('data.table')
 
 # Read the first 1,000 rows
 chunk1 <- fread("hansard_large.csv", nrows = 1000, skip = 0)
@@ -406,7 +408,7 @@ chunk2 <- fread("hansard_large.csv", nrows = 1000, skip = 1000)
 This is the same process but automated, so the user will read up to 100,000 rows of the data. 
 
 ```{r, eval=FALSE}
-library(data.table)
+library('data.table')
 
 # Set parameters for reading data
 file_path <- "hansard_large.csv"
@@ -442,10 +444,10 @@ We will practice with an 1893 translation of _Egil's Saga,_ or the _Skalla-Grím
 Please note: The code that follows handles downloading and text extraction, but it does not include functionality for deleting the file afterward.  This omission is intentional: to prevent any risk of accidentally deleting important or unrelated files, we have left the task of file deletion to the user’s discretion. If the script is executed, the reader should manually delete the downloaded PDF file from their computer once it is no longer needed.
 
 ```{r}
-library(httr)
-library(fs)
-library(pdftools)
-library(tidyverse)
+library('httr')
+library('fs')
+library('pdftools')
+library('tidyverse')
 
 # Define the URL with the PDF to be downloaded
 url <- "https://sagadb.org/files/pdf/egils_saga.en.pdf"
@@ -478,8 +480,8 @@ tidy_egils_saga %>%
 With just a few lines of code to locate, download, and scrape the PDF file, it is now easy to count the top words in _Egil's Saga_.
 
 ```{r}
-library(tidyverse)
-library(tidytext)
+library('tidyverse')
+library('tidytext')
 
 data(stop_words)
 
@@ -491,7 +493,8 @@ top_words <- tidy_egils_saga %>%
   slice_max(n, n = 20)
 
 # Visualize top 20 words
-top_words %>% ggplot(aes(x = reorder(word, n), y = n)) +
+top_words %>% 
+  ggplot(aes(x = reorder(word, n), y = n)) +
   geom_col() +
   coord_flip() +
   labs(title = "Top 20 Words in Egil's Saga (after removing stop words)",
@@ -513,7 +516,7 @@ tidy_egils_saga_with_metadata <- tidy_egils_saga %>%
 This metadata helps an analyst keep track of key information about the book. However, because each row in the author, book, and date columns contains the same values, the metadata is redundantly stored in the data frame. 
 
 ```{r}
-library(gt)
+library('gt')
 
 gt(head(tidy_egils_saga_with_metadata))
 ```
@@ -548,8 +551,8 @@ An additional precaution is to add code to slow down the web scraping process.  
 The following example illustrates the initial step in this process: retrieving the HTML content of the GitHub repository page for this book followed by a snippet of the page's HTML. 
 
 ```{r}
-library(rvest)
-library(dplyr)
+library('rvest')
+library('dplyr')
 
 url <- "https://github.com/stephbuon/text-mining-for-historical-analysis"
 page <- read_html(url)
@@ -608,7 +611,7 @@ We do not disagree with these points. Texts--especially historical ones--are med
 From the Hansard data, we provide the following example of an illogical text concatenation: the word "said" is included as part of the speaker's name. As a result, "The Bishop of Exeter" and "The Bishop of Exeter said" appear as two separate speakers in the dataset. If we were to group the data by speaker and count the most frequent words, this error would lead to treating a single individual as two distinct parliamentarians.
 
 ```{r}
-library(hansardr)
+library('hansardr')
 data("speaker_metadata_1840")
 ```
 
@@ -652,7 +655,7 @@ for a comprehensive encyclopedia of regular expressions in R.
 While effective, writing our own regular expression-based approaches to data cleaning can become increasingly intricate and difficult to scale, such as demonstrated by the following code. 
 
 ```{r}
-library(stringr)
+library('stringr')
 
 # Messy string
 messy_string <- " <p>We!!!   can clean   messy--<b> text using </b>.. ,    regular expressions </p> "
@@ -688,7 +691,7 @@ For example, we provided this prompt and string to OpenAI's GPT-4:
 GPT-4 returned this code: 
 
 ```{r}
-library(stringr)
+library('stringr')
 
 # Remove HTML tags
 messy_string <- gsub("<[^>]+>", "", messy_string)
@@ -707,7 +710,7 @@ Since a single regular expression is often insufficient to handle all types of m
 Below, we provide an example of what this might look like in pseudo-code, or code that resembles real code in order to communicate an idea, but is not actually intended to run. To use similar code, the reader will need to obtain and configure an API key for access to a LLM. 
 
 ```{eval=FALSE}
-library(stringr)
+library('stringr')
 
 max_iterations <- 5 
 
@@ -778,7 +781,7 @@ The functions as.character(), as.date(), and as.numeric() are all useful for con
 Analysts can check the type of data stored in a column using the `typeof()` function. For example, the following code returns "character" as the type for the "text" column in Hansard:
 
 ```{r}
-library("hansardr")
+library('hansardr')
 
 data("hansard_1800")
 
@@ -823,7 +826,7 @@ Here is just one example of how `NA`'s are treated differently than character va
 The "occupation" column (which records the species’ conservation status—e.g., endangered, threatened, or of least concern) contains character strings as well as `NA` values. As we will demonstrate, missing values (`NA`) behave yield a different result than text when undergoing string operations. 
 
 ```{r}
-library(tidyverse)
+library('tidyverse')
 
 census <- tibble(
   name = c("Mary Jenkins", "Samuel Price", "Hannah Lee", "Charles Morton", "Unnamed Child"),
@@ -856,7 +859,7 @@ census %>%
 If we wish for the `NA` values to be treated like strings--which could be the case if we are analyzing historical records where some individuals’ occupations are missing, and we want to treat "unknown" as a searchable category--we could replace them with the word "missing" or with an empty string (`""`). The following code provides an example for how this can be accomplished: 
 
 ```{r}
-library(tidyverse)
+library('tidyverse')
 
 # Replace NA in ""conservation" with the string "missing"
 census <- census %>%
@@ -908,7 +911,7 @@ Some common data structures in R that we have used for text mining are represent
 ```{r gt-text-table, echo=FALSE, message=FALSE, warning=FALSE}
 ### Code doesn't show; only table
 
-library(gt)
+library('gt')
 
 # Create a data frame with the structure
 text_structures <- tibble::tibble(
@@ -969,9 +972,9 @@ However, there are cases where a data frame may not be the most appropriate or e
 
 
 ```{r}
-library(quanteda)
-library(tidyverse)
-library(hansardr)
+library('quanteda')
+library('tidyverse')
+library('hansardr')
 
 data("hansard_1800")
 
@@ -1020,14 +1023,15 @@ Wrangling diverse data structures into the tidy format can be frustrating, but l
 Here is a guide for extracting data from the most common text-based software packages in R and their outputs.
 
 ```{r, echo = FALSE}
-library(gt)
-library(tibble)
-library(dplyr)
+library('gt')
+library('tibble')
+library('dplyr')
 
 md_col <- function(tbl, col) {
   # Safely convert a single column's markdown to gt::md()
   col <- rlang::ensym(col)
-  tbl %>% mutate(!!col := gt::md(!!col))
+  tbl %>% 
+    mutate(!!col := gt::md(!!col))
 }
 
 # --- Quanteda ---
