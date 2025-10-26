@@ -18,8 +18,8 @@ As the book’s narrative continues its theme of critically reflecting upon both
 The output is a dataframe with the top words for each keyword ("climate", "woman", "environmentalist", and "government")
 
 ```{r}
-library(text2vec)
-library(dplyr)
+library('text2vec')
+library('dplyr')
 
 #### temp 
 congress_climate_1 <- as.matrix(read.table("~/Downloads/word_embeddings/congress_climate_2001_2001.txt", as.is = TRUE))
@@ -67,8 +67,8 @@ years <- c(2001, 2021)
 
 
 ```{r, eval = F}
-library(knitr)
-library(kableExtra)
+library('knitr')
+library('kableExtra')
 
 kables(list(kable(caption = "Words Most Related to \"Climate\": Searching the 2001 Congressional Records",
                   most_similar_df_1) %>% 
@@ -80,8 +80,8 @@ kables(list(kable(caption = "Words Most Related to \"Climate\": Searching the 20
 ```
 
 ```{r, echo = F}
-library(knitr)
-library(kableExtra)
+library('knitr')
+library('kableExtra')
 
 kables(list(kable(caption = "Words Most Related to \"Climate\" in the 2001 Congressional Records",
                   most_similar_df_1) %>% 
