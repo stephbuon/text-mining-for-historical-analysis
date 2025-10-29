@@ -136,14 +136,14 @@ Below is an excerpt from `hansardr`:
 library("knitr")
 library("kableExtra")
 
-# code does not show, just the table 
 df_head <- hansard_1850 %>% 
   slice_head(n = 5)
 
-kable(df_head, format = "latex", 
-    booktabs = TRUE, 
-    linesep = "",
-    caption = "Excerpt from Hansard 1850") %>%
+kable(df_head, 
+      format = "latex", 
+      booktabs = TRUE, 
+      linesep = "",
+      caption = "Excerpt from Hansard 1850") %>%
   kable_styling(latex_options = c("scale_down", "striped", "repeat_header"),
                 table.envir = FALSE) %>%
   column_spec(which(colnames(df_head) == "text"), 
@@ -319,9 +319,8 @@ To do this, we can first create our own custom list of words we wish to analyze.
 ```{r}
 # create a list of words commonly used to identify or refer to women
 # the purpose is to help filter or analyze texts for references to women
-identifiers_for_woman = c("girl", "woman", "girls", "women", "wife", "wives", "widow",
-                      "widows", "sister", "sisters", "female", "females", "grandmother", 
-                      "grandmothers", "aunt", "aunts")
+identifiers_for_woman <- c("girl", "woman", "girls", "women", "wife", "wives", "widow", "widows", "sister", 
+                          "sisters", "female", "females", "grandmother","grandmothers", "aunt", "aunts")
 ```
 
 Now we can use the `%in%` operator to check if a word from our list, `identifiers_for_woman`, is in the "word" column. 
