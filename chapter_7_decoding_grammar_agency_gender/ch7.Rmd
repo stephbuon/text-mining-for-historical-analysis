@@ -82,7 +82,7 @@ POS analysis involves installing custom-made software libraries that require som
 
 You should only have to run the code below once.  
 
-```{r setup, include=TRUE}
+```{r include=TRUE}
 # Install reticulate if not already installed
 if (!requireNamespace("reticulate", quietly = TRUE)) {
   install.packages("reticulate")

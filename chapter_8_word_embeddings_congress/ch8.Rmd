@@ -1,0 +1,130 @@
+---
+title: "ch6"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Word Embeddings of Congress
+
+
+So I write about the congress word embeddings in DAOTM - we have papers headed towards the JDH and AHR with this method. It is an important part of Democracy Viewer and the suite of tools that we recommend to scholars of history. So something would be amiss if it was left out. 
+
+That said, yes, we are trying to wrap things up. It is okay if it's a very short chapter.  My instinct is that we want to give the code, even if we ultimately say, "go read about this elsewhere." 
+
+For instance, the code as I recall essentially outsources the work of the model to scikitlearn. We set a few hyperparameters. This might be a good place for an introduction to hyperparameters -- what does it meant to tell scikitlearn to run the model with up to 5-word phrases instead of no ngrams? This is pretty straight forward and shouldn't take too much time. 
+
+We should give the code for calling up one word's embedding within any one 5-yr period. We don't need to do much interpretation.  The examples from https://github.com/joguldi/digital-history/blob/main/hist3368-week11-word-embeddings-over-time-in-congress.ipynb are fine.
+
+Then I'd like to produce one visual -- perhaps one that I've written about elsewhere, like the black-white topic that I discuss at the beginning of DAOTM.  It gives a snapshot of how late, in the 20th century, Congress was willing to talk about race.
+
+Idea: we ask chatgpt to translate https://github.com/joguldi/digital-history/blob/main/hist3368-week11-word-embeddings-over-time-in-congress.ipynb into R and then edit. What do you think?
+
+I could create just the climate change corpus
+
+
+As the book’s narrative continues its theme of critically reflecting upon both data and algorithms, we will weigh the positive aspects of using word embeddings against their negative aspect, which is that they are a “black box” in the sense that the machine learning model that produces the analysis cannot be unpacked.   
+
+
+The output is a dataframe with the top words for each keyword ("climate", "woman", "environmentalist", and "government")
+
+```{r}
+library("text2vec")
+library("dplyr")
+library("tibble")
+
+#---------------------------------------------------
+# 1. Sample text (replace with your own corpus)
+#---------------------------------------------------
+text <- c(
+  "Climate change is a global challenge for humanity.",
+  "Government policies on climate mitigation vary widely.",
+  "Environmental issues are increasingly central to public debate.",
+  "The climate crisis requires bold and sustained action."
+)
+
+#---------------------------------------------------
+# 2. Tokenize
+#---------------------------------------------------
+tokens <- text %>%
+  tolower() %>%
+  word_tokenizer()
+
+#---------------------------------------------------
+# 3. Create vocabulary
+#---------------------------------------------------
+it <- itoken(tokens, progressbar = FALSE)
+vocab <- create_vocabulary(it)
+
+# Optional: prune vocabulary
+vocab <- prune_vocabulary(vocab, term_count_min = 1)
+
+#---------------------------------------------------
+# 4. Vectorize into term-co-occurrence matrix (TCM)
+#---------------------------------------------------
+vectorizer <- vocab_vectorizer(vocab)
+tcm <- create_tcm(it, vectorizer, skip_grams_window = 5L)
+
+#---------------------------------------------------
+# 5. Train a word2vec-like model (GloVe approximation is common)
+#---------------------------------------------------
+glove <- GlobalVectors$new(rank = 50, x_max = 10)
+wv_main <- glove$fit_transform(tcm, n_iter = 30)
+
+# GloVe returns main + context embeddings; add them
+wv_context <- glove$components
+word_embeddings <- wv_main + t(wv_context)
+
+#---------------------------------------------------
+# 6. Inspect embeddings
+#---------------------------------------------------
+dim(word_embeddings)  # rows = words, cols = embedding dims
+head(word_embeddings)
+
+#---------------------------------------------------
+# 7. Find most similar words
+#---------------------------------------------------
+keyword <- "climate"
+kw_vec <- word_embeddings[keyword, , drop = FALSE]
+cos_sim <- sim2(word_embeddings, kw_vec, method = "cosine", norm = "l2")[,1]
+
+tibble(
+  word = names(cos_sim),
+  similarity = cos_sim
+) %>%
+  filter(word != keyword) %>%
+  arrange(desc(similarity)) %>%
+  slice_head(n = 10)
+
+```
+
+
+```{r, eval = F}
+library('knitr')
+library('kableExtra')
+
+kables(list(kable(caption = "Words Most Related to \"Climate\": Searching the 2001 Congressional Records",
+                  most_similar_df_1) %>% 
+              kable_styling(),
+            kable(caption = "Words Most Related to \"Climate\": Searching the 2021 Congressional Records",
+                  most_similar_df_2) %>% 
+              kable_styling())) %>% 
+  kable_styling()
+```
+
+```{r, echo = F}
+library('knitr')
+library('kableExtra')
+
+kables(list(kable(caption = "Words Most Related to \"Climate\" in the 2001 Congressional Records",
+                  most_similar_df_1) %>% 
+              kable_styling(),
+            kable(caption = "Words Most Related to \"Climate\" in the 2001 Congressional Records",
+                  most_similar_df_2) %>% 
+              kable_styling())) %>% 
+  kable_styling()
+```
+
+
