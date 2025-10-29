@@ -132,12 +132,15 @@ As shown by Table 2, the first column in this dataset is `sentence_id`, which gi
 
 Below is an excerpt from `hansardr`: 
 
-```{r, results='asis', warning=FALSE, message=FALSE, echo=FALSE}
+```{r, results='asis', warning=FALSE, message=FALSE}
+library("knitr")
+library("kableExtra")
+
 # code does not show, just the table 
 df_head <- hansard_1850 %>% 
   slice_head(n = 5)
 
-kbl(df_head, format = "latex", 
+kable(df_head, format = "latex", 
     booktabs = TRUE, 
     linesep = "",
     caption = "Excerpt from Hansard 1850") %>%
@@ -147,6 +150,8 @@ kbl(df_head, format = "latex",
               latex_column_spec = "p{12cm}", 
               latex_valign = "top")
 ```
+
+To display the data in a more visually appealing format, we can use the `knitr` package, which provides the `kable()` function for creating clean, basic tables from R objects. We then enhance these tables with the `kableExtra` package, which adds styling options—such as custom column widths, captions, alignment, and shading—allowing us to produce polished, publication-quality tables.
 
 ## Tidy Text Mining and Loading Libraries
 
