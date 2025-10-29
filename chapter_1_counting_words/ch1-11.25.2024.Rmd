@@ -7,6 +7,7 @@ output:
 header-includes:
   - \usepackage{fontspec}
   - \setmainfont{DejaVu Serif}
+  - \usepackage[most]{tcolorbox}
 ---
 
 ```{r setup, include=FALSE}
@@ -75,12 +76,12 @@ As we explained in the introduction, packages only have to be installed once, bu
 
 ```{r, message=FALSE}
 # load the hansardr package
-library(hansardr)
+library("hansardr")
 ```
 
 `hansardr` is now ready for use. It is conventional to load the software packages that will be use at the beginning of each new session. However, for the sake of demonstrating computational historical thinking, we will regularly load packages throughout a chapter so the reader can more easily see which functions relate back to different packages. 
 
-When working with functions in R, it is important to remember that code must be run in order, because each step often depends on what came before it. For example, if we plan to use a package such as hansardr, we must first load it with `library(hansardr)` before calling any of its functions. If we skip this step, R will not know where the hansardr functions come from and will return an error such as "could not find function," even if the code is correct. Similar errors can also occur when data is not processed in the proper sequence, since later steps may rely on datasets or data transformations that have not yet been created.
+When working with functions in R, it is important to remember that code must be run in order, because each step often depends on what came before it. For example, if we plan to use a package such as `hansardr`, we must first load it with `library(hansardr)` before calling any of its functions. If we skip this step, R will not know where the `hansardr` functions come from and will return an error such as "could not find function," even if the code is correct. Similar errors can also occur when data is not processed in the proper sequence, since later steps may rely on datasets or data transformations that have not yet been created.
 
 ### Navigating the `hansardr` Data
 
@@ -92,9 +93,9 @@ The `hansardr` corpus is subsetted by decade. As shown by Table 1, each decade h
 
 ```{r hansard_table, echo=FALSE}
 # code does not show, just the table 
-library(knitr)
-library(kableExtra)
-library(tidyverse)
+library("knitr")
+library("kableExtra")
+library("tidyverse")
 
 df <- data.frame(
   Label = c("hansard_YYYY", "debate_metadata_YYYY", "speaker_metadata_YYYY", "file_metadata_YYYY"),
@@ -140,10 +141,8 @@ kbl(df_head, format = "latex",
     booktabs = TRUE, 
     linesep = "",
     caption = "Excerpt from Hansard 1850") %>%
-  kable_styling(
-    latex_options = c("scale_down", "striped", "repeat_header"),
-    table.envir = FALSE
-  ) %>%
+  kable_styling(latex_options = c("scale_down", "striped", "repeat_header"),
+                table.envir = FALSE) %>%
   column_spec(which(colnames(df_head) == "text"), 
               latex_column_spec = "p{12cm}", 
               latex_valign = "top")
@@ -153,7 +152,7 @@ kbl(df_head, format = "latex",
 
 Most of the functions used in the first chapters of this book come from a software package called `tidyverse` (2019) which is a family of smaller packages developed by Chief Scientist at Posit (formerly known as RStudio), Hadley Wickham. 
 
-The tidyverse was created to order data in "tidy" tables where it is structured as a data frame made up of columns and rows. In other words, the tidyverse is built to work with data like `hansard_1850`.
+The `tidyverse` was created to order data in "tidy" tables where it is structured as a data frame made up of columns and rows. In other words, the `tidyverse` is built to work with data like `hansard_1850`.
 
 We have found that a tidy approach to text exploration and analysis allows us to write code quickly and effectively, giving us ample control over the data and allowing us to inspect the output of every data processing step and type of analysis. This library thus supports analysts focusing on questions about data processing and history without being weighed down by the nuances of different structural and syntactic coding problems. 
 
@@ -163,8 +162,8 @@ In this chapter we will also use the `tidytext` library, developed by David Robi
 
 ```{r, message=FALSE, warning=FALSE}
 # load the tidyverse and tidytext packages
-library(tidyverse)
-library(tidytext)
+library("tidyverse")
+library("tidytext")
 ```
 
 ## Using Functions to Process Data
@@ -538,7 +537,7 @@ When using `KWIC()` we can specify the keyword, the maximum number of words to d
 
 ```{r}
 # load the quanteda package
-library(quanteda)
+library("quanteda")
 
 # convert the filtered february 1850 dataset into a quanteda corpus object
 # specify that the 'text' column contains the actual speech content

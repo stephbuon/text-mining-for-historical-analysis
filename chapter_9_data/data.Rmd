@@ -15,8 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # Only set root.dir when knitting a file
 input <- knitr::current_input()
 if (!is.null(input)) {
-  knitr::opts_knit$set(root.dir = dirname(input))
-}
+  knitr::opts_knit$set(root.dir = dirname(input)) }
 
 # Ensure preamble exists next to the Rmd (belt & suspenders)
 if (!file.exists("preamble.tex")) {
@@ -60,12 +59,11 @@ knitr::knit_hooks$set(output = function(x, options) {
 })
 ```
 
-
 Many careful thinkers, when beginning a new project, seek out multiple archives for research.  Katherine Bode, for example, argues for the importance of scholars building their own resources as a means of challenging the prevailing reliance on canonical texts and curated corpora, as solely engaging these risks reinforcing narrow or dominant histories (Bode 2018). A plurality of archives and texts offers an opportunity to think critically about the boundaries and biases of each archive under consideration. Many of the approaches to text mining we have profiled already -- especially distinctiveness and distance measures -- offer tools for systematically extending the study of the boundaries of the archive, such that a scholar can accumulate critical perspectives as they broaden their access to archives.
 
 When a scholar is pursuing a complex research question, the relevant data must often be located, extracted, and prepared independently before analysis can begin. In historical research or other research problems across the social sciences and humanities, relevant sources may be scattered across different archives and exist only in incomplete or inconsistent formats. While basic guidance can provide some degree of comfort to the analyst who wishes to gain access to the diverse kinds of data available on the web, today's data ecosystem is highly diverse and even fragmented in terms of its infrastructures. 
 
-Data diversity brings technical challenges which many novice analysts may be unprepared for. The method of extracting and analyzing data vary with how the data is stored and processed. Some archives offer well-documented APIs that facilitate access to records, while others provide only partial documentation or inconsistent metadata. These differences often reflect underlying disparities in the resources allocated to developing, maintaining, and preserving digital archives.  Very few archives come packaged as a software repository as `hansardr` is. Therefore most data analysts will eventually want to engage the broader data ecosystem that exists beyond the data prepared for this book. 
+Data diversity brings new technical challenges. The method of extracting and analyzing data vary with how the data is stored and processed. Some archives offer well-documented APIs that facilitate access to records, while others provide only partial documentation or inconsistent metadata. These differences often reflect underlying disparities in the resources allocated to developing, maintaining, and preserving digital archives.  Very few archives come packaged as a software repository as `hansardr` is. Therefore most data analysts will eventually want to engage the broader data ecosystem that exists beyond the data prepared for this book. 
 
 As Ian Milligan argues in _History in the Age of Abundance_ (2019), the explosion of born-digital content has transformed the historian's archive, requiring new tools and methods to access, process, and interpret digital records at scale.  In fields ranging from the humanities to computer science (Dobson 2019, Hayler et. al 2016, Hai-Jew 2018), analysts have documented approaches that are useful for aggregating text from the web.  Once data has been properly accessed, cleaned, and stored, the analysis exercises from the rest of the book can be applied towards a variety of research questions -- but only if the analyst is able to manipulate data.  
 
@@ -100,7 +98,7 @@ In our experience, collecting data from the web is not a routine skill — even 
 
 Part of the problem is that very few instructional materials teach these practices in a systematic way. Several works exist that outline the history of APIs, conceptualize them as a scholarly artifact, or discuss their significance to digital scholarship (Roued-Cunliffe 2017, Wachowiak 2022). However, they do not demonstrate how to use an API. 
 
-Most textbooks treat data as if it were already neatly stored on a local machine, while archivists’ how-to guides tend to focus on individual platforms one at a time without offering a transferable workflow. This piecemeal approach may leave analysts adept at navigating a single repository but unprepared to ingest larger, more heterogeneous collections of digital sources at scale. Lessons on accessing one digital archive at a time rarely arms the analyst with the skills they need to feel comfortable ingesting large amounts of data from diverse sources (_Programming Historian_, "Lesson Index: APIs"; _Programming Historian_), "Lesson Index: Web Scraping").
+Most textbooks treat data as if it were already neatly stored on a local machine, while archivists' how-to guides tend to focus on individual platforms one at a time without offering a transferable workflow. This piecemeal approach may leave analysts adept at navigating a single repository but unprepared to ingest larger, more heterogeneous collections of digital sources at scale. Lessons on accessing one digital archive at a time rarely arms the analyst with the skills they need to feel comfortable ingesting large amounts of data from diverse sources (_Programming Historian_, "Lesson Index: APIs"; _Programming Historian_), "Lesson Index: Web Scraping").
 
 ## Creating a Dataset from an API Endpoint 
 
@@ -123,6 +121,7 @@ Some examples of API endpoints include those offered by Reddit or The Guardian. 
 This URL can be accessed programmatically using R, or the analyst can manually inspect the data by copying and pasting it into a web browser’s address bar. When accessed, this URL returns a structured list of recent submissions to the /r/datascience Subreddit in JSON format. 
 
 Similarly, _The Guardian_, a global news platform, offers an API that enables users to search for news articles on a given topic, such as education, via a URL like:
+
 `https://content.guardianapis.com/search?q=education`. 
 
 #### Using an API: Setting up an API Key
@@ -185,6 +184,7 @@ if (status_code(response) == 200) {
     as_tibble() } else {
   stop("Failed to retrieve data. Status code: ", status_code(response)) }
 ```
+
 Because this request was successful, we now have a data frame containing the shelter data: 
 
 ```{r}
@@ -196,7 +196,7 @@ head(animal_shelter_data[, 1:5])
 
 APIs typically return data in structured formats such as JSON (JavaScript Object Notation), XML (eXtensible Markup Language), or CSV (Comma-Separated Values). JSON is widely used because of its interpretability across programming languages. 
 
-The animal shelter API returned data in the JSON format. Using the fromJSON() function, and we converted the JSON to a tabular format for readability. 
+The animal shelter API returned data in the JSON format. Using the `fromJSON()` function, and we converted the JSON to a tabular format for readability. 
 
 For the sake of understanding the data transformations that occurred, we also kept a copy of the nested JSON data. Many programmers favor JSON because it strikes a strong balance between human readability, machine parsability, and broad compatibility. JSON is the default for most modern APIs. 
 
@@ -215,6 +215,7 @@ When we made this request, we were only able to obtain 1,000 records (which is r
 ```{r}
 nrow(json_list) 
 ```
+
 However, if we return to the dataset’s page —
 
 https://www.dallasopendata.com/Services/Dallas-Animal-Shelter-Data-Fiscal-Year-2019-2020/7h2m-3um5/about_data — 
@@ -261,7 +262,7 @@ Numerous R packages have been developed to simply interactions with APIs. These 
 `usdoj` provides more intuitive access to data from the U.S. Department of Justice's API by wrapping complex API interactions into simple R functions. It can be installed direclty from the rOpenGov universe. To do this, we first need to tell R to check the rOpenGov repository, and then we can install the package using `install.packages("usdoj")` as usual. By default, R installs packages from CRAN (the Comprehensive R Archive Network), but by adding this additional repository, we can access a wider range of packages.
 
 ```{r, echo=FALSE}
-library('usdoj')
+library("usdoj")
 ```
 
 ```{r, warning=FALSE, eval=FALSE}
@@ -269,7 +270,7 @@ options(repos = c(ropengov = 'https://ropengov.r-universe.dev'))
 
 install.packages("usdoj")
 
-library('usdoj')
+library("usdoj")
 ```
 
 We can now use `usdoj` functions to collect data from the U.S. Department of Justice. The following code will extract just 10 blog entries from the U.S. Department of Justice. Specifying the search direction as `DESC` instructs `usdoj` to extract the most recent blog entries. 
@@ -281,11 +282,12 @@ blog_entries <- doj_blog_entries(n_results = 10, search_direction = "DESC")
 ```{r}
 head(blog_entries$teaser, 5)
 ```
+
 From this point, it is easy to analyze words. 
 
 ```{r}
-library('tidyverse')
-library('tidytext')
+library("tidyverse")
+library("tidytext")
 
 # Tokenize, remove stop words, and count word frequency
 top_words <- blog_entries %>%
@@ -334,9 +336,9 @@ RSS feeds are a simpler alternative to APIs for data extraction. For example, BB
 In the following example, only the titles of the news articles and their associated hyperlinks are retrieved from the feed.
 
 ```{r}
-library('rvest')
-library('tidyverse')
-library('xml2')
+library("rvest")
+library("tidyverse")
+library("xml2")
 
 rss_url <- "https://feeds.bbci.co.uk/news/rss.xml"
 
@@ -352,7 +354,6 @@ articles <- tibble(
 
 print(head(articles, 5))
 ```
-
 
 ## Bulk Downloads 
 
@@ -372,7 +373,7 @@ A representative example of a bulk download resource is provided by Old Bailey O
 
 "If you require the complete data (or the API is not suitable for your needs), it is available in XML format only from the University of Sheffield’s data repository (ORDA): http://dx.doi.org/10.15131/shef.data.4775434." (Hitchcock et. al)
 
-The dataset referenced includes 2,163 editions of the *Proceedings* and 475 *Ordinary’s Accounts*, all encoded in XML.
+The dataset referenced includes 2,163 editions of the Proceedings and 475 Ordinary’s Accounts, all encoded in XML.
 
 Other popular sites for bulk downloads include:
 * the HathiTrust, a large-scale collaborative repository of digitized texts from academic, historic, and research institutions. Hathitrust offers materials such as historical magazines and newspapers, government documents, and literary works. 
@@ -391,12 +392,12 @@ The `hansardr` package was built with this challenge in mind: the full Hansard c
 
 #### Reading in a Large Dataset in Chunks
 
-In cases where large dataset has not been partitioned, it is often necessary to process the data in smaller chunks, such as reading one line at a time or loading a subset of rows using functions like `read_csv_chunked()` from the tidyverse's `readr` or `fread(nrows = ...)` from the `data.table()` package. 
+In cases where large dataset has not been partitioned, it is often necessary to process the data in smaller chunks, such as reading one line at a time or loading a subset of rows using functions like `read_csv_chunked()` from the `tidyverse`'s `readr` or `fread(nrows = ...)` from the `"data.table"()` package. 
 
 Below is an example of code for reading a large dataset in 1000 row chunks. For this sake of this practice, we will not download a large dataset onto our computers. We are simply offering a code example. 
 
 ```{r, eval=FALSE}
-library('data.table')
+library("data.table")
 
 # Read the first 1,000 rows
 chunk1 <- fread("hansard_large.csv", nrows = 1000, skip = 0)
@@ -408,7 +409,7 @@ chunk2 <- fread("hansard_large.csv", nrows = 1000, skip = 1000)
 This is the same process but automated, so the user will read up to 100,000 rows of the data. 
 
 ```{r, eval=FALSE}
-library('data.table')
+library("data.table")
 
 # Set parameters for reading data
 file_path <- "hansard_large.csv"
@@ -444,10 +445,10 @@ We will practice with an 1893 translation of _Egil's Saga,_ or the _Skalla-Grím
 Please note: The code that follows handles downloading and text extraction, but it does not include functionality for deleting the file afterward.  This omission is intentional: to prevent any risk of accidentally deleting important or unrelated files, we have left the task of file deletion to the user’s discretion. If the script is executed, the reader should manually delete the downloaded PDF file from their computer once it is no longer needed.
 
 ```{r}
-library('httr')
-library('fs')
-library('pdftools')
-library('tidyverse')
+library("httr")
+library("fs")
+library("pdftools")
+library("tidyverse")
 
 # Define the URL with the PDF to be downloaded
 url <- "https://sagadb.org/files/pdf/egils_saga.en.pdf"
@@ -480,8 +481,8 @@ tidy_egils_saga %>%
 With just a few lines of code to locate, download, and scrape the PDF file, it is now easy to count the top words in _Egil's Saga_.
 
 ```{r}
-library('tidyverse')
-library('tidytext')
+library("tidyverse")
+library("tidytext")
 
 data(stop_words)
 
@@ -501,7 +502,6 @@ top_words %>%
        x = "Word",
        y = "Count") +
   theme_minimal()
-
 ```
 
 For transparency and book keeping, the analyst may want to add additional metadata—such as the book’s title (Egil's Saga), the author (Snorri Sturluson), and the publication date of the English translation (1893).
@@ -516,11 +516,10 @@ tidy_egils_saga_with_metadata <- tidy_egils_saga %>%
 This metadata helps an analyst keep track of key information about the book. However, because each row in the author, book, and date columns contains the same values, the metadata is redundantly stored in the data frame. 
 
 ```{r}
-library('gt')
+library("gt")
 
 gt(head(tidy_egils_saga_with_metadata))
 ```
-
 
 #### Getting PDFs Ready for Computer Readability: Optical Character Recognition (OCR)
 
@@ -530,17 +529,17 @@ One rule of thumb for deciding whether a PDF is machine readable is to open the 
 
 In the past, analysts typically paid for proprietary software when they wanted to apply OCR to PDF files, and the OCR was of varying quality, with OCR packages from twenty years ago producing many errors, and more recent OCR showing a marked improvement and occasionally the ability to identify handwritten scripts from the past, especially when the OCR program had been trained on many examples of the script translated by patient scholars.
 
-The results are promising. For printed Ottoman Turkish, scholars using platforms like Transkribus have trained Handwritten Text Recognition (HTR) models on ~386 pages of late‑Ottoman periodicals, achieving a character error rate of ~7.2 % as of June 2023 (Digital Orientalist 2023).Printed Devanagari (Hindi, Sanskrit, etc.) has been widely supported through engines like Tesseract, E‑Aksharayan, and customized models (e.g. C‑DAC). Chinese handwritten character recognition is a long‑standing research domain. Techniques such as DenseRAN (radical‑aware networks) and recurrent neural net architectures (LSTM/GRU) have achieved high accuracy in offline recognition contexts—even on large character sets up to 30,000 characters, as shown in industry systems (e.g. Apple's Scribble) and academic datasets like ICDAR‑2013 with strong performance (Zhang et all 2016). 
+The results are promising. For printed Ottoman Turkish, scholars using platforms like Transkribus have trained Handwritten Text Recognition (HTR) models on ~386 pages of late‑Ottoman periodicals, achieving a character error rate of ~7.2 % as of June 2023 (Digital Orientalist 2023).Printed Devanagari (Hindi, Sanskrit, etc.) has been widely supported through engines like Tesseract, E‑Aksharayan, and customized models (e.g. C‑DAC). Chinese handwritten character recognition is a long‑standing research domain. Techniques such as DenseRAN (radical‑aware networks) and recurrent neural net architectures (LSTM/GRU) have achieved high accuracy in offline recognition contexts—even on large character sets up to 30,000 characters, as shown in industry systems (e.g. Apple's Scribble) and academic datasets like ICDAR‑2013 with strong performance (Zhang et al. 2016). 
 
 Today, OCR can be performed using AI tools, typically at a fraction of the cost. Although best practices in text recognition are beyond the scope of this book, we have heard reports of scholars having success with using AI to recognize hand-written text in Latin and Spanish using out-of-the-box LLMs such as ChatGPT.
 
-A cursory review of recent articles suggests that the best results for handwritten records involve extensive training sets, translation, and sampling.  Breakthrough success has been reported for using AI trained on Chinese characters to recognize Chinese texts (Chen et al 2025). A Stanford team is applying deep ML and custom training to recognize handwritten text from records in Ottoman, Classical Arabic, and Ottoman Turkish ("Arabic Script OCR/HTR," accessed 2025). We read of good results on Ancient Indian records from Brahmi, Grantha, Devanagari and Tamil manuscripts, ancient Chinese records, handwritten East Syriac, and Latin registers from the Vatican (Yadav 2025, Majeed and Hossani 2024, Zhang 2024, "In Codice Ratio"). The reports suggest that text mining for historical analysis will soon be applied to a widening collection of scholarly texts from different times and places. 
+A cursory review of recent articles suggests that the best results for handwritten records involve extensive training sets, translation, and sampling.  Breakthrough success has been reported for using AI trained on Chinese characters to recognize Chinese texts (Chen et. al 2025). A Stanford team is applying deep ML and custom training to recognize handwritten text from records in Ottoman, Classical Arabic, and Ottoman Turkish ("Arabic Script OCR/HTR," accessed 2025). We read of good results on Ancient Indian records from Brahmi, Grantha, Devanagari and Tamil manuscripts, ancient Chinese records, handwritten East Syriac, and Latin registers from the Vatican (Yadav 2025, Majeed and Hossani 2024, Zhang 2024, "In Codice Ratio"). The reports suggest that text mining for historical analysis will soon be applied to a widening collection of scholarly texts from different times and places. 
 
 Once a collection of PDFs has been OCR'd, it is possible to use the resulting PDF files to create a dataframe for text mining.  
 
 ## Web Scraping 
 
-Before the widespread availability of APIs, data collection from websites was commonly performed through web scraping, which involves the extraction of information from the underlying HTML structure of web pages. In many cases, web scraping is no longer necessary. Numerous websites now provide structured data access through APIs. But in certain circulmstances, web scraping can still help the analyst to prepare information from websites as a dataset. 
+Before the widespread availability of APIs, data collection from websites was commonly performed through web scraping, which involves the extraction of information from the underlying HTML structure of web pages. In many cases, web scraping is no longer necessary. Numerous websites now provide structured data access through APIs. But in certain circumstances, web scraping can still help the analyst to prepare information from websites as a dataset. 
 
 In R, the `rvest` package facilitates web scraping by parsing HTML content into a structured representation, commonly referred to as the HTML tree. 
 
@@ -551,10 +550,11 @@ An additional precaution is to add code to slow down the web scraping process.  
 The following example illustrates the initial step in this process: retrieving the HTML content of the GitHub repository page for this book followed by a snippet of the page's HTML. 
 
 ```{r}
-library('rvest')
-library('dplyr')
+library("rvest")
+library("dplyr")
 
 url <- "https://github.com/stephbuon/text-mining-for-historical-analysis"
+
 page <- read_html(url)
 ```
 
@@ -574,6 +574,7 @@ html_preview <- str_trunc(html_preview, width = 100)
 cat(paste(html_preview, collapse = "\n"))
 
 ```
+
 #### Understanding HTML Code and Finding the Content 
 
 To make practical use of webscraping, the analyst first needs to become aware of the components of the HTML code that structures a website.  On a webpage, each element of HTML code gives the computer specific information about what to display, for instance headers, paragraphs, and links. This information is given in a specific structure in the HTML document, which has a tree-like branching structure.  
@@ -611,7 +612,8 @@ We do not disagree with these points. Texts--especially historical ones--are med
 From the Hansard data, we provide the following example of an illogical text concatenation: the word "said" is included as part of the speaker's name. As a result, "The Bishop of Exeter" and "The Bishop of Exeter said" appear as two separate speakers in the dataset. If we were to group the data by speaker and count the most frequent words, this error would lead to treating a single individual as two distinct parliamentarians.
 
 ```{r}
-library('hansardr')
+library("hansardr")
+
 data("speaker_metadata_1840")
 ```
 
@@ -631,6 +633,7 @@ speaker_metadata_1840 %>%
 speaker_metadata_1840 %>% 
   filter(sentence_id == "S3V0051P0_18193")
 ```
+
 These are just a few examples from the many typographical anomalies existing within the digitized version of the Hansard corpus. 
 
 ## Data Cleaning Using a Large Langauge Model 
@@ -641,11 +644,13 @@ The problem of cleaning data is a long one. A common approach to addressing the 
 speaker_metadata_1840 %>% 
   filter(sentence_id == "S3V0060P0_2194")
 ```
+
 ```{r}
 speaker_metadata_1840 %>% 
   filter(sentence_id == "S3V0060P0_2194") %>%
   mutate(speaker = str_replace_all(speaker, "'", ""))
 ```
+
 Many guides exist for defining and using regular expressions. For this reason, we will not include one here and instead suggest reading 
 
 https://cran.r-project.org/web/packages/stringr/vignettes/regular-expressions.html
@@ -655,7 +660,7 @@ for a comprehensive encyclopedia of regular expressions in R.
 While effective, writing our own regular expression-based approaches to data cleaning can become increasingly intricate and difficult to scale, such as demonstrated by the following code. 
 
 ```{r}
-library('stringr')
+library("stringr")
 
 # Messy string
 messy_string <- " <p>We!!!   can clean   messy--<b> text using </b>.. ,    regular expressions </p> "
@@ -671,10 +676,7 @@ clean_string <- messy_string |>
   str_replace_all("\\s+", " ") |>                  
   str_trim()                                      
 
-
-
 print(clean_string)
-
 ```
 
 Writing complex regular expressions can be time-consuming and difficult to manage, making alternative approaches increasingly appealing. Recently, large language models (LLMs) have been explored as tools for data cleaning. Unlike traditional programming methods, LLMs are not bound by rigid symbolic logic. They can instead interpret natural language instructions. This means we can simply describe how we want a messy string cleaned, and the model can perform the task without requiring detailed code.
@@ -691,7 +693,7 @@ For example, we provided this prompt and string to OpenAI's GPT-4:
 GPT-4 returned this code: 
 
 ```{r}
-library('stringr')
+library("stringr")
 
 # Remove HTML tags
 messy_string <- gsub("<[^>]+>", "", messy_string)
@@ -710,7 +712,7 @@ Since a single regular expression is often insufficient to handle all types of m
 Below, we provide an example of what this might look like in pseudo-code, or code that resembles real code in order to communicate an idea, but is not actually intended to run. To use similar code, the reader will need to obtain and configure an API key for access to a LLM. 
 
 ```{eval=FALSE}
-library('stringr')
+library("stringr")
 
 max_iterations <- 5 
 
@@ -728,12 +730,11 @@ for (i in 1:max_iterations) {
     df$text[row] <- text } }
 ```
 
-
 # Interpreting Data Format, Type, and Structure
 
 Digital methods are now deeply embedded in many areas of humanities research. As a result, it is increasingly necessary to move beyond a surface-level familiarity with the technical aspects of computational text analysis. We argue it is necessary to approach digital media not merely as "tools," but as complex systems shaped by specific technical features. This shift requires a transition toward computational thinking as an approach that emphasizes the conceptual understanding of how data is structured, processed, and interpreted. We argue that adopting computational thinking is essential for engaging more critically with digital sources, and for integrating these methods into the interpretive practices of the humanities.
 
-This section introduces core technical concepts—data format, type, and structure—that shape how textual data is processed and analyzed. In many computational disciplines, these concepts are treated as foundational and are typically addressed early, as they serve as the building blocks to more advanced forms of analysis. In this book, however, we intentionally set these concepts aside because our approach to text mining in R largely handles these data complexities. Most of our work involved character data (e.g., words in a debate) and integer data (e.g., frequency counts of top words), which were stored in data frames compatible with the (primarily) tidyverse tools we selected. Our deliberate approach allowed us to move straight into historical analysis without worrying about data complexities. Here, we pause to examine these underlying structures more deliberately, as a deeper understanding of them can inform strategies for different types of analyses. This section thus reframes some technical fluency as a critical component of interpretive practice in computational text analysis. 
+This section introduces core technical concepts—data format, type, and structure—that shape how textual data is processed and analyzed. In many computational disciplines, these concepts are treated as foundational and are typically addressed early, as they serve as the building blocks to more advanced forms of analysis. In this book, however, we intentionally set these concepts aside because our approach to text mining in R largely handles these data complexities. Most of our work involved character data (e.g., words in a debate) and integer data (e.g., frequency counts of top words), which were stored in data frames compatible with the (primarily) `tidyverse` tools we selected. Our deliberate approach allowed us to move straight into historical analysis without worrying about data complexities. Here, we pause to examine these underlying structures more deliberately, as a deeper understanding of them can inform strategies for different types of analyses. This section thus reframes some technical fluency as a critical component of interpretive practice in computational text analysis. 
 
 ## Data Format
 
@@ -769,19 +770,19 @@ Because the the variable my_number is a character-type object, not a number-type
 my_number + 2
 ```
 
-However, we can use the base R function as.numeric() to tell R to treat my_number henceforth as a number, not a string.
+However, we can use the base R function `as.numeric()` to tell R to treat my_number henceforth as a number, not a string.
 
 ```{r}
 my_number <- as.numeric(my_number) 
 my_number + 2
 ```
 
-The functions as.character(), as.date(), and as.numeric() are all useful for converting datatypes from one type to the next. When working with hansardr, some of us have struggled with deep confusion in our inability to work with the year, until we realized that at some point the year had been converted to a string object, not a numeric or date object. 
+The functions `as.character()`, `as.date()`, and `as.numeric()` are all useful for converting datatypes from one type to the next. When working with `hansardr`, some of us have struggled with deep confusion in our inability to work with the year, until we realized that at some point the year had been converted to a string object, not a numeric or date object. 
 
 Analysts can check the type of data stored in a column using the `typeof()` function. For example, the following code returns "character" as the type for the "text" column in Hansard:
 
 ```{r}
-library('hansardr')
+library("hansardr")
 
 data("hansard_1800")
 
@@ -821,12 +822,12 @@ In R, `NA` (Not Available) represents missing or undefined data. It used when a 
 
 In contrast, `NULL` indicates the absence of an object altogether, meaning the data structure or value does not exist at all. 
 
-Here is just one example of how `NA`'s are treated differently than character values. This is an illustrative, fake historical snippet of a dataset of individuals recorded in an 1850 census table or notarial register, where some people have a listed occupation while others have a blank entry (NA). You want to count how many people were "laborers." If you treat NA as a string instead of a missing value, your counts will be wrong, because `NA` is the absence of information, not the word "laborer" misspelled or omitted.
+Here is just one example of how `NA`'s are treated differently than character values. This is an illustrative, fake historical snippet of a dataset of individuals recorded in an 1850 census table or notarial register, where some people have a listed occupation while others have a blank entry (`NA`). You want to count how many people were "laborers." If you treat NA as a string instead of a missing value, your counts will be wrong, because `NA` is the absence of information, not the word "laborer" misspelled or omitted.
 
 The "occupation" column (which records the species’ conservation status—e.g., endangered, threatened, or of least concern) contains character strings as well as `NA` values. As we will demonstrate, missing values (`NA`) behave yield a different result than text when undergoing string operations. 
 
 ```{r}
-library('tidyverse')
+library("tidyverse")
 
 census <- tibble(
   name = c("Mary Jenkins", "Samuel Price", "Hannah Lee", "Charles Morton", "Unnamed Child"),
@@ -859,7 +860,7 @@ census %>%
 If we wish for the `NA` values to be treated like strings--which could be the case if we are analyzing historical records where some individuals’ occupations are missing, and we want to treat "unknown" as a searchable category--we could replace them with the word "missing" or with an empty string (`""`). The following code provides an example for how this can be accomplished: 
 
 ```{r}
-library('tidyverse')
+library("tidyverse")
 
 # Replace NA in ""conservation" with the string "missing"
 census <- census %>%
@@ -893,88 +894,67 @@ for (item in continents_population) {
 
 Lists can contain varying types, which makes them well-suited for representing complex data. They can provide a more memory-efficient alternative to data frames, particularly in applications such as text mining large datasets. However, the flexibility of lists introduces additional complexity in terms of data types. If these complexities are not carefully managed, code may execute without error but yield unintended results due to discrepancies in type.
 
-
 ## Data Structure 
 
 A data structure is a way of organizing and storing data so it can be accessed and modified. If a data type defines what a given piece of data is, a data structure is a container — it organizes multiple values (often of different types) in a structured way. It defines how data is stored, related, and accessed.
 
-Throughout this book, we have consistently employed data frames, and more specifically tibbles, due to their easy integration with the tidyverse and their predictable behavior across a wide range of operations beyond the tidyverse. We have used intuitive naming conventions and pipeable workflows -- all of which are customary for the main software package we have used, the "tidyverse."
+Throughout this book, we have consistently employed data frames, and more specifically tibbles, due to their easy integration with the `tidyverse` and their predictable behavior across a wide range of operations beyond the `tidyverse`. We have used intuitive naming conventions and pipeable workflows -- all of which are customary for the main software package we have used, the `tidyverse`.
 
-The deliberate choice of using the tidyverse methods -- and more specifically the dityverse data structure of tibbles =-- for teaching minimizes the complications often introduced by less interoperable or idiosyncratic data structures. 
+The deliberate choice of using the `tidyverse` methods -- and more specifically the dityverse data structure of tibbles =-- for teaching minimizes the complications often introduced by less interoperable or idiosyncratic data structures. 
 
-But when an analyst begins text mining in earnest, they may soon venture into engaging other software packages in R that may be useful for text mining, but which use different data structures that can be confusing. As with data types, data structures determine the ways in which data can be accessed, transformed, and analyzed in R -- so non-tidy formats may appear confusing and difficult-to-access to the analyst familiar only with the tools from the tidyverse.  
+But when an analyst begins text mining in earnest, they may soon venture into engaging other software packages in R that may be useful for text mining, but which use different data structures that can be confusing. As with data types, data structures determine the ways in which data can be accessed, transformed, and analyzed in R -- so non-tidy formats may appear confusing and difficult-to-access to the analyst familiar only with the tools from the `tidyverse`.  
 
-For instance, the quanteda software package exports many outputs as S3 objects with custom print methods and slot-like components.  The tm and topicmodels package export their outputs as S4 objects, some of which require knowledge of package-specific functions to extract results.  
+For instance, the `quanteda` software package exports many outputs as S3 objects with custom print methods and slot-like components.  The tm and topicmodels package export their outputs as S4 objects, some of which require knowledge of package-specific functions to extract results.  
 
 Some common data structures in R that we have used for text mining are represented by the following table. 
 
 ```{r gt-text-table, echo=FALSE, message=FALSE, warning=FALSE}
 ### Code doesn't show; only table
-
-library('gt')
+library("gt")
 
 # Create a data frame with the structure
-text_structures <- tibble::tibble(
-  Structure = c(
-    "Matrix", "List", "Data Frame", "Tibble", "S3 Object", "S4 Object"
-  ),
-  Dimensions = c(
-    "2D", "1D", "2D", "2D", "Varies", "Varies"
-  ),
-  Homogeneous = c(
-    "Yes", "No", "No", "No", "No", "No"
-  ),
-  `Key Use for Text Mining` = c(
-    "Numeric structure for word embeddings or term-document counts",
-    "Flexible storage for mixed or uniform data—e.g., texts, dates, names",
-    "Standard tabular format for digitized records or structured text metadata",
-    "Tidyverse-friendly data frames optimized for large data and printing",
-    "Used in packages like `quanteda`, `stm` with custom print/access behavior",
-    "Formal, slot-based system used in `tm`, `topicmodels`, with accessor functions"
-  ),
-  Example = c(
-    "`matrix(rnorm(300), nrow = 100, ncol = 3)`",
-    "`list(1800, \"text\", \"author\")`",
-    "`data.frame(name = ..., date = ...)`",
-    "`tibble(year, text)`",
-    "`class(tokens_object) → \"tokens\"`",
-    "`class(corpus_object) → \"Corpus\", \"VCorpus\"`"
-  )
-)
+text_structures <- tibble(Structure = c("Matrix", "List", "Data Frame", "Tibble", "S3 Object", "S4 Object"),
+  Dimensions = c("2D", "1D", "2D", "2D", "Varies", "Varies"),
+  Homogeneous = c("Yes", "No", "No", "No", "No", "No"),
+  `Key Use for Text Mining` = c("Numeric structure for word embeddings or term-document counts",
+                                "Flexible storage for mixed or uniform data—e.g., texts, dates, names",
+                                "Standard tabular format for digitized records or structured text metadata",
+                                "Tidyverse-friendly data frames optimized for large data and printing",
+                                "Used in packages like `quanteda`, `stm` with custom print/access behavior",
+                                "Formal, slot-based system used in `tm`, `topicmodels`, with accessor functions"),
+  Example = c("`matrix(rnorm(300), nrow = 100, ncol = 3)`",
+              "`list(1800, \"text\", \"author\")`",
+              "`data.frame(name = ..., date = ...)`",
+              "`tibble(year, text)`",
+              "`class(tokens_object) → \"tokens\"`",
+              "`class(corpus_object) → \"Corpus\", \"VCorpus\"`"))
 
 # Generate the gt table
 text_structures %>%
   gt() %>%
-  tab_header(
-    title = "Common R Data Structures in Text Mining"
-  ) %>%
-  cols_label(
-    Structure = "Structure",
-    Dimensions = "Dimensions",
-    Homogeneous = "Homogeneous",
-    `Key Use for Text Mining` = "Key Use for Text Mining",
-    Example = "Example"
-  ) %>%
+  tab_header(title = "Common R Data Structures in Text Mining") %>%
+  cols_label(Structure = "Structure",
+             Dimensions = "Dimensions",
+             Homogeneous = "Homogeneous",
+             `Key Use for Text Mining` = "Key Use for Text Mining",
+             Example = "Example") %>%
   fmt_markdown(columns = everything())
 ```
  
 
 The solution to working with new data structures is to learn how to translate a new data structure into a format the analyst is familiar with.  
 
-So the goal is to:
+So the goal is to: extract what you need → eeshape it → coerce it into a tibble
 
-🔁 Extract what you need → 📐 Reshape it → 🧼 Coerce it into a tibble
+#### Working with the Output of Other R-Based Software: `Quanteda`
 
-
-#### Working with the Output of Other R-Based Software: Quanteda
-
-However, there are cases where a data frame may not be the most appropriate or efficient data structure. For example, when working with the `quanteda` package (such as when we performed Key Words in Context (KWIC), we rely on its custom-built data structure known as a quanteda "tokens object." The tokens object was specifically designed to optimize performance when handling large-scale text data within the quanteda ecosystem. In fact, it would be very difficult to perform some of the analyses we did without invoking the qunateda ecosystem given how effcient `quanteda` is at processing. 
+However, there are cases where a data frame may not be the most appropriate or efficient data structure. For example, when working with the `quanteda` package (such as when we performed Key Words in Context (KWIC), we rely on its custom-built data structure known as a `quanteda` "tokens object." The tokens object was specifically designed to optimize performance when handling large-scale text data within the `quanteda` ecosystem. In fact, it would be very difficult to perform some of the analyses we did without invoking the `quanteda` ecosystem given how efficient `quanteda` is at processing. 
 
 
 ```{r}
-library('quanteda')
-library('tidyverse')
-library('hansardr')
+library("quanteda")
+library("tidyverse")
+library("hansardr")
 
 data("hansard_1800")
 
@@ -993,61 +973,54 @@ Impressively, the results from running `KWIC()` on an entire decade of the Hansa
 gt(head(kwic_result))
 ```
 
-However, attempting to use a tidyverse function on the quanteda tokens object returns an error. 
-
+However, attempting to use a `tidyverse` function on the `quanteda` tokens object returns an error. 
 
 ```{r, error=TRUE}
 slice(tokens_hansard, 1:5)
 ```
 
-While quanteda's design improves efficiency, it also introduces certain limitations. In particular, a quanteda tokens object cannot be passed directly to most base R or tidyverse functions. Instead, handling a quanteda obejct largely restricts us to using quanteda functions--or other functions explicitly designed to interface with this structure--unless we first convert the corpus back into a data frame.
+While `quanteda`'s design improves efficiency, it also introduces certain limitations. In particular, a `quanteda` tokens object cannot be passed directly to most base R or `tidyverse` functions. Instead, handling a `quanteda` obejct largely restricts us to using `quanteda` functions--or other functions explicitly designed to interface with this structure--unless we first convert the corpus back into a data frame.
 
-To use tidyverse functions on the data we processed using `quanteda`, we must convert the data (in this case, the tokens object) to a tibble or data frame. 
+To use `tidyverse` functions on the data we processed using `quanteda`, we must convert the data (in this case, the tokens object) to a tibble or data frame. 
 
 ```{r}
-tokens_tibble <- tibble(
-  doc_id = rep(names(tokens_hansard), lengths(tokens_hansard)),
-  token = unlist(tokens_hansard, use.names = FALSE))
+tokens_tibble <- tibble(doc_id = rep(names(tokens_hansard), lengths(tokens_hansard)),
+                        token = unlist(tokens_hansard, use.names = FALSE))
 ```
 
-Now we can use tidyverse functions freely. 
+Now we can use `tidyverse` functions freely. 
 
 ```{r}
 slice(tokens_tibble, 1:5)
 ```
 
-#### Working With Packages Beyond Quanteda
+#### Working With Packages Beyond `Quanteda`
 
 Wrangling diverse data structures into the tidy format can be frustrating, but learning the proprietary functions for each individual software package can take a time. Each analyst will have to balance their own level of interest and comfort as they navigate between different formats of data. In general, however, the strategy for the analyst who has learned tidy methods of working with data remains the same: wrangle the data into the tidy format, then work with it according to methods you already understand. 
 
 Here is a guide for extracting data from the most common text-based software packages in R and their outputs.
 
 ```{r, echo = FALSE}
-library('gt')
-library('tibble')
-library('dplyr')
+library(dplyr)
+library(rlang)
+library(gt)
+library(tibble)
 
 md_col <- function(tbl, col) {
-  # Safely convert a single column's markdown to gt::md()
   col <- rlang::ensym(col)
-  tbl %>% 
-    mutate(!!col := gt::md(!!col))
+  tbl %>% mutate(!!col := gt::md(!!col))
 }
 
 # --- Quanteda ---
 quanteda_tbl <- tibble(
-  Task = c(
-    "Convert dfm to tibble",
-    "Get token list",
-    "Combine with metadata",
-    "Tidy version"
-  ),
-  `What to do` = c(
-    "`dfm %>% convert(to = \"data.frame\") %>% as_tibble()`",
-    "`tokens %>% as.list()`",
-    "`docvars(dfm)` gives doc-level covariates",
-    "`Use quanteda.textmodels::convert()` or `tidytext::tidy()` if applicable"
-  )
+  Task = c("Convert dfm to tibble",
+           "Get token list",
+           "Combine with metadata",
+           "Tidy version"),
+  `What to do` = c("`dfm %>% convert(to = \"data.frame\") %>% as_tibble()`",
+                   "`tokens %>% as.list()`",
+                   "`docvars(dfm)` gives doc-level covariates",
+                   "`Use quanteda.textmodels::convert()` or `tidytext::tidy()` if applicable")
 )
 
 quanteda_tbl %>%
@@ -1058,16 +1031,12 @@ quanteda_tbl %>%
 
 # --- tm ---
 tm_tbl <- tibble(
-  Task = c(
-    "Convert Corpus",
-    "DTM to tidy format",
-    "Combine with meta"
-  ),
-  `What to do` = c(
-    "`sapply(corpus, as.character)` or `content(corpus)`",
-    "`tidy(DTM)` from `tidytext`",
-    "`meta(corpus)` or `tm_map()`"
-  )
+  Task = c("Convert Corpus",
+           "DTM to tidy format",
+           "Combine with meta"),
+  `What to do` = c("`sapply(corpus, as.character)` or `content(corpus)`",
+                   "`tidy(DTM)` from `tidytext`",
+                   "`meta(corpus)` or `tm_map()`")
 )
 
 tm_tbl %>%
@@ -1078,16 +1047,12 @@ tm_tbl %>%
 
 # --- text2vec ---
 text2vec_tbl <- tibble(
-  Task = c(
-    "Convert DTM",
-    "Vocabulary to tibble",
-    "Embeddings to tibble"
-  ),
-  `What to do` = c(
-    "`as.matrix(dtm) %>% as_tibble()` or `Matrix::summary(dtm)`",
-    "`vocab$term_stats %>% as_tibble()`",
-    "`as_tibble(embeddings)`"
-  )
+  Task = c("Convert DTM",
+           "Vocabulary to tibble",
+           "Embeddings to tibble"),
+  `What to do` = c("`as.matrix(dtm) %>% as_tibble()` or `Matrix::summary(dtm)`",
+                   "`vocab$term_stats %>% as_tibble()`",
+                   "`as_tibble(embeddings)`")
 )
 
 text2vec_tbl %>%
@@ -1098,16 +1063,12 @@ text2vec_tbl %>%
 
 # --- topicmodels / stm ---
 stm_tbl <- tibble(
-  Task = c(
-    "Tidy topics + terms",
-    "Tidy docs + topics",
-    "STM effects"
-  ),
-  `What to do` = c(
-    "`tidy(model, matrix = \"beta\")` (from `broom`)",
-    "`tidy(model, matrix = \"gamma\")`",
-    "`Use estimateEffect()` then extract manually"
-  )
+  Task = c("Tidy topics + terms",
+           "Tidy docs + topics",
+           "STM effects"),
+  `What to do` = c("`tidy(model, matrix = \"beta\")` (from `broom`)",
+                   "`tidy(model, matrix = \"gamma\")`",
+                   "`Use estimateEffect()` then extract manually")
 )
 
 stm_tbl %>%
@@ -1118,16 +1079,12 @@ stm_tbl %>%
 
 # --- Sparse matrices ---
 sparse_tbl <- tibble(
-  Task = c(
-    "Convert to dense",
-    "Extract non-zeros",
-    "Tidy-friendly format"
-  ),
-  `What to do` = c(
-    "`as.matrix(sparse_mat)`",
-    "`Matrix::summary(sparse_mat)`",
-    "`Use reshape2::melt()` or `pivot_longer()`"
-  )
+  Task = c("Convert to dense",
+           "Extract non-zeros",
+           "Tidy-friendly format"),
+  `What to do` = c("`as.matrix(sparse_mat)`",
+                   "`Matrix::summary(sparse_mat)`",
+                   "`Use reshape2::melt()` or `pivot_longer()`")
 )
 
 sparse_tbl %>%
@@ -1136,34 +1093,38 @@ sparse_tbl %>%
   tab_header(title = "Sparse matrices (e.g., dgCMatrix)") %>%
   cols_label(`What to do` = "What to do")
 
-# --- Tidyverse Tools ---
+# --- Helpful Tidyverse-Compatible Tools (with tibble) ---
+# Clear any prior object to avoid recycling issues
+rm(list = c("tidyverse_tools_tbl"), envir = .GlobalEnv)
+
+tools <- c("tidytext",
+           "textrecipes",
+           "tidylo",
+           "textdata",
+           "unnest_tokens()",
+           "broom / broom.mixed")
+
+use <- c("Makes many text objects tidy (DTMs, LDA, etc.)",
+         "Tidy preprocessing (e.g., tokenization, tf-idf)",
+         "Additional tidy tools for text and lexicons",
+         "Provides external lexicons and datasets",
+         "Tokenization (splitting text into units, e.g., words or n-grams)",
+         "Tidy output from models (including `topicmodels`)")
+
+# Safety check so knit fails early if a copy/paste ever drops an item
+stopifnot(length(tools) == length(use))
+
 tidyverse_tools_tbl <- tibble(
-  `Tool/Package` = c(
-    "tidytext",
-    "textrecipes",
-    "tidylo, textdata",
-    "unnest_tokens()",
-    "broom / broom.mixed"
-  ),
-  Use = c(
-    "Makes many text objects tidy (DTMs, LDA, etc.)",
-    "Tidy preprocessing (e.g., tokenization, tf-idf)",
-    "Additional tidy tools for text and lexicons",
-    "From `tidytext`, best for converting raw text to tokens",
-    "Tidy output from models (including `topicmodels`)"
-  )
+  `Tool/Package` = tools,
+  Use = use
 )
 
 tidyverse_tools_tbl %>%
   md_col(Use) %>%
   gt() %>%
   tab_header(title = "Helpful Tidyverse-Compatible Tools")
-
 ```
-
 
 # Conclusion
 
 No single book can prepare the analyst for all possible variations of data they may encounter, but the major kinds of data used as of the writing of this book are encompassed by the the methods we have set out here -- using API calls and RSS feeds, bulk downloads, and pdf's; cleaning data, and paying attention to data type and structure. With practice, a data analyst may soon acquire the fluency with these methods needed to wrangle data from across the web and to engage with multiple software packages, each of which have their strengths and weaknesses.
-
-

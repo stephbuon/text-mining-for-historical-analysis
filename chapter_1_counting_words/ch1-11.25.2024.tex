@@ -107,6 +107,7 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \usepackage{fontspec}
 \setmainfont{DejaVu Serif}
+\usepackage[most]{tcolorbox}
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
@@ -277,6 +278,11 @@ in the chapter:
 ## (as 'lib' is unspecified)
 \end{verbatim}
 
+\begin{verbatim}
+## Warning in install.packages("tidyverse"): installation of package 'tidyverse'
+## had non-zero exit status
+\end{verbatim}
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{install.packages}\NormalTok{(}\StringTok{"tidytext"}\NormalTok{)}
@@ -328,7 +334,7 @@ will the data be available for our use.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# load the hansardr package}
-\FunctionTok{library}\NormalTok{(hansardr)}
+\FunctionTok{library}\NormalTok{(}\StringTok{"hansardr"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -341,13 +347,14 @@ packages.
 
 When working with functions in R, it is important to remember that code
 must be run in order, because each step often depends on what came
-before it. For example, if we plan to use a package such as hansardr, we
-must first load it with \texttt{library(hansardr)} before calling any of
-its functions. If we skip this step, R will not know where the hansardr
-functions come from and will return an error such as ``could not find
-function,'' even if the code is correct. Similar errors can also occur
-when data is not processed in the proper sequence, since later steps may
-rely on datasets or data transformations that have not yet been created.
+before it. For example, if we plan to use a package such as
+\texttt{hansardr}, we must first load it with \texttt{library(hansardr)}
+before calling any of its functions. If we skip this step, R will not
+know where the \texttt{hansardr} functions come from and will return an
+error such as ``could not find function,'' even if the code is correct.
+Similar errors can also occur when data is not processed in the proper
+sequence, since later steps may rely on datasets or data transformations
+that have not yet been created.
 
 \subsubsection{\texorpdfstring{Navigating the \texttt{hansardr}
 Data}{Navigating the hansardr Data}}\label{navigating-the-hansardr-data}
@@ -509,9 +516,10 @@ a software package called \texttt{tidyverse} (2019) which is a family of
 smaller packages developed by Chief Scientist at Posit (formerly known
 as RStudio), Hadley Wickham.
 
-The tidyverse was created to order data in ``tidy'' tables where it is
-structured as a data frame made up of columns and rows. In other words,
-the tidyverse is built to work with data like \texttt{hansard\_1850}.
+The \texttt{tidyverse} was created to order data in ``tidy'' tables
+where it is structured as a data frame made up of columns and rows. In
+other words, the \texttt{tidyverse} is built to work with data like
+\texttt{hansard\_1850}.
 
 We have found that a tidy approach to text exploration and analysis
 allows us to write code quickly and effectively, giving us ample control
@@ -542,8 +550,8 @@ book will therefore begin by loading the two libraries
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# load the tidyverse and tidytext packages}
-\FunctionTok{library}\NormalTok{(tidyverse)}
-\FunctionTok{library}\NormalTok{(tidytext)}
+\FunctionTok{library}\NormalTok{(}\StringTok{"tidyverse"}\NormalTok{)}
+\FunctionTok{library}\NormalTok{(}\StringTok{"tidytext"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1484,7 +1492,7 @@ with uppercase or lowercase instances of our keyword.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# load the quanteda package}
-\FunctionTok{library}\NormalTok{(quanteda)}
+\FunctionTok{library}\NormalTok{(}\StringTok{"quanteda"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 

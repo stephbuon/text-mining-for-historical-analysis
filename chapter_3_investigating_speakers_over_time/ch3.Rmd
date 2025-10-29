@@ -59,13 +59,12 @@ The curators of the dataset -- a team of historians and datascientists run by th
 In the following code, we will make our data set smaller and easier to work with by just selecting the "speaker," "suggested_speaker," and "text" fields before tokenizing the data into individual words. 
 
 ```{r, warning=FALSE, message=FALSE}
-library('tidytext')
-library('tidyverse')
-library('lubridate')
+library("tidytext")
+library("tidyverse")
+library("lubridate")
 
 data("hansard_1830")
 data("speaker_metadata_1830")
-
 
 words_1830 <- hansard_1830 %>% 
   left_join(speaker_metadata_1830) %>%
@@ -141,13 +140,13 @@ Before we proceed, we should try to refine our research question to provide maxi
 
 We would expect most of the Chancellor of the Exchequer's speeches in parliament to reflect a predominant concern with taxation and spending.  However, it is also possible that different individuals who held this post prioritized different issues.  How different were they, the Chancellors of the Exchequer for 1830-39? 
 
-To analyze the different speakers, the code that follows will use `group_by()` to `group` the speeches made by Chancellors of the Exchequer by suggested_speaker -- the actual individuals behind the office.  Then, we can inspect the number of words used by each individual Chancellor, comparing their favorite words. 
+To analyze the different speakers, the code that follows will use `group_by()` to group the speeches made by Chancellors of the Exchequer by suggested_speaker -- the actual individuals behind the office.  Then, we can inspect the number of words used by each individual Chancellor, comparing their favorite words. 
 
 ## A Custom Stop Words List
 
-Before we proceed, a first step is to 'clean' our data. In previous chapters we used an existing stop words list from TidyText. The `hansardr` library also provides its own stop words list. 
+Before we proceed, a first step is to "clean" our data. In previous chapters we used an existing stop words list from `tidytext`. The `hansardr` library also provides its own stop words list. 
 
-It may be the case, however, that an analyst wants to curate their own stop words list that caters to their specific data set or research question. In the following code we create a custom stop words list by assigning a list of words to a tibble (a tidyverse-style data frame). In this case, suppose we want to restrict all words referring to parliament, ideas, or procedures; we only want to look at words that are more or less substantive about the subjects being discussed in parliament.  
+It may be the case, however, that an analyst wants to curate their own stop words list that caters to their specific data set or research question. In the following code we create a custom stop words list by assigning a list of words to a tibble (a `tidyverse`-style data frame). In this case, suppose we want to restrict all words referring to parliament, ideas, or procedures; we only want to look at words that are more or less substantive about the subjects being discussed in parliament.  
 
 An appropriate stopwords list might look like this:
 
@@ -186,7 +185,7 @@ chancellor_of_the_exchequeur %>%
   head()
 ```
 
-Note that in the table above, the 'word' is annotated with information about the speaker. This is to prevent confusion about what is being counted; we're not just counting how many times a word appears, but how many times each speaker said it.
+Note that in the table above, the "word" is annotated with information about the speaker. This is to prevent confusion about what is being counted; we're not just counting how many times a word appears, but how many times each speaker said it.
 
 Next, let's visualize the data so that we can see how many words are spoken. 
 
@@ -208,7 +207,7 @@ The results show that the individuals who occupied the post of Chancellor of the
 
 Goulburn is interested in talking about commodities such as beer, tobacco, and malt; Peel is interested in addressing questions about how taxes relate to the church and its tithes, as well as political issues about how dissenters, Protestants and Catholics. Peel also thinks about commodities, but his commodities are different than Goulburn's; they include malt, land, and barley. Rice takes the issues in a different direction, reflecting on Dublin, India, banks, newspapers, and pensions.  He shares with Peel a concern about property or land taxes.    
 
-Interpretation always represents an intellectual challenge. A list of most frequent words is not necessarily an index of importance: the most frequently-mentioned terms are typically the terms most subject to debate. Robert Peel, for instance, does not name Ireland's church tithes because he was interested in protecting the church in Ireland; to the contrary, he wished to abolish the system of tithes.  Nor does the word list give us material for interpreting the rest of Peel's politics; the word list does nothing to tell the uninformed analyst about the movement for the abolition of taxes on grain, which forms a background to interpreting Peel's mentions of barley.  The word list tells us little about the presence in 1830s Ireland of two churches, Roman Catholic and the Church of England. Without further reading, we might never known that Goulburn was famous for arguing for reductions on taxation (although with this knowledge, we might become interested in the word 'lower').  The analyst who comes to this data without a background in British history would do well to read in secondary sources before attempting to interpret the graph.  
+Interpretation always represents an intellectual challenge. A list of most frequent words is not necessarily an index of importance: the most frequently-mentioned terms are typically the terms most subject to debate. Robert Peel, for instance, does not name Ireland's church tithes because he was interested in protecting the church in Ireland; to the contrary, he wished to abolish the system of tithes.  Nor does the word list give us material for interpreting the rest of Peel's politics; the word list does nothing to tell the uninformed analyst about the movement for the abolition of taxes on grain, which forms a background to interpreting Peel's mentions of barley.  The word list tells us little about the presence in 1830s Ireland of two churches, Roman Catholic and the Church of England. Without further reading, we might never known that Goulburn was famous for arguing for reductions on taxation (although with this knowledge, we might become interested in the word "lower").  The analyst who comes to this data without a background in British history would do well to read in secondary sources before attempting to interpret the graph.  
 
 After some basic background research, however, the word lists can help produce insight, cluing the reader into differences such as Goulburn's relative willingness to talk about "distress," Peel's interest in "education," or Rice's interest in the post office.  With word lists of this sort, we retrieve important clues about the salient differences contributed to political debates by individual ministers.  A researcher interested in the careers of Chancellors of the Exchequer might start here before reading more deeply.
 
@@ -225,13 +224,11 @@ In any research process, it is important to reflect on how the choices we have m
 
 One complication of stopwords lists is that to produce functional results, a custom stop words list must often be long; the hundreds of performative, rhetorical, and governmental words listed below is not a perfect list, and it would not work for every exercise. In later chapters, we will investigate approaches such as differential measurement which allow the reader to skip over custom stop words lists to obtain information about what distinguishes one speaker from another or one year from the next.  No process is perfect, however, and analysts must often resort to some kind of custom filter to get closer to information that is useful for their project.  There is no silver bullet for creating an absolutely accurate tool where text-mining research always produces useful information; rather, iterative inquiry, paired with background reading and in-depth reading of primary sources, is the basis upon which all insight is ultimately made.  
 
-
 ## Working With Dates
 
 Knowing who spoke the most in parliament is useful.  But very often insight comes not from examining how counts change over time.  What if we want to know not merely who spoke the most, but who was the top speaker for each year in parliament?  Our `hansard_1830` data frame lists a date in the "speechdate" column, formatted as a four-digit year, two-digit month, and two digit day. To easily track speeches by year, we can add a new "field" -- that is, a column -- listing just the year of each speech.
 
-
-Very frequently, when working with information about dates, we need to extract the month, day, or year from a data set. The lubridate package makes it easy to extract this information from dates in any format. 
+Very frequently, when working with information about dates, we need to extract the month, day, or year from a data set. The `lubridate` package makes it easy to extract this information from dates in any format. 
 
 ```{r, message = F}
 date1 <- mdy("6/24/1819")
@@ -239,13 +236,12 @@ date1
 
 year1 <- year(date1)
 year1
-
 ```
 
-We will use the `year()` function from lubridate with `mutate()` to create a new column that has just the extracted year from the `speechdate` field. 
+We will use the `year()` function from `lubridate` with `mutate()` to create a new column that has just the extracted year from the `speechdate` field. 
 
 ```{r, message = F}
-library('kableExtra')
+library("kableExtra")
 
 data("debate_metadata_1830")
 
@@ -292,7 +288,6 @@ Notice that the result of grouping and counting is a data set with three columns
 
 When we use the `group_by()` command, the fields we use for grouping are preserved in the output.  Two columns are the names of the facets we used for grouping -- "speaker" and "year" -- while the last column, "words_spoken," is the count of how many words are recorded for each speaker per year.  
 
-
 ### Women in 19th-century Parliament 
 
 For the most part, an analysis of speakers in Parliament will take the researcher down the road of the many elite white men who assumed powerful positions or passed honorary titles to their sons. Only 12 named women spoke in Parliament throughout the 19th-century. One woman who spoke the most was Mrs. Walrand from the 1824 debate, "Motion Respecting the Trial and Condemnation of Missionary Smith at Demerara." Exploring her role in this debate can give us insight and speculation into the criteria that had to be set in place for a woman to appear as a speaker and instrument to the power of Parliament. 
@@ -307,13 +302,14 @@ data("speaker_metadata_1820")
 data("file_metadata_1820")
 
 mrs_walrand_speaker_metadata <- speaker_metadata_1820 %>%
-  filter(str_detect(speaker, regex('Mrs(.*)Walrand', ignore_case = T)))
+  filter(str_detect(speaker, regex("Mrs(.*)Walrand", ignore_case = T)))
 
 mrs_walrand_sentences <- left_join(mrs_walrand_speaker_metadata, file_metadata_1820, by = "sentence_id") %>%
   left_join(., hansard_1820, by = "sentence_id") %>%
   select(debate_id, text)
 
-head(mrs_walrand_sentences) %>% kable()
+head(mrs_walrand_sentences) %>% 
+  kable()
 ```
 
 ```{r}
@@ -352,7 +348,7 @@ ggplot(data = mrs_walrand_top_words,
 We can further explore how the role of women manifested in Parliament. First, count the total number of words women spoke in Parliament. To do this, refer to the table below, which visualizes the women in Parliament and the year in which they spoke. Can you find a pattern across the kinds of topics women are brought to Parliament to speak on? 
 
 ```{r, echo = F, message = F}
-library('kableExtra')
+library("kableExtra")
 
 name <- c("Mrs. (Mary Ann) Clark", 
                   "Mrs. Bridgeman", 
