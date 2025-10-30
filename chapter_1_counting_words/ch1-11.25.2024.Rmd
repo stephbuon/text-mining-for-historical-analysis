@@ -89,9 +89,9 @@ To make working with the Hansard corpus quicker and easier--and to prevent our p
 
 The first subset we will meet is a collection of the speeches of parliament, 1850-59, broken into sentences, where each row of the data frame is one sentence. Later, we will meet more datasets that contain "metadata," or information about the speaker, year and date of the speech, and other important contextual information for historical analysis.
 
-The `hansardr` corpus is subsetted by decade. As shown by Table 1, each decade has four types of data, labeled: "hansard," "debate_metadata," "speaker_metadata," and "file_metadata." In the following table, "YYYY" stands in for any given decade.
+The `hansardr` corpus is subsetted by decade. As shown by Table 1, each decade has four types of data, labeled: `hansard`, `debate_metadata`, `speaker_metadata`, and `file_metadata`. In the following table, "YYYY" stands in for any given decade.
 
-```{r hansard_table, echo=FALSE}
+```{r hansard_table, echo=FALSE, message=FALSE, warning=FALSE}
 # code does not show, just the table 
 library("knitr")
 library("kableExtra")
