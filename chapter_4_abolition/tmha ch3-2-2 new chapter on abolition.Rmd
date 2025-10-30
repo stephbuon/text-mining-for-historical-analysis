@@ -70,16 +70,11 @@ If you are new to code, take a moment to notice how changing only one line in th
 
 ```{r, message = F}
 # load packages
-# load tidyverse for data wrangling (dplyr/stringr) + plotting (ggplot2)
-library(tidyverse)
-# load tidytext to tokenize and work with text data
-library(tidytext)
-# load lubridate to handle and extract components from dates (e.g., year())
-library(lubridate)
-# load hansardr to access and load Hansard parliamentary text and metadata
-library(hansardr)
-# load ggrepel to prevent overlapping text labels in ggplot
-library(ggrepel)
+library("tidyverse")
+library("tidytext")
+library("lubridate")
+library("hansardr")
+library("ggrepel")
 
 # load data
 # load data
@@ -89,10 +84,12 @@ data("debate_metadata_1830")
 # merge the Hansard speech text with metadata (e.g., debate title and speech date)
 # create a new column 'year' by extracting the year from the full speech date
 # find just the debates about slavery and who spoke them 
-slavery_debates_1830 <- hansard_1830 %>%  # Create a new dataset called 'debates_1830'
+slavery_1830 <- hansard_1830 %>%  # Create a new dataset called 'debates_1830'
   left_join(debate_metadata_1830, by = "sentence_id") %>%  # Join it with the debate metadata 
   filter(str_detect(tolower(debate), "slavery")) %>% # filter title for 'slavery' 
-  mutate(year = year(speechdate)) %>% # Extract and add the year from the 'speechdate' column
+  mutate(year = year(speechdate)) # Extract and add the year from the 'speechdate' column
+
+slavery_debates_1830 <- slavery_1830 %>%
   left_join(speaker_metadata_1830) %>% # join datasets 
   select(sentence_id, speaker, suggested_speaker, text, year) %>% # retain only relevant columns 
   filter(suggested_speaker != "") # remove any lines with missing speaker information
@@ -110,7 +107,7 @@ words_per_speaker_slavery_1830 <- slavery_words_1830 %>% # create a new dataset
 # find the top speakers 
 top_slavery_speakers <- words_per_speaker_slavery_1830 %>% # create a new dataset
   ungroup() %>% # remove the previous data grouping 
-   arrange(desc(words_per_speaker)) %>% # arrange in descending order 
+  arrange(desc(words_per_speaker)) %>% # arrange in descending order 
   slice(1:20) # take only the top n speakers
 
 # calculates the number of words each speaker said per year in the 1830 slavery dataset
@@ -120,7 +117,6 @@ words_per_speaker_per_year_slavery_1830 <- slavery_words_1830 %>% # create a new
   group_by(speaker, year) %>% # group by speaker and year
   summarize(words_pspy = n()) %>% # count words and store in new column
   arrange(desc(words_pspy)) # sort in descending order of word count
-
 
 # create a summary of the number of words each speaker contributed per year 
 # in the slavery debates of 1830
@@ -730,8 +726,8 @@ Most of the speakers didn't use the word "assembly" or used it rarely. But for P
 ```{r, message = F}
 peel_sentences <- slavery_1830 %>% # start with the text of speeches 
   left_join(speaker_metadata_1830) %>%  # merge with speaker information
-  filter(speaker == "Sir Robert Peel") %>% # keep just the sentences by Peel
-  filter(str_detect(text, "Assembl|assembl")) # searching for both capitalized, uncapitalized, singular and plural
+  filter(speaker == "Sir Robert Peel",  # keep just the sentences by Peel
+         str_detect(text, "Assembl|assembl")) # searching for both capitalized, uncapitalized, singular and plural
 ```
 
 ```{r}
@@ -742,28 +738,43 @@ Here again we must read the sentences in their original speeches to make sense o
 
 ```{r, message = F}
 # moving from a list of sentences to the full speeches for context
-peel_speech_ids <- peel_sentences %>% 
-  select(sentence_id) %>%
-  left_join(file_metadata_1830) %>% # merge with metadata for the 1830s
-  select(speech_id)
+library("dplyr")
+library("kableExtra")
 
-peel_speeches <- peel_speech_ids %>%
-  left_join(file_metadata_1830) %>%
-  select(sentence_id, speech_id) %>%
-  left_join(hansard_1830) %>% # merge those columns with the text of the speeches 
-  left_join(speaker_metadata_1830) %>%
-  select(speaker, text, speech_id, speechdate) %>% # choose just the columns with speech, text, and speech_id numbers
-  group_by(speech_id, speaker, speechdate) %>% # within each speech, paste together each sentence, back to back, with a space in between. Retain the name of the speaker
-    reframe(speech = paste0(text, collapse = " ")) %>% #paste0(text, " ", text), speaker) %>%
-    ungroup() %>%
+# Trim each source to just the fields you need
+peel_base <- peel_sentences %>%
+  select(sentence_id)
+
+hansard_trim <- hansard_1830 %>%
+  select(sentence_id, text)
+
+debate_meta_trim <- debate_metadata_1830 %>%
+  select(sentence_id, speechdate)
+
+speaker_meta_trim <- speaker_metadata_1830 %>%
+  select(sentence_id, speaker)
+
+file_meta_trim <- file_metadata_1830 %>%
+  select(sentence_id, speech_id)
+```
+
+```{r}
+peel_speeches <- peel_base %>%
+  left_join(hansard_trim,  by = "sentence_id") %>%
+  left_join(speaker_meta_trim,  by = "sentence_id") %>%
+  left_join(file_meta_trim, by = "sentence_id") %>% 
+  left_join(debate_meta_trim, by = "sentence_id") %>%
+  group_by(speech_id, speaker, speechdate) %>%
+  summarise(speech = paste(text, collapse = " "), .groups = "drop") %>%
   mutate(speech = paste0(speechdate, ": ", toupper(speaker), " ", speech)) %>%
-  select(speech) # retain just the column with the speaker's name and full speech of each text
+  select(speech)
 
-# some fancy code to turn it into a table
-kable(peel_speeches, format = "html", col.names = "", caption = "Three Speeches by Buckingham about Slavery That Invoke the Word 'Wages'") %>% 
-    kable_styling(bootstrap_options = c("striped", "hover"))
-
-head(buckingham_sentences)
+kable(peel_speeches,
+      format = "latex",
+      booktabs = TRUE,
+      col.names = "",
+      caption = "Three Speeches by Buckingham about Slavery That Invoke the Word 'Wages'") %>%
+  kable_styling(latex_options = c("striped", "hold_position"))
 ```
 
 In the three speeches above, we find Peel invoking the colonial assemblies of the West Indies in order to defend the principle of independent democracies being entitled to make their own laws, unhindered by empire -- even when the laws contained principles so odious as that of the enslavement of human beings. 
@@ -846,8 +857,6 @@ top_freedom_collocates_after_1833
 Let's use tf-idf to find the words that are most distinctive of each period -- before and after 1833 -- in the debates about slavery.
 
 ```{r}
-
-
 freedom_collocates_before_1833 <- slavery_debates_before_1833 %>%
   mutate(when = "1830-32") %>%
   filter(str_detect(tolower(text), "free")) %>%
@@ -857,7 +866,6 @@ freedom_collocates_before_1833 <- slavery_debates_before_1833 %>%
  group_by(when, word) %>%
   reframe(n = n()) %>%
   arrange(desc(n)) 
-
 
 freedom_collocates_after_1833 <- slavery_debates_after_1833 %>%
   mutate(when = "1834-36") %>%
@@ -896,12 +904,19 @@ kable(tf_idf_freedom_collocates_after, caption = "1834-36")
 
 Let's look to see if freedom's meaning changed across everything.
 
+
+
+
 ```{r}
 hansard_before_1833 <- hansard_1830 %>% 
+  left_join(debate_metadata_1830, by = "sentence_id") %>%
+  mutate(year = year(speechdate)) %>%
   filter(year < 1833) %>%
   bind_rows(hansard_1820)
 
 hansard_after_1833 <- hansard_1830 %>%
+  left_join(debate_metadata_1830, by = "sentence_id") %>%
+  mutate(year = year(speechdate)) %>%
   filter(year > 1833)
 
 freedom_collocates_before_1833 <- hansard_before_1833 %>%

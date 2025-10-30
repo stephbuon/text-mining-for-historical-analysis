@@ -270,40 +270,10 @@ in the chapter:
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{install.packages}\NormalTok{(}\StringTok{"tidyverse"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Installing package into '/home/stephbuongiorno/R/x86_64-pc-linux-gnu-library/4.5'
-## (as 'lib' is unspecified)
-\end{verbatim}
-
-\begin{verbatim}
-## Warning in install.packages("tidyverse"): installation of package 'tidyverse'
-## had non-zero exit status
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \FunctionTok{install.packages}\NormalTok{(}\StringTok{"tidytext"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Installing package into '/home/stephbuongiorno/R/x86_64-pc-linux-gnu-library/4.5'
-## (as 'lib' is unspecified)
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \FunctionTok{install.packages}\NormalTok{(}\StringTok{"quanteda"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## Installing package into '/home/stephbuongiorno/R/x86_64-pc-linux-gnu-library/4.5'
-## (as 'lib' is unspecified)
-\end{verbatim}
 
 In RStudio, you can also verify whether a package is already installed
 by checking the Packages tab in the lower-right panel. This tab displays
@@ -490,6 +460,27 @@ detect punctuation and line breaks.
 
 Below is an excerpt from \texttt{hansardr}:
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(}\StringTok{"knitr"}\NormalTok{)}
+\FunctionTok{library}\NormalTok{(}\StringTok{"kableExtra"}\NormalTok{)}
+
+\NormalTok{df\_head }\OtherTok{\textless{}{-}}\NormalTok{ hansard\_1850 }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{slice\_head}\NormalTok{(}\AttributeTok{n =} \DecValTok{5}\NormalTok{)}
+
+\FunctionTok{kable}\NormalTok{(df\_head, }
+      \AttributeTok{format =} \StringTok{"latex"}\NormalTok{, }
+      \AttributeTok{booktabs =} \ConstantTok{TRUE}\NormalTok{, }
+      \AttributeTok{linesep =} \StringTok{""}\NormalTok{,}
+      \AttributeTok{caption =} \StringTok{"Excerpt from Hansard 1850"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{latex\_options =} \FunctionTok{c}\NormalTok{(}\StringTok{"scale\_down"}\NormalTok{, }\StringTok{"striped"}\NormalTok{, }\StringTok{"repeat\_header"}\NormalTok{),}
+                \AttributeTok{table.envir =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{column\_spec}\NormalTok{(}\FunctionTok{which}\NormalTok{(}\FunctionTok{colnames}\NormalTok{(df\_head) }\SpecialCharTok{==} \StringTok{"text"}\NormalTok{), }
+              \AttributeTok{latex\_column\_spec =} \StringTok{"p\{12cm\}"}\NormalTok{, }
+              \AttributeTok{latex\_valign =} \StringTok{"top"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
 \begin{table}
 \centering
 \caption{\label{tab:unnamed-chunk-6}Excerpt from Hansard 1850}
@@ -507,6 +498,13 @@ S3V0108P0\_3 & At pre-sent there were two vacancies in the representative Peers 
 \bottomrule
 \end{tabular}}
 \end{table}
+
+To display the data in a more visually appealing format, we can use the
+\texttt{knitr} package, which provides the \texttt{kable()} function for
+creating clean, basic tables from R objects. We then enhance these
+tables with the \texttt{kableExtra} package, which adds styling
+options---such as custom column widths, captions, alignment, and
+shading---allowing us to produce polished, publication-quality tables.
 
 \subsection{Tidy Text Mining and Loading
 Libraries}\label{tidy-text-mining-and-loading-libraries}
@@ -647,7 +645,7 @@ frequency or occurrence.
 \CommentTok{\# {-} \textquotesingle{}unnest\_tokens()\textquotesingle{} from the \textquotesingle{}tidytext\textquotesingle{} package splits text into lowercase words}
 \CommentTok{\# {-} the new column will be called \textquotesingle{}word\textquotesingle{}}
 \CommentTok{\# {-} each word becomes its own row }
-\NormalTok{tokenized\_hansard }\OtherTok{\textless{}{-}}\NormalTok{ hansard\_1850 }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\# create a new dataframe}
+\NormalTok{tokenized\_hansard }\OtherTok{\textless{}{-}}\NormalTok{ hansard\_1850 }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\# create a new data frame}
   \FunctionTok{unnest\_tokens}\NormalTok{(word, text) }\CommentTok{\# tokenize the \textquotesingle{}text\textquotesingle{} column }
 \end{Highlighting}
 \end{Shaded}
@@ -927,9 +925,8 @@ analyze.
 \begin{Highlighting}[]
 \CommentTok{\# create a list of words commonly used to identify or refer to women}
 \CommentTok{\# the purpose is to help filter or analyze texts for references to women}
-\NormalTok{identifiers\_for\_woman }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\StringTok{"girl"}\NormalTok{, }\StringTok{"woman"}\NormalTok{, }\StringTok{"girls"}\NormalTok{, }\StringTok{"women"}\NormalTok{, }\StringTok{"wife"}\NormalTok{, }\StringTok{"wives"}\NormalTok{, }\StringTok{"widow"}\NormalTok{,}
-                      \StringTok{"widows"}\NormalTok{, }\StringTok{"sister"}\NormalTok{, }\StringTok{"sisters"}\NormalTok{, }\StringTok{"female"}\NormalTok{, }\StringTok{"females"}\NormalTok{, }\StringTok{"grandmother"}\NormalTok{, }
-                      \StringTok{"grandmothers"}\NormalTok{, }\StringTok{"aunt"}\NormalTok{, }\StringTok{"aunts"}\NormalTok{)}
+\NormalTok{identifiers\_for\_woman }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"girl"}\NormalTok{, }\StringTok{"woman"}\NormalTok{, }\StringTok{"girls"}\NormalTok{, }\StringTok{"women"}\NormalTok{, }\StringTok{"wife"}\NormalTok{, }\StringTok{"wives"}\NormalTok{, }\StringTok{"widow"}\NormalTok{, }\StringTok{"widows"}\NormalTok{, }\StringTok{"sister"}\NormalTok{, }
+                          \StringTok{"sisters"}\NormalTok{, }\StringTok{"female"}\NormalTok{, }\StringTok{"females"}\NormalTok{, }\StringTok{"grandmother"}\NormalTok{,}\StringTok{"grandmothers"}\NormalTok{, }\StringTok{"aunt"}\NormalTok{, }\StringTok{"aunts"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 

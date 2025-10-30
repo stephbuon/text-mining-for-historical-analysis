@@ -1,14 +1,11 @@
 ---
-title: "ch6"
+title: "Word Embeddings of Congress"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
-### Word Embeddings of Congress
-
 
 So I write about the congress word embeddings in DAOTM - we have papers headed towards the JDH and AHR with this method. It is an important part of Democracy Viewer and the suite of tools that we recommend to scholars of history. So something would be amiss if it was left out. 
 

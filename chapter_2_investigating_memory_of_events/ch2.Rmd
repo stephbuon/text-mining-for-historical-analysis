@@ -184,7 +184,7 @@ While there are several approaches to finding multiword phrases, we will demonst
 
 The following code filters the speeches of the 1860s for the first months of 1867 before the vote on the Second Reform Act, which gave Britain's urban working-class men the right to vote. We also introduce a new package, `lubridate`, which can be installed in the usual way using `install.packages()`.
 
-```{r}
+```{r, eval=FALSE}
 # Install lubridate
 install.packages("lubridate")
 ```
@@ -467,7 +467,7 @@ top_events_1867_w_speech_metadata <- top_events_1867 %>%
 head(top_events_1867_w_speech_metadata)
 ```
 
-```{r}
+```{r, eval=FALSE}
 install.packages("viridis")
 ```
 
