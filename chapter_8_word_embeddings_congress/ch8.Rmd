@@ -89,12 +89,10 @@ cos_sim <- sim2(word_embeddings, kw_vec, method = "cosine", norm = "l2")[,1]
 
 tibble(
   word = names(cos_sim),
-  similarity = cos_sim
-) %>%
+  similarity = cos_sim) %>%
   filter(word != keyword) %>%
   arrange(desc(similarity)) %>%
   slice_head(n = 10)
-
 ```
 
 

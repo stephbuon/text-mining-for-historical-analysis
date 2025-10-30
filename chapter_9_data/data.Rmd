@@ -277,9 +277,7 @@ We can now use `usdoj` functions to collect data from the U.S. Department of Jus
 
 ```{r, warning=FALSE}
 blog_entries <- doj_blog_entries(n_results = 10, search_direction = "DESC")
-```
 
-```{r}
 head(blog_entries$teaser, 5)
 ```
 
@@ -335,7 +333,7 @@ RSS feeds are a simpler alternative to APIs for data extraction. For example, BB
 
 In the following example, only the titles of the news articles and their associated hyperlinks are retrieved from the feed.
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 library("rvest")
 library("tidyverse")
 library("xml2")
@@ -1000,18 +998,16 @@ Wrangling diverse data structures into the tidy format can be frustrating, but l
 
 Here is a guide for extracting data from the most common text-based software packages in R and their outputs.
 
-```{r, echo = FALSE}
-library(dplyr)
-library(rlang)
-library(gt)
-library(tibble)
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+library("dplyr")
+library("rlang")
+library("gt")
+library("tibble")
 
 md_col <- function(tbl, col) {
   col <- rlang::ensym(col)
-  tbl %>% mutate(!!col := gt::md(!!col))
-}
+  tbl %>% mutate(!!col := gt::md(!!col)) }
 
-# --- Quanteda ---
 quanteda_tbl <- tibble(
   Task = c("Convert dfm to tibble",
            "Get token list",

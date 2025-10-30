@@ -140,7 +140,7 @@ asis_output(two_pane_table)
 
 We can use distinctiveness to quickly identify the words that are frequently in Carroll's book but not Potter's. We might expect the results to include a list of words that includes "Jabberwock" (a fearsome creature), the "Snark" (an elusive entity), the "Bandersnatch" (a fast and dangerous beast), and other terms from his peculiar universe. Indeed, many of these words have rarely, if ever, appeared in publications not authored by Carroll himself. 
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 library("kableExtra")
 
 distinctively_carroll <- tfidf_table %>% 
@@ -174,7 +174,7 @@ install.packages("text2vec")  # Install text2vec
 ```
 
 ```{r}
-library(text2vec)             # Load the package
+library("text2vec")             # Load the package
 
 # define a function for jsd
 jsd <- function(p, q) {
@@ -419,9 +419,9 @@ top_hansard_tf_idf <- hansard_tf_idf %>%
 Let's make a fancy table to inspect the data.
 
 ```{r, results='asis'}
-library(dplyr)
-library(knitr)
-library(kableExtra)
+library("dplyr")
+library("knitr")
+library("kableExtra")
 
 make_kable <- function(df, dec_label) {
   df %>%
@@ -537,10 +537,9 @@ most_dist_hansard_words <- hansard_words_1830_to_1870 %>% # start with merged wo
 ```
 
 ```{r}
-# ---- chunk header: {r, echo=FALSE} ----
-library(dplyr)
-library(knitr)
-library(kableExtra)
+library("dplyr")
+library("knitr")
+library("kableExtra")
 
 make_kable <- function(df, dec_label) {
   df %>%
@@ -627,7 +626,7 @@ q(save = "no")
 
 If you quit RStudio, you will need to reload the required libraries: 
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 library("tidyverse")
 library("tidytext")
 library("hansardr")
@@ -793,9 +792,7 @@ word_dist <- word_dist %>%
 # which approximates zero but keeps the log function well-defined.
 word_dist$p_1840[word_dist$p_1840 == 0] <- 1e-10
 word_dist$p_1850[word_dist$p_1850 == 0] <- 1e-10
-```
 
-```{r}
 head(word_dist)
 ```
 
@@ -927,7 +924,7 @@ A density ridge plot may be an unfamiliar term, as it has not been previously us
 The chatbot generated the following code for a density ridge plot.
 
 ```{r, warning=FALSE, message=FALSE}
-library(ggridges)
+library("ggridges")
 
 ggplot(word_dist, aes(x = Partial_JSD, y = Direction, fill = Direction)) +
   geom_density_ridges(alpha = 0.7) +
@@ -947,7 +944,7 @@ ggplot(word_dist, aes(x = Partial_JSD, y = Direction, fill = Direction)) +
 The chatbot generated the following code for a word cloud. Its generated rationale for doing so was to provide a more "intuitive" overview of the words that had the greatest shifts between decades. In this visualization, the red words shifted the most from 1850 to 1840 (indicating a higher Partial JSD in that direction) whereas the blue words shifted the most from 1840 to 1850. Words that appear more prominently had larger changes. In this example, "Ireland" had a greater change than "stated." 
 
 ```{r, warning=FALSE, message=FALSE}
-library(wordcloud)
+library("wordcloud")
 
 wordcloud(
   words = word_dist$word,

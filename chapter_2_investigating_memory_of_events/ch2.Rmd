@@ -239,7 +239,7 @@ kbl(df_head, format = "latex",
 
 Note that the bigrams extracted overlap, as if the same sentence had been subdivided several times. This output is expected bigrams are created by looking at each pair of words in order, one step at a time—so each new bigram shares a word with the one before it.
 
-#### Counting Bigrams 
+###  Counting Bigrams 
 
 Now we can count the top bigrams and remove any that contain stop words. We remove stop words to focus on word pairs that might be more meaningful for our analysis.
 
@@ -317,9 +317,7 @@ We also see a reference to "public meetings."  Why did speakers in parliament in
 # Filter the 1867 Hansard speeches to keep only those that mention "public meetings"
 my_reading <- hansard_1867 %>% # create a new dataset
   filter(str_detect(text, "public meetings")) # detect the phrase
-```
 
-```{r}
 head(my_reading$text)
 ```
 
@@ -327,7 +325,7 @@ A cursory reading of the sentences suggests that members of parliament were well
 
 Bigrams, however, have limitations. A bigram only looks at one preceding word, but meaning often depends on words far apart in a sentence. Observing longer utterances—such as by moving beyond bigrams to multiword phrases—allows us to capture linguistic meaning that depends on more distant context than just the immediately preceding word.
 
-#### Counting Multiword Phrases
+### Counting Multiword Phrases
 
 Text mining also allows us to look for multiword phrases beyond bigrams.  We can look at 5-word phrases from the year 1867. We can also add a line to filter the n-grams for the presence of the word "people," looking for voices that refer to democracy, for instance, "the will of the people," an important concept in the years leading up to 1867, when working-class men in cities got the right to vote for the first time.  The results will allow us to ask the question: What are the most frequently-invoked phrases involving "the people"?
 
@@ -346,9 +344,7 @@ people_n_grams <- fivegrams_1867 %>% # create a new dataset
   filter(str_detect(ngram, "people")) %>% # keep 5-grams containing "people"
   count(ngram) %>% # count frequency of each 5-gram
   top_n(50) # keep top 50 by count
-```
 
-```{r}
 head(people_n_grams)
 ```
 
@@ -361,9 +357,7 @@ Reading further down this list might give us more hints about the language with 
 # "minds of the people" appears in the "text" column
 minds <- hansard_1867 %>% # create a new dataset
   filter(str_detect(text, "minds of the people")) # detect the phrase
-```
 
-```{r}
 head(minds$text)
 ```
 

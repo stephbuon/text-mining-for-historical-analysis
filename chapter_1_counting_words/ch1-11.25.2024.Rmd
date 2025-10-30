@@ -276,9 +276,7 @@ data("stop_words")
 # remove common stop words from the tokenized word counts
 stopworded_hansard_counts <- tokenized_hansard_counts %>% # create a new data frame 
   anti_join(stop_words) # exclude words that appear in the stop_words dataset
-```
 
-```{r}
 head(stopworded_hansard_counts)
 ```
 
@@ -463,9 +461,7 @@ corn_context <- hansard_1850 %>% # create a new data frame
   filter(!str_detect(word, "[:digit:]")) %>% # remove tokens with digits
   count(word) %>% # count word frequency
   arrange(desc(n)) # sort by frequency
-```
 
-```{r}
 head(corn_context)
 ```
 
@@ -508,9 +504,7 @@ To look at just the month of February, we need to load our decade subset that co
 ```{r}
 # Load the debate metadata for 1850
 data("debate_metadata_1850")
-```
 
-```{r}
 head(debate_metadata_1850)
 ```
 
@@ -520,9 +514,7 @@ We will cover joins in greater detail in Chapter 2. For now it's just important 
 # Merge the hansard_1850 text data with its corresponding metadata
 # using a left join to keep all rows from hansard_1850
 hansard_1850_with_metadata <- left_join(hansard_1850, debate_metadata_1850)
-```
 
-```{r}
 head(hansard_1850_with_metadata)
 ```
 
@@ -554,9 +546,7 @@ corn_kwic <- kwic(tokens(my_corpus), # tokenize corpus
                   "corn", # keyword to search
                   window = 5, # number of words before/after
                   case_insensitive = TRUE) # match regardless of case
-```
 
-```{r}
 head(corn_kwic)
 ```
 

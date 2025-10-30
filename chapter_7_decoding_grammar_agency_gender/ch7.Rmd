@@ -120,9 +120,7 @@ To install `spacyr`, we begin by using the standard `install.packages()` functio
 ```{r, eval=FALSE}
 # First time only -- installing spacyr on your computer
 install.packages("spacyr")
-
 library(spacyr)
-
 spacy_install()
 ```
 
@@ -256,7 +254,7 @@ The results of this process show that the sentences that mention "woman" or "wom
 
 However, many of our top words are common stop words (e.g. "other," "such," "many," and "same"), which can obscure more meaningful patterns when attempting to analyze the words that co-occured in the same sentence as "woman" or "women." Removing stop words using the `tidytext` package can help uncover more insightful trends in the corpus.
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 library(tidytext)
 
 data(stop_words)
@@ -312,7 +310,7 @@ top_nouns <- filtered_nouns %>%
   count(token, sort = TRUE)
 ```
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 library(gridExtra)
 # layout as a table
 grid.arrange(tableGrob(top_nouns[1:15, ]), tableGrob(top_nouns[16:30, ]), tableGrob(top_nouns[31:45, ]), ncol = 3)
@@ -416,8 +414,7 @@ woman_context_show <- woman_context %>%
 
 invisible(sapply(woman_context_show$text, function(x) {
   cat(paste(strwrap(x, width = 80), collapse = "\n"))
-  cat("\n\n")  # separator between entries
-}))
+  cat("\n\n") })) # separator between entries
 ```
 
 The speech refers to the questioning of managing British colonies in the West Indies. After the abolition of slavery in the British Empire in 1834, plantation owners in the Caribbean (notably in British Guiana, Trinidad, and Jamaica) sought replacement labor for sugar plantations. They turned to indentured labor from India, China, and other parts of Asia and Africa.  Laborers were often recruited (or deceived) into contracts. The Chinese laborers were typically from southern China, especially Fujian and Guangdong.
@@ -469,8 +466,7 @@ comparison <- full_join(man_adjectives, woman_adjectives, by = "adjective", suff
   mutate( # add a new column 
     count_1 = replace_na(count_1, 0),
     count_2 = replace_na(count_2, 0), 
-    count_diff = count_2 - count_1 # subtract men's count from women's
-  ) %>%
+    count_diff = count_2 - count_1) %>% # subtract men's count from women's
     filter(count_diff!=0) # delete all entries where there is no difference
 
 # In this dataset, there are a large number of adjectives with a count of two. We will therefore "sample" from the results to draw our visualization. This means that every time the visualization below is redrawn, different results will appear.  
@@ -511,8 +507,9 @@ filtered_df %>%
   geom_hline(yintercept = 0, color = "black")
 ```
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 library(gt)
+library(htmltools)
 
 # take the top adjectives unique to men; because there are so many with a max of 2, sample some positives
 positive_sample <- comparison %>%
@@ -536,8 +533,6 @@ filtered_df <- negative_sample %>%
   arrange(desc(abs(count_diff))) %>%
   mutate(adjective = fct_reorder(adjective, count_diff))
 
-
-
 # Function to generate a single gt table
 make_gt_table <- function(data_slice) {
   data_slice %>%
@@ -552,31 +547,23 @@ make_gt_table <- function(data_slice) {
       fn = function(x) {
         color_map <- ifelse(x == "Women", "blue", "red")
         mapply(function(txt, col) {
-          HTML(paste0("<span style='color:", col, "'>", txt, "</span>"))
-        }, x, color_map)
-      }
-    )
-}
-
-
+          HTML(
+            paste0("<span style='color:", col, "'>", txt, "</span>")) }, x, color_map) })}
 
 # Create three slices
-table1 <- make_gt_table(filtered_df %>% slice(1:200))
-table2 <- make_gt_table(filtered_df %>% slice(101:200))
-table3 <- make_gt_table(filtered_df %>% slice(201:300))
+table1 <- make_gt_table(filtered_df %>% 
+                          slice(1:200))
 
-# Combine side by side
-library(htmltools)
+table2 <- make_gt_table(filtered_df %>% 
+                          slice(101:200))
 
-browsable(
-  tagList(
-    tags$div(style = "display: flex; gap: 20px;",
+table3 <- make_gt_table(filtered_df %>% 
+                          slice(201:300))
+
+browsable(tagList(tags$div(style = "display: flex; gap: 20px;",
              tags$div(style = "flex: 1;", table1),
              tags$div(style = "flex: 1;", table2),
-             tags$div(style = "flex: 1;", table3)
-    )
-  )
-)
+             tags$div(style = "flex: 1;", table3))))
 ```
 
 #*** STEPH this table needs to be reformatted so that all the women are together and the color column isn't shown.
@@ -679,9 +666,7 @@ get_simple_lemmatized_svo_triples <- function(parsed_data){
 
 ```{r}
 simple_svo_triples_1870 <- get_simple_lemmatized_svo_triples(parsed_hansard_woman_1870)
-```
 
-```{r}
 head(simple_svo_triples_1870)
 ```
 
