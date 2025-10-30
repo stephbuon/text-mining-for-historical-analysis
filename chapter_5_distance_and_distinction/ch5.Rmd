@@ -400,7 +400,7 @@ hansard_tf_idf %>%
 
 Please note that the output of `bind_tf_idf()` includes the component calculations we mentioned:
 - one row for each decade in which each word appears
-- the total number of times each word appears in this decade (given in `word_count_per_decade`, the product of our calculation to produce the `words_per_decade` dataframe)
+- the total number of times each word appears in this decade (given in `word_count_per_decade`, the product of our calculation to produce the `words_per_decade` data frame)
 - the "term frequency" calculation, a metric of how often each word appears per decade, normalized against the total number of words in each decade. A high TF means that the word appears frequently in a given decade.
 - the "inverse document frequency" metric, a calcuation of how uncommon the word is across the entire corpus. A high IDF means that a word is rare across the corpus.
 - the tf_idf score -- the most important score for interpreting the results.  A high tf-idf score means that a word is highly distinctive of a decade, i.e., it scarcely appears in the other decade(s) of a corpus.  
@@ -456,7 +456,7 @@ This toy analysis is limited in implication, however, because historians rarely 
 
 ## Analyzing the Distinctiveness of Decades Over a Half-Century, from 1830 to 1870
 
-The following code loads the 1840 and 1850 Hansard debates and combines them into a single dataframe that will be used to measure tf-idf. 
+The following code loads the 1840 and 1850 Hansard debates and combines them into a single data frame that will be used to measure tf-idf. 
 
 ```{r}
 # Load Hansard data for the 1840s and 1850s
@@ -477,7 +477,7 @@ hansard_data_1830_to_1870 <- hansard_data %>%
   bind_rows(hansard_1850) # Add 1850s data
 ```
 
-In preparation for using tf-idf across multiple decades, we use the following codes to generate word frequencies in text data across specific time periods (e.g., decades). It uses a `for()` loop to iterate through each decade for preprocessing. It preprocesses the text by tokenizing it into words, removing stop words, and filtering out irrelevant tokens (like numbers), then counts the most frequently used words for each decade. The results are stored in a new dataframe, `hansard_count`.
+In preparation for using tf-idf across multiple decades, we use the following codes to generate word frequencies in text data across specific time periods (e.g., decades). It uses a `for()` loop to iterate through each decade for preprocessing. It preprocesses the text by tokenizing it into words, removing stop words, and filtering out irrelevant tokens (like numbers), then counts the most frequently used words for each decade. The results are stored in a new data frame, `hansard_count`.
 
 While a `for` loop is not needed to perform these actions, we have chosen to use one here to process text data separately for each decade in the dataset. Otherwise, tokenizing all four decade subsets simultaneously could exceed available computer memory. The code may run slow on older or more limited machines -- give it time to run.
 
@@ -887,7 +887,7 @@ The causes and implications of these changes are interesting to contemplate, and
 
 Throughout _Text Mining for Historical Analysis_, we have primarily visualized data using bar charts. This is because bar charts are accessible and allow viewers to quickly apprehend patterns, comparisons, and trends. We can, however, use an AI chatbot to suggest different approaches to visualizing data. Such can be useful for exploratory data analysis and considering alternative forms of representation--such as line graphs for temporal trends or word clouds for lexical frequency. However, AI-generated suggestions are not truly aware of research contexts, so the generated results should be critically explored and vetted by the analyst. 
 
-In the following examples, we used suggestions from an AI chatbot to explore alternative ways of visualizing our JSD data. To ensure the AI-generated code was compatible with our existing dataset, we included the code we had been using to create the JSD dataframe in our prompt. This helped align the chatbot's responses with the structure and content of our data, so the plots it produced would work correctly. With this context the AI chatbot can generate suggestions that take into account the structure of our data, the libraries we were using (if necessary), and the types of historical patterns we were interested in highlighting. This allowed us to rapidly experiment with new forms of visualization while staying grounded in the context of our existing work.
+In the following examples, we used suggestions from an AI chatbot to explore alternative ways of visualizing our JSD data. To ensure the AI-generated code was compatible with our existing dataset, we included the code we had been using to create the JSD data frame in our prompt. This helped align the chatbot's responses with the structure and content of our data, so the plots it produced would work correctly. With this context the AI chatbot can generate suggestions that take into account the structure of our data, the libraries we were using (if necessary), and the types of historical patterns we were interested in highlighting. This allowed us to rapidly experiment with new forms of visualization while staying grounded in the context of our existing work.
 
 \begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, title=Analyst Prompt]
 I calculated partial JSD using the following code. Can you suggest multiple ways of visualizing the results in R? Tell me why you have chosen each visualization.  

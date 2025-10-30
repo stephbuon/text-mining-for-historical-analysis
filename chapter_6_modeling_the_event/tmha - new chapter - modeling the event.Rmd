@@ -16,7 +16,7 @@ To analyze how the reform acts changed parliament, we can compare the speakers a
 
 ### Working With Big Data: Cautions Before Proceeding 
 
-In previous chapters, we worked with datasets that were intentionally scaled down to work on most entry-level laptops. This chapter is an intentional exception.
+In the previous chapters, we worked with intentionally small, subsetted datasets so the examples would run on a casual laptop. In this chapter, we take the opposite approach: we join multiple decades and create a much larger dataset first, and then filter it as needed. This allows us to demonstrate another workflow for working with large-scale historical data—one in which analysts begin with the full corpus and progressively narrow the scope through filtering and subsetting.
 
 Because we will ask the computer to store data from three decades at a time, the following exercise may crash smaller computers. If this happens, do not be alarmed. Power users of data sometimes need to upgrade their machines or work on university-provided servers to accomplish their research; you can make inquiries about using a more powerful computer with your IT services department. For the purposes of the rest of the chapter, you may regard the code that follows as an example of a process, recognizing how the tools we have previously used are deployed in what follows.
 
@@ -24,8 +24,7 @@ Users with more modern laptops may find that the code runs, but it runs extremel
 
 Previously, we demonstrated techniques were we worked with chunks of the data at a time to save computer memory. We did this so the code will run on a laptop. 
 
-
-```{r, echo=FALSE}
+```{r, message=FALSE}
 # load some data (hansardr version needed)
 # dates 1822-1842
 library("hansardr")
@@ -62,6 +61,8 @@ annotated_1840 <- hansard_1840 %>%
 
 hansard <- bind_rows(annotated_1820, annotated_1830, annotated_1840)
 ```
+
+`hansard` is a large dataset that includes three decades of parliamentary debates along with multiple layers of metadata that make the text analyzable. The debate metadata (which includes information such as the date of the speech and the title of the debate) and the speaker metadata (which includes the original speaker name and the disambiguated canonical name) are linked to each sentence through a shared `sentence_id`.
 
 We can remove the variables that we are no longer using to save space --------
 
@@ -268,11 +269,11 @@ top_speakers
 
 ## Investigating Speaker Wordcount With Joins
 
-With the dataframe both_periods_speakers, we have wordcounts for each speaker for pre- and postreform. There's a great deal we can do with this data. First, let's perform some basic counts to help us to understand, in raw numbers, the basic features of prereform and postreform parliament.  
+With the data frame both_periods_speakers, we have wordcounts for each speaker for pre- and postreform. There's a great deal we can do with this data. First, let's perform some basic counts to help us to understand, in raw numbers, the basic features of prereform and postreform parliament.  
 
 We'll start by asking how many members of parliament stood for the ten years pre and post reform. We will label each with a "class" called "prereform only," "postreform only," or "continuous speakers." Note that these "classes" are fundamentally different than the "period" categorization we applied above, where we labeled speeches given before the 1832 reform law as "prereform" and those after the law as "postreform." Instead of labeling the years, we want to identify the speakers that spoke only in one period or the other, and those who spoke in both. 
 
-To identify these speakers, we will begin by returning to an earlier dataframe -- `prereform_speakers_wordcount` -- and using a process called a "join" to exclude those speakers who also appear in the dataset `postreform_speakers_wordcount`.  
+To identify these speakers, we will begin by returning to an earlier data frame -- `prereform_speakers_wordcount` -- and using a process called a "join" to exclude those speakers who also appear in the dataset `postreform_speakers_wordcount`.  
 
 Information scientists theorize several ways to combine data through what is called "set theory." Two of the simplest joins are known as the "union" of two sets -- what they have in common -- and the "difference" between two sets -- what is in one but not the other. 
 
@@ -339,7 +340,7 @@ Because recorded parliamentary speech is an index of importance, the members who
 
 We might guess that it was vanishingly small, because a reform of historical significance could have swept away all incumbents. On the other hand, many historians of the 1832 Reform Bill have pointed out that it didn't shift the election process so drastically as had once been assumed. 
 
-In any case, to identify the speakers who appear in both the prereform and postreform datasets, we will use another function -- `inner_join()` -- to identify what is known as the "intersection" of the two datasets. That is, we are looking for speakers who occupy a row in both the `prereform_speakers_wordcount` dataframe and the `postreform_speakers_wordcount` dataframe. The syntax for `inner_join()` is just like that of `anti_join()`, but the result is to keep rows that appear in both datasets, not to exclude those rows.
+In any case, to identify the speakers who appear in both the prereform and postreform datasets, we will use another function -- `inner_join()` -- to identify what is known as the "intersection" of the two datasets. That is, we are looking for speakers who occupy a row in both the `prereform_speakers_wordcount` data frame and the `postreform_speakers_wordcount` data frame. The syntax for `inner_join()` is just like that of `anti_join()`, but the result is to keep rows that appear in both datasets, not to exclude those rows.
 
 ```{r, echo=FALSE}
 # How Many Members of Parliament Spoke Both Prereform and Postreform?
@@ -496,7 +497,7 @@ But for questions about information when several dimensions of data are related 
 
 In the case of the data about speakers before and after 1832, we have rich information that deserves to be represented in an interesting way. We have three categories of speakers -- prereform, postreform, and continuous speakers -- and information about how many speakers are in each category. We also have information about how much each speaker spoke each year.  Can we model this information together and learn something from the result?
 
-in the code block below, we'll create a "dot plot," mapping one point for each of the 10,810 speakers in the dataframe. We will use the color and shape of the dots to map the three classes of speakers -- prereform, postreform, and continuous. 
+in the code block below, we'll create a "dot plot," mapping one point for each of the 10,810 speakers in the data frame. We will use the color and shape of the dots to map the three classes of speakers -- prereform, postreform, and continuous. 
 
 ### Contingent labeling
 
@@ -595,7 +596,7 @@ As Prof. Guldi has explained in _The Dangerous Art of Text Mining_ (2023), diffe
 
 If tf-idf is a tool for identifying the characterstics of an orange that can't be found in apples, another approach -- log likelihood -- helps us see the nuances that overlap. The mathematical features of this approach and their implications are explored in _The Dangerous Art of Text Mining_, so here, we will emphasize instead how to employ log likelihood to create an alternative comparison of two time periods.   
 
-The `dhmeasures` package contains the `log_likelihood()` function, which acts much like `bind_tf_idf()`, accepting a dataframe with columns `word`, `group`, and `n`, and producing a score of distinctiveness ("ll") for each word-group pair. 
+The `dhmeasures` package contains the `log_likelihood()` function, which acts much like `bind_tf_idf()`, accepting a data frame with columns `word`, `group`, and `n`, and producing a score of distinctiveness ("ll") for each word-group pair. 
 
 ## Distinctiveness Continued: Those Who Weren't Reelected
 

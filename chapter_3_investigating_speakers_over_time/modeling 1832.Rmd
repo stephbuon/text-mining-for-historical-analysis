@@ -268,11 +268,11 @@ Here we can see one potential problem -- Lord Henry Brougham appears both as "Lo
 
 ## Investigating Speaker Wordcount With Joins
 
-With the dataframe both_periods_speakers, we have wordcounts for each speaker for pre- and postreform. There's a great deal we can do with this data. First, let's perform some basic counts to help us to understand, in raw numbers, the basic features of prereform and postreform parliament.  
+With the data frame both_periods_speakers, we have wordcounts for each speaker for pre- and postreform. There's a great deal we can do with this data. First, let's perform some basic counts to help us to understand, in raw numbers, the basic features of prereform and postreform parliament.  
 
 We'll start by asking how many members of parliament stood for the ten years pre and post reform. We will label each with a "class" called "prereform only," "postreform only," or "continuous speakers." Note that these "classes" are fundamentally different than the "period" categorization we applied above, where we labeled speeches given before the 1832 reform law as "prereform" and those after the law as "postreform." Instead of labeling the years, we want to identify the speakers that spoke only in one period or the other, and those who spoke in both. 
 
-To identify these speakers, we will begin by returning to an earlier dataframe -- "prereform_speakers_wordcount" -- and using a process called a "join" to exclude those speakers who also appear in the dataset "postreform_speakers_wordcount."  
+To identify these speakers, we will begin by returning to an earlier data frame -- "prereform_speakers_wordcount" -- and using a process called a "join" to exclude those speakers who also appear in the dataset "postreform_speakers_wordcount."  
 
 Information scientists theorize several ways to combine data through what is called "set theory." Two of the simplest joins are known as the "union" of two sets -- what they have in common -- and the "difference" between two sets -- what is in one but not the other. 
 
@@ -338,7 +338,7 @@ Because recorded parliamentary speech is an index of importance, the members who
 
 We might guess that it was vanishingly small, because a reform of historical significance could have swept away all incumbents. On the other hand, many historians of the 1832 Reform Bill have pointed out that it didn't shift the election process so drastically as had once been assumed. 
 
-In any case, to identify the speakers who appear in both the prereform and postreform datasets, we will use another function -- inner_join() -- to identify what is known as the "intersection" of the two datasets. That is, we are looking for speakers who occupy a row in both the *prereform_speakers_wordcount* dataframe and the *postreform_speakers_wordcount* dataframe. The syntax for inner_join() is just like that of anti_join(), but the result is to *keep* rows that appear in both datasets, not to exclude those rows.
+In any case, to identify the speakers who appear in both the prereform and postreform datasets, we will use another function -- inner_join() -- to identify what is known as the "intersection" of the two datasets. That is, we are looking for speakers who occupy a row in both the *prereform_speakers_wordcount* data frame and the *postreform_speakers_wordcount* data frame. The syntax for inner_join() is just like that of anti_join(), but the result is to *keep* rows that appear in both datasets, not to exclude those rows.
 
 ```{r, echo=FALSE}
 # How Many Members of Parliament Spoke Both Prereform and Postreform?
@@ -493,7 +493,7 @@ But for questions about information when several dimensions of data are related 
 
 In the case of the data about speakers before and after 1832, we have rich information that deserves to be represented in an interesting way. We have three categories of speakers -- prereform, postreform, and continuous speakers -- and information about how many speakers are in each category. We also have information about how much each speaker spoke each year.  Can we model this information together and learn something from the result?
 
-in the code block below, we'll create a "dot plot," mapping one point for each of the 10,810 speakers in the dataframe. We will use the color and shape of the dots to map the three classes of speakers -- prereform, postreform, and continuous. 
+in the code block below, we'll create a "dot plot," mapping one point for each of the 10,810 speakers in the data frame. We will use the color and shape of the dots to map the three classes of speakers -- prereform, postreform, and continuous. 
 
 ### Contingent labeling
 Because labeling all the speakers would result in an unreadable graphic, we will tell the computer to only label those speakers who are classified as "TRUE" in the column *top*, where we annotated if a speaker was among the top n speakers of each class by wordcount. The syntax for this operation is given inside the parentheses of *geom_label_repel()*, where the coder has an opportunity to point to a new dataset as the source of the text in the labels.  Here, we tell the computer which dots to label and which to leave blank with  the use of *subset(graph_ready, top == TRUE)*. Operations of this type are relatively advanced for visualization, but they are extremely useful for the kind of dense, text-forward information that implementors of text mining often want from their analysis.
@@ -602,7 +602,7 @@ Same thing with an alternative measure -- log likelihood.
 
 
 
-Now, looking for distinctiveness with log likelihood. The *dhmeasures* package contains the *log_likelihood()* function, which acts much like *bind_tf_idf()*, accepting a dataframe with columns *word*, *group*, and *n*, and producing a score of distinctiveness ("ll") for each word-group pair. 
+Now, looking for distinctiveness with log likelihood. The *dhmeasures* package contains the *log_likelihood()* function, which acts much like *bind_tf_idf()*, accepting a data frame with columns *word*, *group*, and *n*, and producing a score of distinctiveness ("ll") for each word-group pair. 
 
 
 ```{r}

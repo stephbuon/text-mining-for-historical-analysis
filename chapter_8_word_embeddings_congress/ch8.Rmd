@@ -28,7 +28,7 @@ I could create just the climate change corpus
 As the book’s narrative continues its theme of critically reflecting upon both data and algorithms, we will weigh the positive aspects of using word embeddings against their negative aspect, which is that they are a “black box” in the sense that the machine learning model that produces the analysis cannot be unpacked.   
 
 
-The output is a dataframe with the top words for each keyword ("climate", "woman", "environmentalist", and "government")
+The output is a data frame with the top words for each keyword ("climate", "woman", "environmentalist", and "government")
 
 ```{r}
 library("text2vec")

@@ -211,7 +211,7 @@ In this one-token-per-row format we can easily process our data. This approach t
 # - 'unnest_tokens()' from the 'tidytext' package splits text into lowercase words
 # - the new column will be called 'word'
 # - each word becomes its own row 
-tokenized_hansard <- hansard_1850 %>% # create a new dataframe
+tokenized_hansard <- hansard_1850 %>% # create a new data frame
   unnest_tokens(word, text) # tokenize the 'text' column 
 ```
 

@@ -74,7 +74,7 @@ words_1830 <- hansard_1830 %>%
 head(words_1830)
 ```
 
-With a dataframe containing fields for "speaker", "suggested_speaker", and "word," we are now in a position to perform a new kind of analysis to see the number of words each speaker contributed to Parliament using two new functions: `group_by()` and `summarize()`. 
+With a data frame containing fields for "speaker", "suggested_speaker", and "word," we are now in a position to perform a new kind of analysis to see the number of words each speaker contributed to Parliament using two new functions: `group_by()` and `summarize()`. 
 
 We use `group_by()` to organize the data by group before using summarize for our count. By using `group_by()` we can count the number of times one variable occurs, given the presence of another variable.  We can count the number of words spoken by a speaker. We could also use group_by to count the words spoken in a given year -- or by a given speaker in a given year, and so on.
 

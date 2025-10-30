@@ -238,7 +238,7 @@ parsed_hansard_woman <- spacy_parse(hansard_woman_1860$text,
 head(parsed_hansard_woman)
 ```
 
-`spacy_parse()` returns a new dataframe in which each row represents an individual token from the text. This data now includes the token's part-of-speech (POS) tag and syntactic dependency, which can be used for further analysis. For instance, I can filter and count to find the top adjectives stated in the Hansard sentences containing the word "woman" or "women." 
+`spacy_parse()` returns a new data frame in which each row represents an individual token from the text. This data now includes the token's part-of-speech (POS) tag and syntactic dependency, which can be used for further analysis. For instance, I can filter and count to find the top adjectives stated in the Hansard sentences containing the word "woman" or "women." 
 
 ```{r}
 # Filter for just words tagged by spacyr as adjectives 
@@ -382,7 +382,7 @@ adjective_noun_pairs_woman <- get_adjective_noun_pairs(parsed_hansard_woman,
                                                        nouns_to_filter)
 ```
 
-The code performs a series of steps: first it filters for adjectives with the dependency label `amod`, which stands for "adjectival modifier." These are adjectives that directly modify nouns. The code then joins each adjective with the noun it modifies. At this point, we have processed all adjective-noun pairs within these sentences. We are, however, only interested in adjective-noun pairs containing the word "woman" or "women." Therefore, we added a filtering step to only keep relevant pairs. Finally, the code combines the adjective and noun into a single string to make the results easier to read. The final result is a dataframe that lists all such adjective-noun combinations found in the corpus.
+The code performs a series of steps: first it filters for adjectives with the dependency label `amod`, which stands for "adjectival modifier." These are adjectives that directly modify nouns. The code then joins each adjective with the noun it modifies. At this point, we have processed all adjective-noun pairs within these sentences. We are, however, only interested in adjective-noun pairs containing the word "woman" or "women." Therefore, we added a filtering step to only keep relevant pairs. Finally, the code combines the adjective and noun into a single string to make the results easier to read. The final result is a data frame that lists all such adjective-noun combinations found in the corpus.
 
 ```{r}
 adjective_noun_pair_counts_woman <- adjective_noun_pairs_woman %>%

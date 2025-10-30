@@ -152,7 +152,7 @@ As a result of this organization scheme, many kinds of analyses will require wor
 # Load the tidyverse
 library("tidyverse")
 
-# Join the Hansard debate text with the debate metadata into a single dataframe
+# Join the Hansard debate text with the debate metadata into a single data frame
 # left_join() will automatically detect that both datasets share the sentence_id 
 hansard_1860 <- left_join(hansard_1860, debate_metadata_1860)
 
@@ -194,9 +194,9 @@ install.packages("lubridate")
 library("tidytext")   
 library("lubridate")  
 
-# create a new dataframe "hansard_1867" from "hansard_1860" that contains
+# create a new data frame "hansard_1867" from "hansard_1860" that contains
 # data for 1867 
-hansard_1867 <- hansard_1860 %>% # create a new dataframe
+hansard_1867 <- hansard_1860 %>% # create a new data frame
   mutate(year = year(speechdate)) %>% # extract year from speechdate
   filter(year == 1867, # keep only year 1867
          speechdate <= ymd("1867-08-15")) # and speechdate before or on august 15
@@ -387,7 +387,7 @@ data("debate_metadata_1860")
 hansard_1860 <- left_join(hansard_1860, debate_metadata_1860)
 
 # create a new dataset for just the year 1867
-hansard_1867 <- hansard_1860 %>% # create a new dataframe
+hansard_1867 <- hansard_1860 %>% # create a new data frame
   mutate(year = year(speechdate)) %>% # keep only speeches from the year 1867, 
   filter(year == 1867, #keep only speeches made on or before August 15th
          speechdate <= as.Date("1867-08-15"))
@@ -858,17 +858,17 @@ Here are some different events that might be relevant based on your list:
 \textbf{Reason:} While slightly later, Fenian meetings parallel "clontarf meeting" by highlighting Irish political concerns and illustrating how public gatherings were used to address issues of representation and governance.
 \end{tcolorbox}
 
-Now that we have a more specific list of events that aligns with our interests, we can use them in our analysis. To use our new events, we will create a dataframe for them. We can prompt the chatbot to return the needed code. Given that we are very familiar with creating dataframes at this point, we can also proof the chatbot's results and ensure they match our desired output. 
+Now that we have a more specific list of events that aligns with our interests, we can use them in our analysis. To use our new events, we will create a data frame for them. We can prompt the chatbot to return the needed code. Given that we are very familiar with creating data frames at this point, we can also proof the chatbot's results and ensure they match our desired output. 
 
 \begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, title=Analyst Prompt]
-Return this text as a dataframe in R with two columns: a column for the event, named event\_name and a column for the date, named AI Assigned Date. Write the events in lower case. 
+Return this text as a data frame in R with two columns: a column for the event, named event\_name and a column for the date, named AI Assigned Date. Write the events in lower case. 
 \end{tcolorbox}
 
 \begin{tcolorbox}[colback=green!5!white, colframe=green!75!black, title=ChatGPT-4o Response]
-Here is the R code to create the requested dataframe:
+Here is the R code to create the requested data frame:
   
 \begin{verbatim}
-# Create the dataframe
+# Create the data frame
 
 events_df <- data.frame(
   event_name = c(
@@ -889,17 +889,17 @@ events_df <- data.frame(
   )
 )
 
-# Print the dataframe
+# Print the data frame
 print(events_data)
 \end{verbatim}
 
-This will create a dataframe in R with two columns: event\_name (containing the event names in lowercase) and AI Assigned Date.
+This will create a data frame in R with two columns: event\_name (containing the event names in lowercase) and AI Assigned Date.
 \end{tcolorbox}
 
 We can now test the chatbot's responses by running the code. 
 
 ```{r}
-# Create the dataframe
+# Create the data frame
 events_df <- data.frame(
   event_name = c(
     "crimean war",
@@ -919,7 +919,7 @@ events_df <- data.frame(
   )
 )
 
-# Print the dataframe
+# Print the data frame
 print(events_df)
 
 ```
@@ -934,7 +934,7 @@ hansard_1860 <- hansard_1860 %>%
 
 ```
 
-The following code filters the `hansard_1860` dataset to include rows where the `text` column matches any event name in `events_df$event_name`, using case-insensitive matching. It then adds a new column, `matched_event`, which contains the specific matched event name from the `text`. The result is a filtered dataframe with an additional column identifying the matched event for each row.
+The following code filters the `hansard_1860` dataset to include rows where the `text` column matches any event name in `events_df$event_name`, using case-insensitive matching. It then adds a new column, `matched_event`, which contains the specific matched event name from the `text`. The result is a filtered data frame with an additional column identifying the matched event for each row.
 
 ```{r}
 # Match with each event and 

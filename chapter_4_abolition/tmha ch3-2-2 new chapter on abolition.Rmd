@@ -289,7 +289,7 @@ The `bind_tf_idf()` function takes three arguments. The first two are the names 
 
 ```{r, message = F}
 # calculate the measure of how distinctive each keyword is of each speaker
-tfidf_per_top_slavery_speaker_1833 <- top_words_per_abolition_speaker %>% # start with a dataframe with wordcounts per speaker
+tfidf_per_top_slavery_speaker_1833 <- top_words_per_abolition_speaker %>% # start with a data frame with wordcounts per speaker
   bind_tf_idf(word, speaker, n) %>% # In this case, the groupings of words we want to explore ('document') are the speakers
   arrange(desc(tf_idf))
 

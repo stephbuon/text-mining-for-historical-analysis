@@ -535,7 +535,7 @@ Today, OCR can be performed using AI tools, typically at a fraction of the cost.
 
 A cursory review of recent articles suggests that the best results for handwritten records involve extensive training sets, translation, and sampling.  Breakthrough success has been reported for using AI trained on Chinese characters to recognize Chinese texts (Chen et. al 2025). A Stanford team is applying deep ML and custom training to recognize handwritten text from records in Ottoman, Classical Arabic, and Ottoman Turkish ("Arabic Script OCR/HTR," accessed 2025). We read of good results on Ancient Indian records from Brahmi, Grantha, Devanagari and Tamil manuscripts, ancient Chinese records, handwritten East Syriac, and Latin registers from the Vatican (Yadav 2025, Majeed and Hossani 2024, Zhang 2024, "In Codice Ratio"). The reports suggest that text mining for historical analysis will soon be applied to a widening collection of scholarly texts from different times and places. 
 
-Once a collection of PDFs has been OCR'd, it is possible to use the resulting PDF files to create a dataframe for text mining.  
+Once a collection of PDFs has been OCR'd, it is possible to use the resulting PDF files to create a data frame for text mining.  
 
 ## Web Scraping 
 
