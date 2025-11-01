@@ -87,7 +87,7 @@ You should only have to run the code below once.
 if (!requireNamespace("reticulate", quietly = TRUE)) {
   install.packages("reticulate")
 }
-library(reticulate)
+library("reticulate")
 
 # Install Miniconda (cross-platform)
 install_miniconda()
