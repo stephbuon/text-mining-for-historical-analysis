@@ -38,7 +38,7 @@ When a humanist thinks of data they might begin by imagining content such as let
 File directories are structured like trees, yet when we interact with our computers, we usually see only the leaves—the individual files and folders. The branching structure that connects them remains hidden, making file paths conceptually difficult. When working in a programming language, we must mentally reconstruct this invisible hierarchy to navigate it effectively. Figure B.1 provides a visual representation of a hypothetical file hierarchy. To reach the file `word_counter.R` within this hypothetical hierarhcy, you would start from your Home directory, or the root of your computer. From there, you move into the Documents folder, which branches off from Home. Inside Documents, there’s a subfolder called R Code, and inside that folder lives the file `word_counter.R`.
 
 ```{r}
-knitr::include_graphics("/home/stephbuongiorno/Desktop/Text Mining for Historical Analysis/appendix_b/file_paths_are_trees.jpg")
+knitr::include_graphics("~/Repos/text-mining-for-historical-analysis/appendix_b/file_paths_are_trees.jpg")
 ```
 
 The route through this tree is represented by the following file path:
@@ -163,7 +163,7 @@ decades <- c("1800", "1810", "1820")
 # your visualizations will be saved here
 output_dir <- getwd()
 
-print(paste("Visualizations will be saved to:", current_dir))
+print(paste("Visualizations will be saved to:", output_dir))
 
 for (decade in decades) {
   print(paste0("Processing ", decade))
