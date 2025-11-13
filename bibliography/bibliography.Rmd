@@ -121,9 +121,11 @@ Williams, Raymond. _Keywords: A Vocabulary of Culture and Society._ Revised ed.,
 
 ### Chapter 2
 
-CITE DILPAD 
-
 Buongiorno, Steph. hansardr: Access a cleaned version of the c19 Hansard corpus with improved speaker names in the R environment. 2021. GitHub, R package. https://github.com/stephbuon/hansardr.
+
+Buongiorno, Steph, Serena Di Martino, Ryan Schaefer, Shawn Chen, Alisha Morejon, Hailey DeMark, Francesca La Marca, Grace Schultz, Wes Anderson, Chris Miller, and Matt Swigart. Democracy Viewer, 2023, accessed Nov. 9, 2024. 
+
+Eggers, Andrew C., and Arthur Spirling. “Electoral Security as a Determinant of Legislator Activity, 1832-1918: New Data and Methods for Analyzing British Political Development.” Legislative Studies Quarterly 39, no. 4 (2014): 593–620. http://www.jstor.org/stable/43862507.
 
 Fyfe, Paul. (2016). "An archaeology of Victorian newspapers." Victorian Periodicals Review, 49(4), 546–577.
 
@@ -140,6 +142,8 @@ Spinu, Vitalie, Garrett Grolemund, and Hadley Wickham. lubridate: Make Dealing w
 Spirling, Arthur and Any Eggers. "Electoral Security as a Determinant of Legislator Activity, 1832–1918: New Data and Methods for Analyzing British Political Development".
 
 Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino McGowan, Romain François, Garrett Grolemund, et al. "Welcome to the Tidyverse." _Journal of Open Source Software_, vol. 4, no. 43, 2019, p. 1686. https://doi.org/10.21105/joss.01686.
+
+Winters, Jane and Martin Steer. Digging into Linked Parliamentary Data (DiLiPaD). 2013.
 
 ### Chapter 3
 

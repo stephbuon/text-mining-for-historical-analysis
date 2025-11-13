@@ -1,4 +1,35 @@
 In the prose use ` for: 
 
 
+    Go back to the Chicago Manual of Style and review the rules on punctuation. Apply this to all headers, all sentences, all visualizations, and even comments in the code (perhaps? We need a style rule)
+    consult Manual of style guide to em dashes vs hyphens.
+
+
+Make sure it displays: tf-idf
+
+in-text citations should be chicago style 
+
+
+
 In the code use " 
+
+the analyst / the reader instead of you 
+
+
+Make library("package") into library(package)
+
+Make sure all libraries in prose have ` around them 
+
+make sure all titles are title case 
+
+Headers / subtitles: ## size 
+
+
+make sure book titles are italic
+
+
+Make sure comments are in regular case: 
+
+# Load packages
+# Create vocabulary and term co-occurrence matrix
+# Fit GloVe model

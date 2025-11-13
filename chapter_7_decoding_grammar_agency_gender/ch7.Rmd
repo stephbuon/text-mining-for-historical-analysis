@@ -207,7 +207,7 @@ knitr::include_graphics(dest)
 
 In this example, the head of the verb "submitting" is the subject "women." The verb "submitting" also has multiple children: "themselves," "voluntarily," and "to." The head of the adjective "medical" is the object "examination." The head can vary based on the type of phrase or clause. For instance, in noun phrases, the noun is typically the head, while in verb phrases, the verb often functions as the head. With an understanding of how `spacyr` processes linguistic data, we can now use it to parse our Hansard data and extract parts-of-speech with a more critical eye.  
 
-### Counting Adjectives and Nouns Colocated With the Word "Woman" 
+### Counting Adjectives and Nouns Collocated With the Word "Woman" 
 
 In investigating parliamentarian's speech about women, we used a layered approach to analysis allows us to trace patterns of language use. Our aim is to explore how members of Parliament in the mid-19th century described and imagined women, and to consider how these linguistic patterns connect back to broader cultural frameworks. Specifically, we will ask: How are women represented in the language of 19th-century Parliamentarians, as reflected in the 1860 Hansard debates?
 
