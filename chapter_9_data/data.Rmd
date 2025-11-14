@@ -140,23 +140,23 @@ Once obtained, the key is appended to API requests—for example:
 
 Authentication is the process by which a user verifies their identity to the API, typically by including an API key with each request for data. Importantly, once an API key tethered to a user is submitted, the interaction is no longer anonymous—the exchange of information is now linked to a specific account, allowing the API provider to monitor usage, enforce rate limits, or restrict access if necessary. In this chapter, we will not use an API that requires authentication. 
 
-To illustrate how an API works, consider this example from the City of Dallas Open Data portal, which provides access to 311 Service Requests October 1, 2020 to Present:
+#### Practical Exercise: The API in Action
 
-`https://www.dallasopendata.com/Services/311-Service-Requests-October-1-2020-to-Present/d7e7-envw/about_data`.
+To illustrate how an API works, consider this example from the New York City Open Data portal, "NYC OpenData", which provides access to vast public datasets including population data, budgetary data, and data on city infrastructure. For this exercise we will look at just current and historic 311 service requests. The link below takes us to a webpage for the dataset _311 Call Center Inquiry_, which also provides a direct link to the API endpoint.
+
+`https://data.cityofnewyork.us/City-Government/311-Call-Center-Inquiry/wewp-mm3p/about_data`.
 
 Copying and pasting the API endpoint from this page, 
 
-`https://www.dallasopendata.com/api/v3/views/d7e7-envw/query.json`, 
+`https://data.cityofnewyork.us/resource/wewp-mm3p.json`, 
 
-into a web browser will return nested data—typically in JSON format—which can be expanded to reveal the individual fields and their associated values. The dataset includes information about shelter operations, such as animal intakes, adoptions, transfers to rescue organizations, and the daily care provided by shelter staff. We will now read this data into the R environment for data processing and analysis. 
-
-#### Practical Exercise: The API in Action
+into a web browser will return nested data—typically in JSON format—which can be expanded to reveal the individual fields and their associated values. In this dataset, each entry includes the date and time the request was made, the agency responsible for handling the request, the name of the request, and a brief description. We will now read this data into the R environment for data processing and analysis. 
 
 In the following code, we use two new R packages: `httr` for sending HTTP requests, and `jsonlite` for parsing JSON data into a tidy data frame that mirrors the data structure we have been processing throughout the book. 
 
 The code sets the user up for a conversation with a server, with the following components of the dialogue:
 * A "request" is a message sent from a client (in this case, your R script) to a server, asking for specific information or resources—such as a dataset. 
-* The "result" is stored in the "response" object, which represents the message returned by the server. A response includes a status code (e.g., 200 for success, 404 for not found), headers (which contain metadata), and the body (which holds the requested content, such as the JSON data containing the animal shelter data). 
+* The "result" is stored in the "response" object, which represents the message returned by the server. A response includes a status code (e.g., 200 for success, 404 for not found), headers (which contain metadata), and the body (which holds the requested content, such as the JSON data containing the service request data). 
 
 Please note the following components of the API call:
 * The `GET()` function from the `httr` package sends an HTTP `GET` request to the specified API endpoint to retrieve data.
@@ -170,7 +170,7 @@ library("httr")
 library("jsonlite")
 
 # Define the JSON API endpoint
-url <- "https://www.dallasopendata.com/resource/7h2m-3um5.json"
+url <- "https://data.cityofnewyork.us/resource/wewp-mm3p.json"
 
 # Make GET request to extract JSON content
 response <- GET(url)
@@ -180,7 +180,7 @@ if (status_code(response) == 200) {
   # Extract and parse JSON content into a data frame
   json_content <- content(response, "text", encoding = "UTF-8")
   
-  animal_shelter_data <- fromJSON(json_content, flatten = TRUE) %>%
+  service_requests <- fromJSON(json_content, flatten = TRUE) %>%
     as_tibble() } else {
   stop("Failed to retrieve data. Status code: ", status_code(response)) }
 ```
@@ -189,14 +189,14 @@ Because this request was successful, we now have a data frame containing the she
 
 ```{r}
 # Show just the first five columns
-head(animal_shelter_data[, 1:5])
+head(service_requests[, 1:5])
 ```
 
 #### Examining the Data Returned by APIs: JSON Records
 
 APIs typically return data in structured formats such as JSON (JavaScript Object Notation), XML (eXtensible Markup Language), or CSV (Comma-Separated Values). JSON is widely used because of its interpretability across programming languages. 
 
-The animal shelter API returned data in the JSON format. Using the `fromJSON()` function, and we converted the JSON to a tabular format for readability. 
+The service request API returned data in the JSON format. Using the `fromJSON()` function, and we converted the JSON to a tabular format for readability. 
 
 For the sake of understanding the data transformations that occurred, we also kept a copy of the nested JSON data. Many programmers favor JSON because it strikes a strong balance between human readability, machine parsability, and broad compatibility. JSON is the default for most modern APIs. 
 
@@ -218,19 +218,19 @@ nrow(json_list)
 
 However, if we return to the dataset’s page —
 
-https://www.dallasopendata.com/Services/Dallas-Animal-Shelter-Data-Fiscal-Year-2019-2020/7h2m-3um5/about_data — 
+`https://data.cityofnewyork.us/City-Government/311-Call-Center-Inquiry/wewp-mm3p/about_data` — 
 
-We can see that the site reports the dataset contains tens of thousands of records. Technically, nothing went wrong during data extraction. Instead, we were "rate limited." Rate limiting is a common mechanism used by open data APIs to manage server load and prevent abuse. It restricts how many requests a user can make within a given time period. For example, unauthenticated users might be limited to 100 requests per hour, while authenticated users may be allowed significantly more—such as 10,000 requests per hour. This means that even though the data is publicly available, access can still be throttled based on usage patterns and credentials.
+We can see that the site reports the dataset contains millions of records. Technically, nothing went wrong during data extraction. Instead, we were "rate limited." Rate limiting is a common mechanism used by open data APIs to manage server load and prevent abuse. It restricts how many requests a user can make within a given time period. For example, unauthenticated users might be limited to 100 requests per hour, while authenticated users may be allowed significantly more—such as 10,000 requests per hour. This means that even though the data is publicly available, access can still be throttled based on usage patterns and credentials.
 
 Most platforms open government data websites using the Socrata Open Data API (SODA) limit responses to 1,000 records per request by default. If a dataset exceeds this, only the first 1,000 rows are returned unless pagination is used. In the following example we revise the above code to account for pagination. This code runs two cycles, collecting up to 1,000 records per cycle for a total of up to 2,000 records. This code can be modified to extract additional records. 
 
 ```{r}
-url <- "https://www.dallasopendata.com/resource/7h2m-3um5.json"
+url <- "https://data.cityofnewyork.us/resource/wewp-mm3p.json"
 
 # Pagination settings
 limit <- 1000
 # Will store the output from each iteration 
-animal_shelter_data <- tibble() 
+service_request_data <- tibble() 
 
 # Run for two iterations: first with offset = 0, then with offset = 1000.
 # This means the code will first collect rows 1–1000,
@@ -248,7 +248,7 @@ for (i in 0:1) {
   data_subset <- fromJSON(content(response, "text"), flatten = TRUE)
   
   # Save collected data 
-  animal_shelter_data <- bind_rows(animal_shelter_data, as_tibble(data_subset)) }
+  service_requests <- bind_rows(service_requests, as_tibble(data_subset)) }
 ```
 
 Importantly, even if you use pagination, you may still violate a website’s Terms of Service. Some websites explicitly require delays—such as adding a sleep interval between requests—to avoid overloading their servers with requests that exceed typical human usage. 
