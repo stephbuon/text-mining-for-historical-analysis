@@ -581,6 +581,41 @@ There are two main features of HTML code:
 * CSS selectors, derived from web design conventions, identify elements based on tags (e.g., "`p`" for paragraphs), classes (e.g., "`.title`"), IDs (e.g., "`#main`"), or structural relationships (e.g., "`div > p`" for paragraph tags directly nested in a `div`). 
 * In contrast, XPath offers a more expressive syntax for specifying paths through the HTML tree, enabling selection based on element attributes, positions, or nested hierarchies (e.g., "`//div[@class='content']/p`" selects all paragraph tags within div elements that have the class content).
 
+As an example, in the following code the CSS selector `p` would select both paragraph elements inside the `<div>`. 
+
+```
+<div class="article">
+  <h2>A Heading</h2>
+
+  <div class="text-block">
+    <p>First paragraph.</p>
+    <p>Second paragraph.</p>
+  </div>
+
+  <ul class="links">
+    <li><a href="#">Link one</a></li>
+    <li><a href="#">Link two</a></li>
+  </ul>
+</div>
+```
+
+To extract the content itself, the analyst uses these selectors to locate relevant elements in the HTML tree and then retrieve their text. In practice, this involves three steps: downloading the page’s HTML, parsing it into a structured document, and applying CSS or XPath queries to extract the desired nodes. For example, using the `rvest` package in R, the following code retrieves all paragraph text from a webpage using the `p` tag as the selector:
+
+```{r}
+library(rvest)
+
+# Step 1: Read the webpage
+url <- "https://example.com"
+page <- read_html(url)
+
+# Step 2: Select and extract all <p> tags using a CSS selector
+paragraphs <- page %>%
+  html_elements("p") %>%      # CSS selector
+  html_text(trim = TRUE)      # extract clean text
+
+print(paragraphs)
+```
+
 # Data Cleaning
 
 Historic documents pose unique challenges for text mining due to inconsistencies in spelling and the physical degradation of materials over time. Additionally, digitization often introduces errors, such as mistakes from Optical Character Recognition (OCR), which complicate analysis. 
