@@ -85,13 +85,13 @@ data("debate_metadata_1830")
 # create a new column 'year' by extracting the year from the full speech date
 # find just the debates about slavery and who spoke them 
 slavery_1830 <- hansard_1830 %>%  # Create a new dataset called 'debates_1830'
-  left_join(debate_metadata_1830, by = "sentence_id") %>%  # Join it with the debate metadata 
+  left_join(debate_metadata_1830, by = "sentence_id") %>% # Join with the debate metadata 
   filter(str_detect(tolower(debate), "slavery")) %>% # filter title for 'slavery' 
   mutate(year = year(speechdate)) # Extract and add the year from the 'speechdate' column
 
 slavery_debates_1830 <- slavery_1830 %>%
   left_join(speaker_metadata_1830) %>% # join datasets 
-  select(sentence_id, speaker, suggested_speaker, text, year) %>% # retain only relevant columns 
+  select(sentence_id, speaker, suggested_speaker, text, year) %>% # retain relevant columns 
   filter(suggested_speaker != "") # remove any lines with missing speaker information
 
 # break up the text into words
@@ -131,8 +131,8 @@ words_per_speaker_per_year_slavery_1830 <- slavery_words_1830 %>% # create a new
 top_words_pspy_slavery_1830 <- words_per_speaker_per_year_slavery_1830 %>%
   filter(speaker %in% unique(top_slavery_speakers$speaker)) # retain only relevant rows
 
-# this plot visualizes who spoke about slavery in 1830, how much they said, and when they spoke.
-# each point represents a speaker's total words for a given year, with labels showing speaker names.
+# visualize who spoke about slavery in 1830, how much they said, and when they spoke.
+# each point represents a speaker's total words for a given year
 # the x-axis shows years (rounded to whole numbers), and the y-axis shows word counts.
 ggplot(top_words_pspy_slavery_1830, # make a graph
        aes(x = year, # x axis = year
@@ -188,16 +188,22 @@ In the following code, we provide a list of speakers and use the `%in%` operator
 
 ```{r, message = F}
 library(knitr)
+library(kableExtra)
 
-# make a list of the names of the top speakers, using the quotation marks to tell the computer that the contents are textual strings
-pattern1 = c("Mr. Fowell Buxton", "Mr. Buckingham", "Mr. Stanley", "The Duke of Wellington", "Sir Robert Peel")
+# make a list of the names of the top speakers
+pattern1 = c("Mr. Fowell Buxton", "Mr. Buckingham", "Mr. Stanley", 
+             "The Duke of Wellington", "Sir Robert Peel")
 
 # search for the words said by the speakers in pattern1 
 top_slavery_speakers_1833 <- slavery_debates_1833 %>%
-  filter(speaker %in% pattern1) # retain only the rows were the speaker's name is in the list pattern1 
+  filter(speaker %in% pattern1) # keep rows containing a speaker's name
 
-# inspect the data
-kable(top_slavery_speakers_1833)
+top_slavery_speakers_1833 %>%
+  head() %>%
+  mutate(text = str_trunc(text, 120)) %>%   # optional: shorten long lines
+  kable("latex", booktabs = TRUE) %>%
+  kable_styling(full_width = FALSE, position = "left") %>%
+  column_spec(2, width = "4cm")    # wrap the "text" column
 ```
 
 Next, let's break the text into words and clean it up, removing numbers and stop words. We're lemmatizing each word into its word stem so that we can count singular and plural of the same word as one.
@@ -210,8 +216,7 @@ filtered_words_per_top_slavery_speaker_1833 <- top_slavery_speakers_1833 %>%
   unnest_tokens(word, text) %>% # break up into words 
   filter(!str_detect(word,"^\\s*[0-9]*\\s*$")) %>% # remove all numbers 
   anti_join(stop_words, by = "word") %>% # remove stopwords 
-  #anti_join(custom_stop_words, by = "word")  %>% # remove any words in the custom_stop_words list
-  mutate(word = lemmatize_words(word))  # lemmatize the word, reducing each word to its word stem for counting 
+  mutate(word = lemmatize_words(word)) # lemmatize the word 
 
 # inspect the data
 head(filtered_words_per_top_slavery_speaker_1833)
@@ -285,8 +290,8 @@ The `bind_tf_idf()` function takes three arguments. The first two are the names 
 
 ```{r, message = F}
 # calculate the measure of how distinctive each keyword is of each speaker
-tfidf_per_top_slavery_speaker_1833 <- top_words_per_abolition_speaker %>% # start with a data frame with wordcounts per speaker
-  bind_tf_idf(word, speaker, n) %>% # In this case, the groupings of words we want to explore ('document') are the speakers
+tfidf_per_top_slavery_speaker_1833 <- top_words_per_abolition_speaker %>% 
+  bind_tf_idf(word, speaker, n) %>% 
   arrange(desc(tf_idf))
 
 # inspect the data
@@ -478,7 +483,7 @@ ggplot(data = mr_buckingham_slavery_debates2,
     unique(floor(pretty(seq(min(x), (max(x) + 1) * 1))))) + # use whole numbers for the x axis
   geom_col() + # create a bar graph 
   coord_flip() + # switches the x and y axis for a more elegant presentation 
-  labs(title = "Mr Buckingham\'s Most Distinctive Words", # this is another way of labeling title and axes
+  labs(title = "Mr Buckingham\'s Most Distinctive Words",
        subtitle = "From the 1833 Debate on the Abolition of Slavery",
        x = "Word",
        y = "Count")
@@ -526,18 +531,23 @@ buckingham_sentences <- slavery_debates_1833 %>%
   filter(speaker == "Mr. Buckingham",
          str_detect(text, "wages"))
 
-# some fancy code to format the results as a table
-kable(buckingham_sentences,
-      format = "latex",
-      booktabs = TRUE,
-      caption = "Buckingham's sentences about slavery invoking the word 'wages'") %>%
-  kable_styling(latex_options = c("striped", "hold_position"))
+buckingham_sentences %>%
+  head() %>%
+  mutate(text = str_trunc(text, 120)) %>%   # optional: shorten long lines
+  kable("latex", booktabs = TRUE) %>%
+  kable_styling(full_width = FALSE, position = "left") %>%
+  column_spec(2, width = "4cm")    # wrap the "text" column
 ```
 
 Here they are as plaintext:
 
 ```{r}
-buckingham_sentences$text
+buckingham_sentences %>%
+  head() %>%
+  mutate(text = str_wrap(text, 80)) %>%
+  select(text) %>%
+  kable("latex", booktabs = TRUE, longtable = TRUE, escape = FALSE) %>%
+  column_spec(1, width = "14cm")
 ```
 
 We see in these sentences that Buckingham is using "wages" in concert with the concepts of "freedom," "labour," and "property" to recapitulate a Lockean argument about how property depends on the work of men to enclose land, and how the duty fo the state is to uphold contracts that will protect exchanges built upon this system, upon which capitalism rests.  A string of sentences follow about the specificities of wages. But the details are hard to interpret, in part because we are missing important context. 
@@ -568,13 +578,16 @@ buck_speech_ids <- buckingham_sentences %>%
 buck_speeches <- buck_speech_ids %>%
   left_join(hansard_1830, by = "sentence_id") 
 
-# some fancy code to turn it into a table
-kable(buck_speeches,
-      format   = "latex",                         # PDF needs LaTeX
-      booktabs = TRUE,                            # nicer rules; requires \usepackage{booktabs}
-      col.names = NULL,                           # no header row ("" can confuse LaTeX)
-      caption  = "Three Speeches by Buckingham about Slavery that invoke the word 'wages'") %>%
-  kable_styling(latex_options = c("striped", "hold_position"))
+buck_speeches %>%
+  head() %>%
+  mutate(text = str_trunc(text, 120)) %>%   # optional: shorten long lines
+  kable("latex", 
+        booktabs = TRUE,
+        col.names=NULL,
+        caption="Speeches by Buckingham about Slavery that invoke the word 'wages'") %>%
+  kable_styling(full_width = FALSE, position = "left") %>%
+  column_spec(2, width = "4cm")    # wrap the "text" column
+  
 ```
 
 With missing sentences added back in, the speeches in their entirety are much easier to understand. 
@@ -601,7 +614,12 @@ buckingham_sentences_2 <- slavery_debates_1830 %>%
 ```
 
 ```{r}
-buckingham_sentences_2$text
+buckingham_sentences_2 %>%
+  head() %>%
+  mutate(text = str_wrap(text, 80)) %>%
+  select(text) %>%
+  kable("latex", booktabs = TRUE, longtable = TRUE, escape = FALSE) %>%
+  column_spec(1, width = "14cm")
 ```
 
 If the example of "wages" furnished sentences difficult to understand without broader context, the sentences about "enjoyment" give an example where Buckingham's case is clear without any further effort peering into the text. His utopian vision of capitalism becomes clear in these passages, which posit the conjecture that the freedom to work on a wage market gives labourers access to "enjoyment," and that enjoyment and its natural incentives therefore offers a reason why the slaves should be freed.
@@ -614,7 +632,12 @@ buckingham_sentences_3 <- slavery_debates_1830 %>%
 ```
 
 ```{r}
-buckingham_sentences_3$text
+buckingham_sentences_3 %>%
+  head() %>%
+  mutate(text = str_wrap(text, 80)) %>%
+  select(text) %>%
+  kable("latex", booktabs = TRUE, longtable = TRUE, escape = FALSE) %>%
+  column_spec(1, width = "14cm")
 ```
 
 We might also elect to investigate "love," one of the words that appeared highly ranked through tf-idf but relatively sparse. We investigated the word because we felt that it might represent one of a set of virtues to which Buckingham looked -- alongside "universal," "desire," and "religion."
@@ -629,7 +652,12 @@ buckingham_sentences_4 <- slavery_debates_1830 %>%
 ```
 
 ```{r}
-buckingham_sentences_4$text
+buckingham_sentences_4 %>%
+  head() %>%
+  mutate(text = str_wrap(text, 80)) %>%
+  select(text) %>%
+  kable("latex", booktabs = TRUE, longtable = TRUE, escape = FALSE) %>%
+  column_spec(1, width = "14cm")
 ```
 
 We find in these sentences Buckingham invoking "universal" in the sense of an Enlightenment mandate, whether an expression of consensus or natural laws. Democratic demand for the abolition of slavery is an expression of a "universal" sentiment (sentences 1, 3 and 4). "Universal" laws govern behavior, including the fact that rebellion is more scarce in free nations (sentence 2). Universal truths, revealed through democratic processes, give the basis for legislation, according to Buckingham.
@@ -644,7 +672,12 @@ buckingham_sentences_5 <- slavery_debates_1830 %>%
 ```
 
 ```{r}
-buckingham_sentences_5$text
+buckingham_sentences_5 %>%
+  head() %>%
+  mutate(text = str_wrap(text, 80)) %>%
+  select(text) %>%
+  kable("latex", booktabs = TRUE, longtable = TRUE, escape = FALSE) %>%
+  column_spec(1, width = "14cm")
 ```
 
 Buckingham invokes "desire" as the basis for understanding. Buckingham invokes universal desire in the spirit of Locke, Mandeville, and Smith as forces that incline men to leisure and pleasure and thus incentivize work (sentences 1, 2, 3, 6, 7).  Buckingham suggests that former enslaved persons could eventually follow the American model, growing wealthy enough to become consumers who would buy finished products from British manufactures. A process of mutual enrichment would be the consequence (sentence 4). 
@@ -661,7 +694,12 @@ The id of Sentence #5 is S3V0018P0_8993. Since we understand the gist of Bucking
 missing_context <- hansard_1830 %>% 
   filter(sentence_id %in% c("S3V0018P0_8990", "S3V0018P0_8991", "S3V0018P0_8992", "S3V0018P0_8993"))
 
-missing_context$text
+missing_context %>%
+  head() %>%
+  mutate(text = str_wrap(text, 80)) %>%
+  select(text) %>%
+  kable("latex", booktabs = TRUE, longtable = TRUE, escape = FALSE) %>%
+  column_spec(1, width = "14cm")
 ```
 
 In Sentence #5, Buckingham is talking about how workers will pursue dangerous and difficult jobs when motivated by desire ("gain, honour, promotion, and prize-money.") For this reason, Buckingham concluded that "promotion was the desire of all," and that, if allowed to pursue them, the prospect of wages would incentivize formerly enslaved people as it had incentivized British navvvies to work hard in the pursuit of earnings.
@@ -731,7 +769,12 @@ peel_sentences <- slavery_1830 %>% # start with the text of speeches
 ```
 
 ```{r}
-peel_sentences$text # show us the text of Peel's sentences
+peel_sentences %>%
+  head() %>%
+  mutate(text = str_wrap(text, 80)) %>%
+  select(text) %>%
+  kable("latex", booktabs = TRUE, longtable = TRUE, escape = FALSE) %>%
+  column_spec(1, width = "14cm")
 ```
 
 Here again we must read the sentences in their original speeches to make sense of it. 
@@ -878,7 +921,8 @@ freedom_collocates_after_1833 <- slavery_debates_after_1833 %>%
   arrange(desc(n)) 
 
 
-tf_idf_freedom_collocates <- bind_rows(freedom_collocates_after_1833, freedom_collocates_before_1833) %>%
+tf_idf_freedom_collocates <- bind_rows(freedom_collocates_after_1833, 
+                                       freedom_collocates_before_1833) %>%
   bind_tf_idf(word, when, n) %>%
   arrange(-tf_idf) %>%
   select(when, word, n, tf_idf)
@@ -903,9 +947,6 @@ kable(tf_idf_freedom_collocates_after, caption = "1834-36")
 ```
 
 Let's look to see if freedom's meaning changed across everything.
-
-
-
 
 ```{r}
 hansard_before_1833 <- hansard_1830 %>% 
@@ -941,7 +982,8 @@ freedom_collocates_after_1833 <- hansard_after_1833 %>%
   arrange(desc(n)) 
 
 
-tf_idf_freedom_collocates <- bind_rows(freedom_collocates_after_1833, freedom_collocates_before_1833) %>%
+tf_idf_freedom_collocates <- bind_rows(freedom_collocates_after_1833, 
+                                       freedom_collocates_before_1833) %>%
   bind_tf_idf(word, when, n) %>%
   arrange(-tf_idf) %>%
   select(when, word, n, tf_idf)

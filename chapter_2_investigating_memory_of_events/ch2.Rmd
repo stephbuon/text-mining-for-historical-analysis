@@ -158,7 +158,12 @@ library("tidyverse")
 hansard_1860 <- left_join(hansard_1860, debate_metadata_1860)
 
 # Show the first few rows of the 1860 Hansard debate text
-head(hansard_1860)
+hansard_1860 %>%
+  head() %>%
+  mutate(text = str_trunc(text, 120)) %>%   # optional: shorten long lines
+  kable("latex", booktabs = TRUE) %>%
+  kable_styling(full_width = FALSE, position = "left") %>%
+  column_spec(2, width = "4cm")    # wrap the "text" column
 ```
 
 Notice that the resulting dataset, `hansard_corpus_1860`, has information about speaker and date for each sentence of text. 
@@ -249,7 +254,7 @@ Now we can count the top bigrams and remove any that contain stop words. We remo
 # keep only bigrams made up of two lowercase alphabetic words
 clean_bigrams_1867 <- bigrams_1867 %>%
   filter(!str_detect(bigram, 
-                     paste0("\\b(", paste(stop_words$word, collapse = "|"), ")\\b"))) %>% # remove stop words
+                     paste0("\\b(", paste(stop_words$word, collapse = "|"), ")\\b"))) %>%
   filter(str_detect(bigram, "^[a-z]+ [a-z]+$")) # keep only two-word lowercase alphabetic bigrams
 ```
 
@@ -319,7 +324,12 @@ We also see a reference to "public meetings."  Why did speakers in parliament in
 my_reading <- hansard_1867 %>% # create a new dataset
   filter(str_detect(text, "public meetings")) # detect the phrase
 
-head(my_reading$text)
+my_reading %>%
+  head() %>%
+  mutate(text = str_wrap(text, 80)) %>%
+  select(text) %>%
+  kable("latex", booktabs = TRUE, longtable = TRUE, escape = FALSE) %>%
+  column_spec(1, width = "14cm")
 ```
 
 A cursory reading of the sentences suggests that members of parliament were well aware of massive public meetings where more than a thousand members of the public showed up support the vote for working-class people.  We read of demonstrations around British Empire, even in Nova Scotia.  We read of members of parliament challenging each other to meet the demands of the public: "Have you not heard or read what has been said?"  We have only skimmed a few sentences, but the material in these 126 rows gives us what we need to understand how members of parliament talked about public protests in these crucial months of 1867.
@@ -359,7 +369,12 @@ Reading further down this list might give us more hints about the language with 
 minds <- hansard_1867 %>% # create a new dataset
   filter(str_detect(text, "minds of the people")) # detect the phrase
 
-head(minds$text)
+minds %>%
+  head() %>%
+  mutate(text = str_wrap(text, 80)) %>%
+  select(text) %>%
+  kable("latex", booktabs = TRUE, longtable = TRUE, escape = FALSE) %>%
+  column_spec(1, width = "14cm")
 ```
 
 When speakers referenced the "minds of the people," they frequently depicted popular politics as a form of collective political achievement to which ordinary people contributed the rational evidence of their own lived experience. We find the phrase connected to ideas about moral "duty" and political "harmony." We also see it invoked in reference to Ireland, India and Scotland.
@@ -398,10 +413,10 @@ bigrams_1867 <- hansard_1867 %>%
 
 # remove bigrams that contain any stop word (e.g., "the", "of", "and")
 # and keep only bigrams made up of two lowercase alphabetic words (exclude numbers and punctuation)
-clean_bigrams_1867 <- bigrams_1867 %>% # create a new dataset
+clean_bigrams_1867 <- bigrams_1867 %>% 
   filter(!str_detect(bigram, paste0("\\b(", 
-                                    paste(stop_words$word, collapse = "|"), ")\\b"))) %>% # remove bigrams containing stop words
-  filter(str_detect(bigram, "^[a-z]+ [a-z]+$")) # keep only two-word lowercase alphabetic bigrams
+                                    paste(stop_words$word, collapse = "|"), ")\\b"))) %>% 
+  filter(str_detect(bigram, "^[a-z]+ [a-z]+$")) 
 
 head(clean_bigrams_1867)
 ```
@@ -410,15 +425,16 @@ The following code filters the `clean_bigrams_1867` dataset to retain only rows 
 
 ```{r}
 # define a controlled vocabulary of event-related keywords to search for in bigrams
-controlled_vocab = c("riot", "meeting", "famine","revolt", "exhibition", "massacre", "strike", "war") 
+controlled_vocab = c("riot", "meeting", "famine","revolt", "exhibition", "massacre", 
+                     "strike", "war") 
 
 # filter the cleaned bigrams to keep only those that contain one of the vocabulary terms
 # build a regex pattern from the vocabulary and match bigrams containing any of those words
 # select only the bigram and the associated speech date for further analysis
 events_1867 <- clean_bigrams_1867 %>%
   filter(str_detect(bigram, 
-                    paste0("\\b(", paste(controlled_vocab, collapse = "|"), ")\\b"))) %>% # keep bigrams with event-related terms
-  select(bigram, speechdate) # select bigram and date only
+                    paste0("\\b(", paste(controlled_vocab, collapse = "|"), ")\\b"))) %>% 
+  select(bigram, speechdate) 
 
 head(events_1867)
 ```
@@ -488,7 +504,7 @@ ggplot(top_events_1867_w_speech_metadata,
   # format and customize the appearance of a timeline plot showing event mentions
   # x-axis shows months, point size reflects frequency, and plot is styled for readability
   # includes rotated labels, extended margins, and simplified legend
-  scale_x_date(date_breaks = "1 month", date_labels = "%B") + # x-axis: one label per month
+  scale_x_date(date_breaks = "1 month", date_labels = "%B") + # x axis one label per month
   scale_size_continuous(range = c(1, 10)) + # scale point sizes
   geom_point(alpha = .5, shape = 15) + # semi-transparent square points
   coord_cartesian(clip = "off") + # don't clip outer elements
@@ -544,7 +560,7 @@ data("hansard_1830")
 data("debate_metadata_1830")
 
 # Merge the speech data with its metadata using a left join
-# This ensures all rows from hansard_1830 are retained, with metadata added where available
+# All rows from hansard_1830 are retained, with metadata added where available
 hansard_1830 <- hansard_1830 %>% # create a new dataset
   left_join(debate_metadata_1830) # join debate text and metadata
 
@@ -599,7 +615,8 @@ head(cleaned_events)
 # then join back with the full event data to recover speech-level detail
 indexed_events <- cleaned_events %>%
   mutate(index = scholar_assigned_date %/% 
-           ((max(scholar_assigned_date) - min(scholar_assigned_date)) / 30)) %>% # assign bin index
+           ((max(scholar_assigned_date) - 
+               min(scholar_assigned_date)) / 30)) %>% # assign bin index
   group_by(index) %>% # group by time bin
   filter(total == max(total)) %>% # keep most mentioned event in each bin
   ungroup() %>% # remove grouping
@@ -610,7 +627,7 @@ head(indexed_events)
 
 ```{r}
 # Define a boundary value by adding 8 days to the latest speech date in the dataset
-# This step makes the visualization easier to read by adding padding to the visualization, ensuring no points are cut off or jammed against the end of the plot 
+# Make the visualization easier to read by adding padding to the visualization, ensuring no points are cut off or jammed against the end of the plot 
 left_range <- max(events_1830$speechdate) + 8
 ```
 
@@ -622,7 +639,7 @@ ggplot(data = indexed_events, # provide the name of the dataset
        aes(x = speechdate, # assign the x-axis
            y = scholar_assigned_date, # assign the y-axis
            size = n, # assign the size of the points
-           label = paste0("            ", ngram, " (", scholar_assigned_date, ")"), # label text
+           label = paste0("            ", ngram, " (", scholar_assigned_date, ")"),
            color = n)) +  # assign the color
 
 # use viridis color scale with log transform for better contrast
@@ -689,7 +706,12 @@ c15_mentions <- hansard_1830 %>% # create a new dataset
 ```
 
 ```{r}
-c15_mentions$text
+c15_mentions %>%
+  head() %>%
+  mutate(text = str_wrap(text, 80)) %>%
+  select(text) %>%
+  kable("latex", booktabs = TRUE, longtable = TRUE, escape = FALSE) %>%
+  column_spec(1, width = "14cm")
 ```
 
 ```{r}

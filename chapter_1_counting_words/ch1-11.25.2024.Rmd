@@ -29,6 +29,22 @@ The data processing techniques we foreground will lead to our first visualizatio
 
 Importantly, the techniques presented in this chapter have both promise and limits.  As our companion volume, _The Dangerous Art of Text Mining_ (2023), makes clear, simple word counts are almost never sufficient on their own to support an in-depth analysis of culture.  Nevertheless, knowing how to count words and compare the context with which different concepts are used is a first step to using text as data. Recognizing that langauge contains keywords that can, for example, be chosen by an analyst to guide data processing is a first step towards producing meaning from text data. 
 
+## R Versions
+
+Before we get started, we need to make sure we have an up-to-date version of R installed in order to use the packages and functions in this book.
+
+To check which version of R is currently running on your computer, run:
+
+```{r}
+R.version.string
+```
+
+If your version is more than one major release behind (e.g., anything below 4.3 while the current version is 4.4), you should update R from:
+
+https://cran.r-project.org
+
+Keeping R up to date helps ensure that your code runs smoothly—especially when installing or loading packages, which often require the latest versions of R to work correctly.
+
 ## Running a Line of Code 
 
 The first step in learning R is understanding how to run a line of code. 
@@ -83,7 +99,7 @@ library("hansardr")
 
 When working with functions in R, it is important to remember that code must be run in order, because each step often depends on what came before it. For example, if we plan to use a package such as `hansardr`, we must first load it with `library(hansardr)` before calling any of its functions. If we skip this step, R will not know where the `hansardr` functions come from and will return an error such as "could not find function," even if the code is correct. Similar errors can also occur when data is not processed in the proper sequence, since later steps may rely on datasets or data transformations that have not yet been created.
 
-### Navigating the `hansardr` Data
+## Navigating the `hansardr` Data
 
 To make working with the Hansard corpus quicker and easier--and to prevent our personal computers from being overloaded with too much data at once--we partitioned the century long corpus into decade sections. In the field of data analysis, it is common to call these sections "subsets."  
 
@@ -156,7 +172,6 @@ To display the data in a more visually appealing format, we can use the `knitr` 
 ## Tidy Text Mining and Loading Libraries
 
 Most of the functions used in the first chapters of this book come from a software package called `tidyverse` (2019) which is a family of smaller packages developed by Chief Scientist at Posit (formerly known as RStudio), Hadley Wickham. 
-
 The `tidyverse` was created to order data in "tidy" tables where it is structured as a data frame made up of columns and rows. In other words, the `tidyverse` is built to work with data like `hansard_1850`.
 
 We have found that a tidy approach to text exploration and analysis allows us to write code quickly and effectively, giving us ample control over the data and allowing us to inspect the output of every data processing step and type of analysis. This library thus supports analysts focusing on questions about data processing and history without being weighed down by the nuances of different structural and syntactic coding problems. 
@@ -317,8 +332,9 @@ To do this, we can first create our own custom list of words we wish to analyze.
 ```{r}
 # create a list of words commonly used to identify or refer to women
 # the purpose is to help filter or analyze texts for references to women
-identifiers_for_woman <- c("girl", "woman", "girls", "women", "wife", "wives", "widow", "widows", "sister", 
-                          "sisters", "female", "females", "grandmother","grandmothers", "aunt", "aunts")
+identifiers_for_woman <- c("girl", "woman", "girls", "women", "wife", "wives", "widow", 
+                           "widows", "sister", "sisters", "female", "females", 
+                           "grandmother","grandmothers", "aunt", "aunts")
 ```
 
 Now we can use the `%in%` operator to check if a word from our list, `identifiers_for_woman`, is in the "word" column. 
@@ -369,7 +385,8 @@ The following example searches `hansard_1850` for the keyword "coal." Notice tha
 
 ```{r}
 # filter speeches that mention the exact word "coal"
-# \\b ensures "coal" is matched as a whole word, not as part of another word (e.g. "coalesce")
+# \\b ensures "coal" is matched as a whole word, not as part of another word 
+# (e.g. "coalesce")
 hansard_coal <- hansard_1850 %>% # create a new data frame
   filter(str_detect(text, "\\bcoal\\b")) # filter the text 
 ```
@@ -381,7 +398,15 @@ One reason the `str_detect()` function is so special is because, unlike `filter(
 The result of our search is variable, `hansard_coal`, that contains only sentences from the 1850 debates that contain the word "coal."
 
 ```{r}
-head(hansard_coal$text)
+library(knitr)
+library(kableExtra)
+
+hansard_coal %>%
+  head() %>%
+  mutate(text = str_wrap(text, 80)) %>%
+  select(text) %>%
+  kable("latex", booktabs = TRUE, longtable = TRUE, escape = FALSE) %>%
+  column_spec(1, width = "14cm")
 ```
 
 ## Finding and Comparing Keywords' Context  
@@ -393,7 +418,7 @@ We already have everything we need to make this happen: we can search for a keyw
 The following code chains multiple data processing steps together.
 
 ```{r}
-# tokenize the 'text' column into individual lowercase words and store them in a new column 'word'
+# tokenize the 'text' column into individual lowercase words
 # remove common stop words (e.g., 'the', 'and') that carry little meaning
 # filter out any tokens that contain digits (e.g., years, numbers)
 # count the frequency of each remaining word
@@ -515,7 +540,12 @@ We will cover joins in greater detail in Chapter 2. For now it's just important 
 # using a left join to keep all rows from hansard_1850
 hansard_1850_with_metadata <- left_join(hansard_1850, debate_metadata_1850)
 
-head(hansard_1850_with_metadata)
+hansard_1850_with_metadata %>%
+  head() %>%
+  mutate(text = str_trunc(text, 120)) %>%   # optional: shorten long lines
+  kable("latex", booktabs = TRUE) %>%
+  kable_styling(full_width = FALSE, position = "left") %>%
+  column_spec(2, width = "4cm")    # wrap the "text" column
 ```
 
 In the following code we filter for speech dates that are on or after (greater than or equal to `>=`) February 1, 1850, and on or before (less than or equal to `<=`) February 28, 1850.
@@ -568,7 +598,7 @@ Creating a function will allow us to automatically create a series of graphs for
 generate_word_plot <- function(keyword, hansard_data) {
     
     filtered_hansard_1850 <- hansard_data %>%
-      filter(str_detect(text, paste0("\\b", keyword, "\\b"))) %>% # filter rows with keyword
+      filter(str_detect(text, paste0("\\b", keyword, "\\b"))) %>% # filter rows
       unnest_tokens(word, text) %>% # tokenize text
       anti_join(stop_words) %>% # remove stop words
       filter(!str_detect(word, "[:digit:]")) %>% # remove numeric tokens
@@ -635,7 +665,12 @@ Looking at the first lines of `hansard_1850`, you might ask yourself these quest
 Analyzing the entire data frame to further inspect the data can be distracting since a data frame usually contains multiple columns, some which may be irrelevant to our current query. 
 
 ```{r}
-head(hansard_1850_with_metadata)
+hansard_1850_with_metadata %>%
+  head() %>%
+  mutate(text = str_trunc(text, 120)) %>%   # optional: shorten long lines
+  kable("latex", booktabs = TRUE) %>%
+  kable_styling(full_width = FALSE, position = "left") %>%
+  column_spec(2, width = "4cm")    # wrap the "text" column
 ```
 
 We can make the data more readable by displaying just the data from the column of interest. 

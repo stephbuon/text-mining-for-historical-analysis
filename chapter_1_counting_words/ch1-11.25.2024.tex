@@ -326,7 +326,7 @@ Similar errors can also occur when data is not processed in the proper
 sequence, since later steps may rely on datasets or data transformations
 that have not yet been created.
 
-\subsubsection{\texorpdfstring{Navigating the \texttt{hansardr}
+\subsection{\texorpdfstring{Navigating the \texttt{hansardr}
 Data}{Navigating the hansardr Data}}\label{navigating-the-hansardr-data}
 
 To make working with the Hansard corpus quicker and easier--and to
@@ -343,9 +343,10 @@ speech, and other important contextual information for historical
 analysis.
 
 The \texttt{hansardr} corpus is subsetted by decade. As shown by Table
-1, each decade has four types of data, labeled: ``hansard,''
-``debate\_metadata,'' ``speaker\_metadata,'' and ``file\_metadata.'' In
-the following table, ``YYYY'' stands in for any given decade.
+1, each decade has four types of data, labeled: \texttt{hansard},
+\texttt{debate\_metadata}, \texttt{speaker\_metadata}, and
+\texttt{file\_metadata}. In the following table, ``YYYY'' stands in for
+any given decade.
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2821}}
@@ -809,12 +810,6 @@ analysis from our data.
 ## Joining with `by = join_by(word)`
 \end{verbatim}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{head}\NormalTok{(stopworded\_hansard\_counts)}
-\end{Highlighting}
-\end{Shaded}
-
 \begin{verbatim}
 ##         word      n
 ## 1        hon 125465
@@ -911,8 +906,9 @@ analyze.
 \begin{Highlighting}[]
 \CommentTok{\# create a list of words commonly used to identify or refer to women}
 \CommentTok{\# the purpose is to help filter or analyze texts for references to women}
-\NormalTok{identifiers\_for\_woman }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"girl"}\NormalTok{, }\StringTok{"woman"}\NormalTok{, }\StringTok{"girls"}\NormalTok{, }\StringTok{"women"}\NormalTok{, }\StringTok{"wife"}\NormalTok{, }\StringTok{"wives"}\NormalTok{, }\StringTok{"widow"}\NormalTok{, }\StringTok{"widows"}\NormalTok{, }\StringTok{"sister"}\NormalTok{, }
-                          \StringTok{"sisters"}\NormalTok{, }\StringTok{"female"}\NormalTok{, }\StringTok{"females"}\NormalTok{, }\StringTok{"grandmother"}\NormalTok{,}\StringTok{"grandmothers"}\NormalTok{, }\StringTok{"aunt"}\NormalTok{, }\StringTok{"aunts"}\NormalTok{)}
+\NormalTok{identifiers\_for\_woman }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"girl"}\NormalTok{, }\StringTok{"woman"}\NormalTok{, }\StringTok{"girls"}\NormalTok{, }\StringTok{"women"}\NormalTok{, }\StringTok{"wife"}\NormalTok{, }\StringTok{"wives"}\NormalTok{, }\StringTok{"widow"}\NormalTok{, }
+                           \StringTok{"widows"}\NormalTok{, }\StringTok{"sister"}\NormalTok{, }\StringTok{"sisters"}\NormalTok{, }\StringTok{"female"}\NormalTok{, }\StringTok{"females"}\NormalTok{, }
+                           \StringTok{"grandmother"}\NormalTok{,}\StringTok{"grandmothers"}\NormalTok{, }\StringTok{"aunt"}\NormalTok{, }\StringTok{"aunts"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1065,7 +1061,8 @@ keyword ``coal.''
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# filter speeches that mention the exact word "coal"}
-\CommentTok{\# \textbackslash{}\textbackslash{}b ensures "coal" is matched as a whole word, not as part of another word (e.g. "coalesce")}
+\CommentTok{\# \textbackslash{}\textbackslash{}b ensures "coal" is matched as a whole word, not as part of another word }
+\CommentTok{\# (e.g. "coalesce")}
 \NormalTok{hansard\_coal }\OtherTok{\textless{}{-}}\NormalTok{ hansard\_1850 }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\# create a new data frame}
   \FunctionTok{filter}\NormalTok{(}\FunctionTok{str\_detect}\NormalTok{(text, }\StringTok{"}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{bcoal}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{b"}\NormalTok{)) }\CommentTok{\# filter the text }
 \end{Highlighting}
@@ -1095,18 +1092,40 @@ contains only sentences from the 1850 debates that contain the word
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{head}\NormalTok{(hansard\_coal}\SpecialCharTok{$}\NormalTok{text)}
+\FunctionTok{library}\NormalTok{(knitr)}
+\FunctionTok{library}\NormalTok{(kableExtra)}
+
+\NormalTok{hansard\_coal }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{head}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{text =} \FunctionTok{str\_wrap}\NormalTok{(text, }\DecValTok{80}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(text) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable}\NormalTok{(}\StringTok{"latex"}\NormalTok{, }\AttributeTok{booktabs =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{longtable =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{escape =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{column\_spec}\NormalTok{(}\DecValTok{1}\NormalTok{, }\AttributeTok{width =} \StringTok{"14cm"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-## [1] "The manufacturers of this country relied on their capital, and their command of coal and iron, for a continuance of their prosperity; but, again, let them cast their eyes on the other side of the Atlantic."                                                                                                       
-## [2] "Mines, also, except coal, clay pits, slate quarries, and other descriptions even of real property escaped the operation of the Act."                                                                                                                                                                                 
-## [3] "One class of offences which was more particularly adverted to in this part of the Bill, was that of the offence of coal stealing."                                                                                                                                                                                   
-## [4] "A coal-owner told him that he was plundered of many tons of coal per week, owing to the difficulty of prosecuting the offenders."                                                                                                                                                                                    
-## [5] "They were subjected to great loss by the theft of small articles of coal, and they submitted from time to time to the injury rather than prosecute; till, at last, they found themselves compelled to proceed against some person for the theft of an article not amounting, perhaps, to more than a penny in value."
-## [6] "Here, perhaps, is one county abounding in coal and stone—the latter advantageous for the construction of houses for all classes."
-\end{verbatim}
+\begin{longtable}{>{\raggedright\arraybackslash}p{14cm}}
+\toprule
+text\\
+\midrule
+The manufacturers of this country relied on their capital, and their command of
+coal and iron, for a continuance of their prosperity; but, again, let them cast
+their eyes on the other side of the Atlantic.\\
+Mines, also, except coal, clay pits, slate quarries, and other descriptions even
+of real property escaped the operation of the Act.\\
+One class of offences which was more particularly adverted to in this part of
+the Bill, was that of the offence of coal stealing.\\
+A coal-owner told him that he was plundered of many tons of coal per week, owing
+to the difficulty of prosecuting the offenders.\\
+They were subjected to great loss by the theft of small articles of coal, and
+they submitted from time to time to the injury rather than prosecute; till, at
+last, they found themselves compelled to proceed against some person for the
+theft of an article not amounting, perhaps, to more than a penny in value.\\
+\addlinespace
+Here, perhaps, is one county abounding in coal and stone—the latter advantageous
+for the construction of houses for all classes.\\
+\bottomrule
+\end{longtable}
 
 \subsection{Finding and Comparing Keywords'
 Context}\label{finding-and-comparing-keywords-context}
@@ -1125,7 +1144,7 @@ The following code chains multiple data processing steps together.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# tokenize the \textquotesingle{}text\textquotesingle{} column into individual lowercase words and store them in a new column \textquotesingle{}word\textquotesingle{}}
+\CommentTok{\# tokenize the \textquotesingle{}text\textquotesingle{} column into individual lowercase words}
 \CommentTok{\# remove common stop words (e.g., \textquotesingle{}the\textquotesingle{}, \textquotesingle{}and\textquotesingle{}) that carry little meaning}
 \CommentTok{\# filter out any tokens that contain digits (e.g., years, numbers)}
 \CommentTok{\# count the frequency of each remaining word}
@@ -1217,7 +1236,7 @@ throughout this book.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics[width=0.8\linewidth]{ch1-11.25.2024_files/figure-latex/unnamed-chunk-29-1}
+\includegraphics[width=0.8\linewidth]{ch1-11.25.2024_files/figure-latex/unnamed-chunk-28-1}
 
 The resulting bar chart shows us the number of times ``coal'' was
 mentioned, as well as the top words that appear with coal. Note that
@@ -1268,11 +1287,7 @@ were coal and corn debated using the same language or different words?
   \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{str\_detect}\NormalTok{(word, }\StringTok{"[:digit:]"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\# remove tokens with digits}
   \FunctionTok{count}\NormalTok{(word) }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\# count word frequency}
   \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(n)) }\CommentTok{\# sort by frequency}
-\end{Highlighting}
-\end{Shaded}
 
-\begin{Shaded}
-\begin{Highlighting}[]
 \FunctionTok{head}\NormalTok{(corn\_context)}
 \end{Highlighting}
 \end{Shaded}
@@ -1319,7 +1334,7 @@ makes this context easier to apprehend.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics[width=0.8\linewidth]{ch1-11.25.2024_files/figure-latex/unnamed-chunk-32-1}
+\includegraphics[width=0.8\linewidth]{ch1-11.25.2024_files/figure-latex/unnamed-chunk-30-1}
 
 Comparison between the words used in the context of coal and corn gives
 us a foothold for beginning to think about how taxation was discussed in
@@ -1384,11 +1399,7 @@ the debates, \texttt{hansard\_1850}.
 \begin{Highlighting}[]
 \CommentTok{\# Load the debate metadata for 1850}
 \FunctionTok{data}\NormalTok{(}\StringTok{"debate\_metadata\_1850"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
 
-\begin{Shaded}
-\begin{Highlighting}[]
 \FunctionTok{head}\NormalTok{(debate\_metadata\_1850)}
 \end{Highlighting}
 \end{Shaded}
@@ -1413,38 +1424,29 @@ speeches are aligned with their correct dates.
 \CommentTok{\# Merge the hansard\_1850 text data with its corresponding metadata}
 \CommentTok{\# using a left join to keep all rows from hansard\_1850}
 \NormalTok{hansard\_1850\_with\_metadata }\OtherTok{\textless{}{-}} \FunctionTok{left\_join}\NormalTok{(hansard\_1850, debate\_metadata\_1850)}
+
+\NormalTok{hansard\_1850\_with\_metadata }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{head}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{text =} \FunctionTok{str\_trunc}\NormalTok{(text, }\DecValTok{120}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}   \CommentTok{\# optional: shorten long lines}
+  \FunctionTok{kable}\NormalTok{(}\StringTok{"latex"}\NormalTok{, }\AttributeTok{booktabs =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{full\_width =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{position =} \StringTok{"left"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{column\_spec}\NormalTok{(}\DecValTok{2}\NormalTok{, }\AttributeTok{width =} \StringTok{"4cm"}\NormalTok{)    }\CommentTok{\# wrap the "text" column}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{head}\NormalTok{(hansard\_1850\_with\_metadata)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##   sentence_id
-## 1 S3V0108P0_0
-## 2 S3V0108P0_1
-## 3 S3V0108P0_2
-## 4 S3V0108P0_3
-## 5 S3V0108P0_4
-## 6 S3V0108P0_5
-##                                                                                                                                                                                                                                                                                                                                                                                                                                                          text
-## 1                                                                                                                                                                                                                       , which had been prorogued successively from the 1st of August to the 9th of October, from thence to the 20th of November, thence to the 16th of January, and from thence to the 31st January, met this day for despatch of business.
-## 2                                                                                                                                             The Parliament was opened by Commission, the LORDS COMMISSIONERS present being the LORD CHANCELLOR; the LORD PRESIDENT OF THE COUNCIL (the Marquess of Lansdowne); the LORD PRIVY SEAL (the Earl of Minto); the LORD CHAMBERLAIN OF THE HOUSEHOLD (the Marquess of Breadalbane); and the LORD BISHOP OF LONDON.
-## 3                                                                                                                                                                                                                                                                                 called attention to a great omission of their duty on the part of Ministers, with respect to the privileges of their Lordships, which might and ought to have been avoided.
-## 4                                                                                                                                                                                                                                                                                                      At pre-sent there were two vacancies in the representative Peers of Scotland, in consequence of the deaths of the Earl of Airlie and of Lord Colville.
-## 5 Although the Act of Parliament directed that the proclamation should issue forthwith for the election of representative Peers to fill up any vacancies which might occur, by death or otherwise, no such proclamation had yet taken place in the case of the two vacancies he had just mentioned, and the consequence was, that for twenty-four days after the meeting of Parliament it was not possible for any Scotch representative Peers to be elected.
-## 6                                                                                                                                                                                                                                                                                                                                                           The Peerage of Scotland was not therefore represented in Parliament at present as it ought to be.
-##   speechdate                       debate
-## 1 1850-01-31       MEETING OF PARLIAMENT.
-## 2 1850-01-31       MEETING OF PARLIAMENT.
-## 3 1850-01-31 SCOTCH REPRESENTATIVE PEERS.
-## 4 1850-01-31 SCOTCH REPRESENTATIVE PEERS.
-## 5 1850-01-31 SCOTCH REPRESENTATIVE PEERS.
-## 6 1850-01-31 SCOTCH REPRESENTATIVE PEERS.
-\end{verbatim}
+\begin{tabular}{l>{\raggedright\arraybackslash}p{4cm}ll}
+\toprule
+sentence\_id & text & speechdate & debate\\
+\midrule
+S3V0108P0\_0 & , which had been prorogued successively from the 1st of August to the 9th of October, from thence to the 20th of Nove... & 1850-01-31 & MEETING OF PARLIAMENT.\\
+S3V0108P0\_1 & The Parliament was opened by Commission, the LORDS COMMISSIONERS present being the LORD CHANCELLOR; the LORD PRESIDEN... & 1850-01-31 & MEETING OF PARLIAMENT.\\
+S3V0108P0\_2 & called attention to a great omission of their duty on the part of Ministers, with respect to the privileges of their ... & 1850-01-31 & SCOTCH REPRESENTATIVE PEERS.\\
+S3V0108P0\_3 & At pre-sent there were two vacancies in the representative Peers of Scotland, in consequence of the deaths of the Ear... & 1850-01-31 & SCOTCH REPRESENTATIVE PEERS.\\
+S3V0108P0\_4 & Although the Act of Parliament directed that the proclamation should issue forthwith for the election of representati... & 1850-01-31 & SCOTCH REPRESENTATIVE PEERS.\\
+\addlinespace
+S3V0108P0\_5 & The Peerage of Scotland was not therefore represented in Parliament at present as it ought to be. & 1850-01-31 & SCOTCH REPRESENTATIVE PEERS.\\
+\bottomrule
+\end{tabular}
 
 In the following code we filter for speech dates that are on or after
 (greater than or equal to \texttt{\textgreater{}=}) February 1, 1850,
@@ -1506,11 +1508,7 @@ with uppercase or lowercase instances of our keyword.
                   \StringTok{"corn"}\NormalTok{, }\CommentTok{\# keyword to search}
                   \AttributeTok{window =} \DecValTok{5}\NormalTok{, }\CommentTok{\# number of words before/after}
                   \AttributeTok{case\_insensitive =} \ConstantTok{TRUE}\NormalTok{) }\CommentTok{\# match regardless of case}
-\end{Highlighting}
-\end{Shaded}
 
-\begin{Shaded}
-\begin{Highlighting}[]
 \FunctionTok{head}\NormalTok{(corn\_kwic)}
 \end{Highlighting}
 \end{Shaded}
@@ -1579,7 +1577,7 @@ forces from beyond Britain.
 \NormalTok{generate\_word\_plot }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(keyword, hansard\_data) \{}
     
 \NormalTok{    filtered\_hansard\_1850 }\OtherTok{\textless{}{-}}\NormalTok{ hansard\_data }\SpecialCharTok{\%\textgreater{}\%}
-      \FunctionTok{filter}\NormalTok{(}\FunctionTok{str\_detect}\NormalTok{(text, }\FunctionTok{paste0}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{b"}\NormalTok{, keyword, }\StringTok{"}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{b"}\NormalTok{))) }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\# filter rows with keyword}
+      \FunctionTok{filter}\NormalTok{(}\FunctionTok{str\_detect}\NormalTok{(text, }\FunctionTok{paste0}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{b"}\NormalTok{, keyword, }\StringTok{"}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{b"}\NormalTok{))) }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\# filter rows}
       \FunctionTok{unnest\_tokens}\NormalTok{(word, text) }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\# tokenize text}
       \FunctionTok{anti\_join}\NormalTok{(stop\_words) }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\# remove stop words}
       \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{str\_detect}\NormalTok{(word, }\StringTok{"[:digit:]"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\# remove numeric tokens}
@@ -1608,7 +1606,7 @@ forces from beyond Britain.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics[width=0.8\linewidth]{ch1-11.25.2024_files/figure-latex/unnamed-chunk-41-1}
+\includegraphics[width=0.8\linewidth]{ch1-11.25.2024_files/figure-latex/unnamed-chunk-36-1}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1617,7 +1615,7 @@ forces from beyond Britain.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics[width=0.8\linewidth]{ch1-11.25.2024_files/figure-latex/unnamed-chunk-42-1}
+\includegraphics[width=0.8\linewidth]{ch1-11.25.2024_files/figure-latex/unnamed-chunk-37-1}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1626,7 +1624,7 @@ forces from beyond Britain.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics[width=0.8\linewidth]{ch1-11.25.2024_files/figure-latex/unnamed-chunk-43-1}
+\includegraphics[width=0.8\linewidth]{ch1-11.25.2024_files/figure-latex/unnamed-chunk-38-1}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1635,7 +1633,7 @@ forces from beyond Britain.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics[width=0.8\linewidth]{ch1-11.25.2024_files/figure-latex/unnamed-chunk-44-1}
+\includegraphics[width=0.8\linewidth]{ch1-11.25.2024_files/figure-latex/unnamed-chunk-39-1}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1644,7 +1642,7 @@ forces from beyond Britain.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics[width=0.8\linewidth]{ch1-11.25.2024_files/figure-latex/unnamed-chunk-45-1}
+\includegraphics[width=0.8\linewidth]{ch1-11.25.2024_files/figure-latex/unnamed-chunk-40-1}
 
 Producing many graphs in succession can be useful for exploratory data
 analysis. Performing a comparative analysis of graphs side-by-side is
@@ -1742,33 +1740,28 @@ which may be irrelevant to our current query.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{head}\NormalTok{(hansard\_1850\_with\_metadata)}
+\NormalTok{hansard\_1850\_with\_metadata }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{head}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{text =} \FunctionTok{str\_trunc}\NormalTok{(text, }\DecValTok{120}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}   \CommentTok{\# optional: shorten long lines}
+  \FunctionTok{kable}\NormalTok{(}\StringTok{"latex"}\NormalTok{, }\AttributeTok{booktabs =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{full\_width =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{position =} \StringTok{"left"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{column\_spec}\NormalTok{(}\DecValTok{2}\NormalTok{, }\AttributeTok{width =} \StringTok{"4cm"}\NormalTok{)    }\CommentTok{\# wrap the "text" column}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-##   sentence_id
-## 1 S3V0108P0_0
-## 2 S3V0108P0_1
-## 3 S3V0108P0_2
-## 4 S3V0108P0_3
-## 5 S3V0108P0_4
-## 6 S3V0108P0_5
-##                                                                                                                                                                                                                                                                                                                                                                                                                                                          text
-## 1                                                                                                                                                                                                                       , which had been prorogued successively from the 1st of August to the 9th of October, from thence to the 20th of November, thence to the 16th of January, and from thence to the 31st January, met this day for despatch of business.
-## 2                                                                                                                                             The Parliament was opened by Commission, the LORDS COMMISSIONERS present being the LORD CHANCELLOR; the LORD PRESIDENT OF THE COUNCIL (the Marquess of Lansdowne); the LORD PRIVY SEAL (the Earl of Minto); the LORD CHAMBERLAIN OF THE HOUSEHOLD (the Marquess of Breadalbane); and the LORD BISHOP OF LONDON.
-## 3                                                                                                                                                                                                                                                                                 called attention to a great omission of their duty on the part of Ministers, with respect to the privileges of their Lordships, which might and ought to have been avoided.
-## 4                                                                                                                                                                                                                                                                                                      At pre-sent there were two vacancies in the representative Peers of Scotland, in consequence of the deaths of the Earl of Airlie and of Lord Colville.
-## 5 Although the Act of Parliament directed that the proclamation should issue forthwith for the election of representative Peers to fill up any vacancies which might occur, by death or otherwise, no such proclamation had yet taken place in the case of the two vacancies he had just mentioned, and the consequence was, that for twenty-four days after the meeting of Parliament it was not possible for any Scotch representative Peers to be elected.
-## 6                                                                                                                                                                                                                                                                                                                                                           The Peerage of Scotland was not therefore represented in Parliament at present as it ought to be.
-##   speechdate                       debate
-## 1 1850-01-31       MEETING OF PARLIAMENT.
-## 2 1850-01-31       MEETING OF PARLIAMENT.
-## 3 1850-01-31 SCOTCH REPRESENTATIVE PEERS.
-## 4 1850-01-31 SCOTCH REPRESENTATIVE PEERS.
-## 5 1850-01-31 SCOTCH REPRESENTATIVE PEERS.
-## 6 1850-01-31 SCOTCH REPRESENTATIVE PEERS.
-\end{verbatim}
+\begin{tabular}{l>{\raggedright\arraybackslash}p{4cm}ll}
+\toprule
+sentence\_id & text & speechdate & debate\\
+\midrule
+S3V0108P0\_0 & , which had been prorogued successively from the 1st of August to the 9th of October, from thence to the 20th of Nove... & 1850-01-31 & MEETING OF PARLIAMENT.\\
+S3V0108P0\_1 & The Parliament was opened by Commission, the LORDS COMMISSIONERS present being the LORD CHANCELLOR; the LORD PRESIDEN... & 1850-01-31 & MEETING OF PARLIAMENT.\\
+S3V0108P0\_2 & called attention to a great omission of their duty on the part of Ministers, with respect to the privileges of their ... & 1850-01-31 & SCOTCH REPRESENTATIVE PEERS.\\
+S3V0108P0\_3 & At pre-sent there were two vacancies in the representative Peers of Scotland, in consequence of the deaths of the Ear... & 1850-01-31 & SCOTCH REPRESENTATIVE PEERS.\\
+S3V0108P0\_4 & Although the Act of Parliament directed that the proclamation should issue forthwith for the election of representati... & 1850-01-31 & SCOTCH REPRESENTATIVE PEERS.\\
+\addlinespace
+S3V0108P0\_5 & The Peerage of Scotland was not therefore represented in Parliament at present as it ought to be. & 1850-01-31 & SCOTCH REPRESENTATIVE PEERS.\\
+\bottomrule
+\end{tabular}
 
 We can make the data more readable by displaying just the data from the
 column of interest.
@@ -2125,7 +2118,7 @@ the word ``Irish''
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics[width=0.8\linewidth]{ch1-11.25.2024_files/figure-latex/unnamed-chunk-54-1}
+\includegraphics[width=0.8\linewidth]{ch1-11.25.2024_files/figure-latex/unnamed-chunk-49-1}
 
 In this chapter, we used computational historical thinking as a method
 for examining change over time. We integrated historical theory, code,

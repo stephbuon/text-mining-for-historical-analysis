@@ -16,9 +16,9 @@ To analyze how the reform acts changed parliament, we can compare the speakers a
 
 ### Working With Big Data: Cautions Before Proceeding 
 
-In the previous chapters, we worked with intentionally small, subsetted datasets so the examples would run on a casual laptop. In this chapter, we take the opposite approach: we join multiple decades and create a much larger dataset first, and then filter it as needed. This allows us to demonstrate another workflow for working with large-scale historical data—one in which analysts begin with the full corpus and progressively narrow the scope through filtering and subsetting.
+In the previous chapters, we worked with intentionally small, subsetted datasets so the examples would run on a laptop. In this chapter, we take the opposite approach: we join multiple decades and create a much larger dataset first. We then filter it as needed. This allows us to demonstrate another workflow for working with large-scale historical data—one in which analysts begin with the full corpus and progressively narrow the scope through filtering and subsetting.
 
-Because we will ask the computer to store data from three decades at a time, the following exercise may crash smaller computers. If this happens, do not be alarmed. Power users of data sometimes need to upgrade their machines or work on university-provided servers to accomplish their research; you can make inquiries about using a more powerful computer with your IT services department. For the purposes of the rest of the chapter, you may regard the code that follows as an example of a process, recognizing how the tools we have previously used are deployed in what follows.
+Because we will ask our computer to store data from three decades at a time, the following exercise may crash smaller computers. If this happens, do not be alarmed. Power users of data sometimes need to upgrade their machines or work on university-provided servers to accomplish their research; you can make inquiries about using a more powerful computer with your IT services department. For the purposes of the rest of the chapter, you may regard the code that follows as an example of a process, recognizing how the tools we have previously used are deployed in what follows.
 
 Users with more modern laptops may find that the code runs, but it runs extremely slowly. The following block of text, for example, may well take an hour to run on some machines. It is worthwhile; the results merit patience. 
 
@@ -251,6 +251,11 @@ both_periods_speakers <- rbind(prereform_speakers_wordcount, postreform_speakers
 head(both_periods_speakers)
 ```
 
+
+```{r}
+rm(prereform_words, postreform_words)
+```
+
 Let's look at the speakers who spoke the most.
 
 ```{r, echo=FALSE}
@@ -396,11 +401,13 @@ One of the great advantages of text mining is that we can analyze not just the s
 all_per_speaker_wordcounts <- bind_rows(prereform_speakers_wordcount, postreform_speakers_wordcount) %>%
   ungroup() 
 
-# create a database of speaker, year, and wordcount
+all_classes_unique <- all_classes %>%
+  distinct(suggested_speaker, .keep_all = TRUE)
+
 all_speakers_annotated <- all_per_speaker_wordcounts %>%
-  left_join(all_classes) %>%
+  left_join(all_classes_unique, by = "suggested_speaker") %>%
   filter(!is.na(suggested_speaker)) %>%
-  ungroup() 
+  ungroup()
 
 # inspect the data
 all_speakers_annotated
@@ -451,6 +458,25 @@ Let's try it.
 
 ```{r, echo=FALSE}
 # clean up speaker names
+annotated_1820 <- hansard_1820 %>%
+  left_join(debate_metadata_1820)  %>% 
+  mutate(year = year(speechdate)) %>%
+  left_join(speaker_metadata_1820) %>%
+  select(text, year, speechdate, suggested_speaker)
+
+annotated_1830 <- hansard_1830 %>%
+  left_join(debate_metadata_1830) %>%
+  mutate(year = year(speechdate))  %>%
+  left_join(speaker_metadata_1830) %>%
+  select(text, year, speechdate, suggested_speaker)
+  
+annotated_1840 <- hansard_1840 %>%
+  left_join(debate_metadata_1840) %>%
+  mutate(year = year(speechdate))  %>%
+  left_join(speaker_metadata_1840) %>%
+  select(text, year, speechdate, suggested_speaker)
+
+hansard <- bind_rows(annotated_1820, annotated_1830, annotated_1840)
 
 speaker_key <- hansard %>%
   select(suggested_speaker) %>%
@@ -476,12 +502,8 @@ The function `left_join()` takes as its first argument the name of the dataset w
 speakers_w_top_and_speaker_key <- all_speakers_annotated %>%
   rename(wordcount_per_speaker_per_year = wordcount) %>%
   left_join(top_speakers, by = c("suggested_speaker", "class")) %>%
-  left_join(speaker_key) %>%
-  distinct()
+  left_join(speaker_key)
 
-#*********** STEPH this process generates multiple entires, which is why i resort to distinct(). do you have a more elegant solution? thanks! JG
-
-#inspect the data
 speakers_w_top_and_speaker_key %>% 
   filter(str_detect(suggested_speaker, "peel_")) %>% 
   select(suggested_speaker, top, year, wordcount_per_speaker_per_year, class) %>%
@@ -540,11 +562,11 @@ Interesting though it is to quantify the number of speakers and speeches before 
 
 In general, historians have told us that after the 1832 Reform Act, Parliament began to pay more attention to issues that reflected the concerns of the growing middle class and urban population—concerns that had been largely ignored by the pre-reform, aristocracy-dominated Parliament. Key shifts included ending child labor, the repeal of the grain laws to make bread cheaper for urban workers, public health, tackling corruption, and grants for schools.
 
-Yet the debates of parliament cover a diversity of issues far wider than the lexical set of changes that have been  enshrined in history textbooks. If we really want to know, in full, how parliament sounded different before and after 1832, text mining provides one of our greatest possible tools for understanding. 
+Yet the debates of parliament cover a diversity of issues far wider than the lexical set of changes that have been enshrined in history textbooks. If we really want to know, in full, how parliament sounded different before and after 1832, text mining provides one of our greatest possible tools for understanding. 
 
 Text mining gives us an opportunity to approach the issue on the basis of the words that speakers used. The tools of analyzing distinctiveness, introduced in the previous chapter, allow us to prioritize words that were used markedly more in one case or another.  For example, we might become interested in which words were used the most before and after 1832.
 
-By using tf-idf as our tool for understanding, we will privilege a strict filter: we will look for words spoken in 1822-32 that were almost never spoken in 1832-42, and vice versa. What might the silences and expansions of the period reveal that we did not previously know? 
+By using tf-idf as our tool for understanding, we will privilege a strict filter: we will look for words spoken in 1822-32 that were almost never spoken in 1832-42, and vice-versa. What might the silences and expansions of the period reveal that we did not previously know? 
 
 ```{r}
 prereform_top_words_w_speaker_classifications_tfidf <- prereform_words_w_speaker_classifications_tfidf %>%
@@ -964,7 +986,7 @@ annotated_1850 <- hansard_1850 %>%
 annotated_1860 <- hansard_1860 %>%
   left_join(debate_metadata_1860) %>%
   mutate(year = year(speechdate))  %>%
-  left_join(speaker_metadata_1860)# %>%
+  left_join(speaker_metadata_1860) %>%
   select(text, year, suggested_speaker)
   
 annotated_1870 <- hansard_1870 %>%

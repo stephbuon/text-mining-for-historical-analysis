@@ -326,3 +326,25 @@ Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino 
 Wickham, Hadley, and Jim Hester. fs: Cross-Platform File System Operations Based on 'libuv'. R package version 1.6.3, 2023, https://CRAN.R-project.org/package=fs.
 
 Wickham, Hadley. stringr: Simple, Consistent Wrappers for Common String Operations. R package version 1.5.1, 2023, https://CRAN.R-project.org/package=stringr.
+
+### Glossary 
+
+Raymond Williams Keywords 
+
+Alexander, Marc. (2023) Speech in the British Hansard. In: Korhonen, M., Kotze,
+H. and Tyrkkö, J. (eds.) Exploring Language and Society with Big Data: Parliamentary
+Discourse across Time and Space. Series: Studies in corpus linguistics (111). John
+Benjamins: Amsterdam, pp. 17-53. ISBN 9789027214065 (doi: 10.1075/scl.111.01ale).
+
+Demmen, Jane, Lesley Jeffries, and Brian Walker. “Charting the Semantics of Labour Relations in House of Commons Debates Spanning Two Hundred Years: A Study of Parliamentary Language Using Corpus Linguistic Methods and Automated Semantic Tagging.” In Doing Politics: Discursivity, Performativity and Mediation in Political Discourse, edited by Michael Kranert and Geraldine Horan, 81–104. Discourse Approaches to Politics, Society and Culture 80. Amsterdam: John Benjamins, 2018.
+
+In New Digital Worlds (2018), Roopika Risam argues that data in the digital humanities must be understood as a product of cultural and historical processes.
+
+Cite this: https://www.nature.com/articles/sdata201618
+
+Underwood novel TM dataset
+
+For
+example, they might show that in the United States Congressional Record, the word man became increasingly
+associated with the term gay in later decades—indicating a change in how certain concepts were linked in
+political discourse (Buongiorno). congress viewer 

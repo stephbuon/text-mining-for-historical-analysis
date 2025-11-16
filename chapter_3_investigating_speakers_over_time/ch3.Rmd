@@ -146,16 +146,66 @@ To analyze the different speakers, the code that follows will use `group_by()` t
 
 Before we proceed, a first step is to "clean" our data. In previous chapters we used an existing stop words list from `tidytext`. The `hansardr` library also provides its own stop words list. 
 
-It may be the case, however, that an analyst wants to curate their own stop words list that caters to their specific data set or research question. In the following code we create a custom stop words list by assigning a list of words to a tibble (a `tidyverse`-style data frame). In this case, suppose we want to restrict all words referring to parliament, ideas, or procedures; we only want to look at words that are more or less substantive about the subjects being discussed in parliament.  
-
+It may be the case, however, that an analyst wants to curate their own stop words list that caters to their specific data set or research question. In the following code we create a custom stop words list by assigning a list of words to a tibble (a `tidyverse`-style data frame). In this case, suppose we want to restrict all words referring to parliament, ideas, or procedures; we only want to look at words that are more or less substantive about the subjects being discussed in parliament.  s
 An appropriate stopwords list might look like this:
 
 ```{r}
-custom_stop_words = tibble(word = c("hon", "speaker", "house", "question", "lord", "bill", "committee", "duty", "country", "time", "amount", "government", "proposed", "law", "measure", "learned", "law", "sir", "respect", "public", "gentleman", "gentlemen", "friend", "noble", "parliament", "expenditure", "revenue", "tax", "principle", "proposal", "consideration", "duties", "stated", "parliament", "act", "opinion", "inquiry", "effect", "subject", "object", "motion", "baronet", "crown", "propose", "estimates", "sum", "account", "ministers", "majesty",
-"proposition", "persons", "principles","service", "found", "propositions", "office", "matter", "statement",
-"paid", "increase", "moved", "means", "considerable", "supply", "intention", "debt", "received", "expense", "estimate", "charges", "resolution", "notice", "report", "parties", "party", "surplus", "commons", "parties", "class", "commission", "form", "answer", "commissioners", "appointment", "officers", "saving", "appeared", "granted", "late", "day", "future", "opportunity", "saving", "officers", "information", "extent", "authority", "session", "justice", "believed", "support", "character", "carried", "plan", "paper", "clause",  "opposite", "system", "argument", "rate", "considered", "bills", "increase", "result", "reference", "prepared", "laid", "portion", "passed", "intended", "chancellor", "taxation", "classes", "appointed", "established", "parish", "confidence", "evidence", "pensions", "bring", "income", "connected", "referred", "objection", "hoped", "adopted", "chancellor", "account", "ministers", "occasion", "reduction", "reductions", "service", "services", "attention", "vote", "brought", "forward", "purpose", "wish", "called", "period", "money", "purpose", "power", "charge", "view", "circumstances", "trade", "taxes", "list", "civil", "wished", "people", "discussion", "applied", "proper", "taking", "amendment", "statements", "repeal", "papers", "fund", "feeling", "measures", "minister", "purposes", "payment", "stock", "increased", "bound", "grant", "grounds", "doubt", "applied", "stamp", "manner", "conduct", "exchequer", "provide", "reduced", "table", "difficulties", "anxious", "compared", "provide", "king", "individual", "expressed", "hear", "hope", "establishment", "debate", "contrary", "instance", "introduced", "call", "lords", "existing", "half", "head", "offices", "views", "leave", "respecting", "speech", "feel", "excise", "effected", "economy", "night", "price", "majority", "reason", "disposed", "held", "claims", "leave", "required", "moment", "admitted", "ready", "words", "issue", "allowed", "true", "treasury", "administration", "consent", "advantage", "business", "calculated", "enter", "fair", "nature", "oppose", "reign", "honour", "mode", "reduce", "difficulty", "favour", "credit", "adopt", "additional", "individuals", "mind",
-"sale", "times", "amounted", "deficiency", "laws", "til", "agreed", "alluded", "mentioned", "meant", "heard", "feelings", "engaged", "consolidated", "conclusion", "circulation", "begged", "calculations", "afford", "acts", "acted", "giving", "pledge", "matters", "contract", "proceed", "determined", "satisfaction", "declare", "giving", "spirits", "resolutions", "pursue", "opposition", "force","pursue", "force", "opinions", "refer", "produce", "appeal", "pay", "terms", "private", "reform", "observations", "entitles", "laws", "alteration", "due", "gallant", "joint", "undoubtedly", "alluded", "benefit", "consequence", "perfectly", "trusted", "loan", "proceed", "cent", "regard", "political", "royal", "carry", "importance", "proceedings", "aware", "rates", "similar", "examination", "details", "told", "supposed", "sufficient", "person", "necessity", "millions", "emoluments", "difference", "department", "till", "submit", "lay", "imposed", "claim", "branches", "recommended", "privy", "personal", "select", "salary", "revenues", "preceding", "practice", "move", "meet", "hand", "funds", "formed", "expenses", "establishments", "entitled", "dimunition", "settlement",
-"sense", "arrangement", "address", "sufficient", "local", "clergy", "relief", "necessity", "application", "claim", "responsibility", "situation", "satisfactory", "ground", "revenues", "quarter", "change", "founded", "secretary", "provided", "read", "commutation", "body", "provision", "practice", "difference", "composition", "condition", "hands", "provision", "capital", "responsibility", "press", "knowledge", "raised", "friends", "altogether", "meet", "hand", "free", "difference", "claim", "necessity", "arguments", "left", "single", "founded", "arrangement", "admit", "total", "told", "operation", "apply", "shown", "person", "decision", "actual", "returns", "return", "restrictions", "national", "limited", "hundred", "existed", "council", "charged", "annual", "allowances", "proceeding", "word", "existed", "fairly", "loss", "spirit", "west", "sum"))
+custom_stop_words = tibble(word = c("hon", "speaker", "house", "question", "lord", "bill", 
+"committee", "duty", "country", "time", "amount", "government", "proposed", "law", 
+"measure", "learned", "law", "sir", "respect", "public", "gentleman", "gentlemen", 
+"friend", "noble", "parliament", "expenditure", "revenue", "tax", "principle", "proposal", 
+"consideration", "duties", "stated", "parliament", "act", "opinion", "inquiry", "effect", 
+"subject", "object", "motion", "baronet", "crown", "propose", "estimates", "sum", 
+"account", "ministers", "majesty", "proposition", "persons", "principles", "service", 
+"found", "propositions", "office", "matter", "statement", "paid", "increase", "moved", 
+"means", "considerable", "supply", "intention", "debt", "received", "expense", "estimate", 
+"charges", "resolution", "notice", "report", "parties", "party", "surplus", "commons", 
+"parties", "class", "commission", "form", "answer", "commissioners", "appointment", 
+"officers", "saving", "appeared", "granted", "late", "day", "future", "opportunity", 
+"saving", "officers", "information", "extent", "authority", "session", "justice", 
+"believed", "support", "character", "carried", "plan", "paper", "clause",  "opposite", 
+"system", "argument", "rate", "considered", "bills", "increase", "result", "reference", 
+"prepared", "laid", "portion", "passed", "intended", "chancellor", "taxation", "classes", 
+"appointed", "established", "parish", "confidence", "evidence", "pensions", "bring", 
+"income", "connected", "referred", "objection", "hoped", "adopted", "chancellor", 
+"account", "ministers", "occasion", "reduction", "reductions", "service", "services", 
+"attention", "vote", "brought", "forward", "purpose", "wish", "called", "period", 
+"money", "purpose", "power", "charge", "view", "circumstances", "trade", "taxes", "list", 
+"civil", "wished", "people", "discussion", "applied", "proper", "taking", "amendment", 
+"statements", "repeal", "papers", "fund", "feeling", "measures", "minister", "purposes", 
+"payment", "stock", "increased", "bound", "grant", "grounds", "doubt", "applied", "stamp", 
+"manner", "conduct", "exchequer", "provide", "reduced", "table", "difficulties", "anxious", 
+"compared", "provide", "king", "individual", "expressed", "hear", "hope", "establishment", 
+"debate", "contrary", "instance", "introduced", "call", "lords", "existing", "half", 
+"head", "offices", "views", "leave", "respecting", "speech", "feel", "excise", "effected", 
+"economy", "night", "price", "majority", "reason", "disposed", "held", "claims", "leave", 
+"required", "moment", "admitted", "ready", "words", "issue", "allowed", "true", "treasury", 
+"administration", "consent", "advantage", "business", "calculated", "enter", "fair",
+"nature", "oppose", "reign", "honour", "mode", "reduce", "difficulty", "favour", "credit", 
+"adopt", "additional", "individuals", "mind", "sale", "times", "amounted", "deficiency", 
+"laws", "til", "agreed", "alluded", "mentioned", "meant", "heard", "feelings", "engaged", 
+"consolidated", "conclusion", "circulation", "begged", "calculations", "afford", "acts", 
+"acted", "giving", "pledge", "matters", "contract", "proceed", "determined", "satisfaction", 
+"declare", "giving", "spirits", "resolutions", "pursue", "opposition", "force","pursue", 
+"force", "opinions", "refer", "produce", "appeal", "pay", "terms", "private", "reform", 
+"observations", "entitles", "laws", "alteration", "due", "gallant", "joint", "undoubtedly", 
+"alluded", "benefit", "consequence", "perfectly", "trusted", "loan", "proceed", "cent", 
+"regard", "political", "royal", "carry", "importance", "proceedings", "aware", "rates", 
+"similar", "examination", "details", "told", "supposed", "sufficient", "person", "necessity", 
+"millions", "emoluments", "difference", "department", "till", "submit", "lay", "imposed", 
+"claim", "branches", "recommended", "privy", "personal", "select", "salary", "revenues", 
+"preceding", "practice", "move", "meet", "hand", "funds", "formed", "expenses", 
+"establishments", "entitled", "dimunition", "settlement", "sense", "arrangement", "address", 
+"sufficient", "local", "clergy", "relief", "necessity", "application", "claim", 
+"responsibility", "situation", "satisfactory", "ground", "revenues", "quarter", "change", 
+"founded", "secretary", "provided", "read", "commutation", "body", "provision", "practice", 
+"difference", "composition", "condition", "hands", "provision", "capital", "responsibility", 
+"press", "knowledge", "raised", "friends", "altogether", "meet", "hand", "free", 
+"difference", "claim", "necessity", "arguments", "left", "single", "founded", "arrangement", 
+"admit", "total", "told", "operation", "apply", "shown", "person", "decision", "actual", 
+"returns", "return", "restrictions", "national", "limited", "hundred", "existed", "council", 
+"charged", "annual", "allowances", "proceeding", "word", "existed", "fairly", "loss", "spirit", 
+"west", "sum"))
 ```
 
 We are ready to filter and clean our data and explore the langauge of speakers called Chancellor of the Exchequer. 
@@ -216,8 +266,6 @@ There is no rule of thumb for how many words to look at, but more words is alway
 
 How new is this information to readers of British history?  We have long known that issues of what was taxed and how are a basic matter for politics of class, empire and nation; everyone wants someone else to pay for the government.   The research modeled in this textbook has a pedagogical function, and for that reason, we often present in these chapters examples that could be improved or investigated further, and the above chart is one of those.  
 
-
-
 #### Critical Thinking About Our Results
 
 In any research process, it is important to reflect on how the choices we have made impact our analysis, and how making different choices might have produced different results.  For some researchers, the list in `custom_stop_words` may unnecessarily eliminate words whose usage they might want to track. Some researchers will want to identify words for rhetorical statements such as "hoped" or "feeling"; others may be intrigued about how different speakers refer to "information" or "knowledge." In general, I have opted for a deep list which includes every general allusion to governance, institutions, discovery, and communication.  The beauty of custom lists is that each researcher can easily adjust the words to match their interests Analysts should understand how carefully they must tailor a custom stop words list to their project, and how much of a difference additions and subtractions make. Using a custom stop word list is very much an artisinal skill of research; it involves much the same skills of judgment, awareness, curiosity, and sensitivity to background issues from theory and secondary sources as does careful reading of primary sources.  
@@ -250,10 +298,12 @@ hansard_1830_w_year <- hansard_1830 %>%
   mutate(year = year(speechdate))
 
 # look at the first few columns of the dataset
-hansard_1830_w_year %>% 
-  head() %>% 
-  select(speechdate, text, year) %>% 
-  kable()
+hansard_1830_w_year %>%
+  head() %>%
+  mutate(text = str_trunc(text, 120)) %>%   # optional: shorten long lines
+  kable("latex", booktabs = TRUE) %>%
+  kable_styling(full_width = FALSE, position = "left") %>%
+  column_spec(2, width = "4cm")    # wrap the "text" column
 ```
 
 Notice that the resulting dataset has a new field, "year."

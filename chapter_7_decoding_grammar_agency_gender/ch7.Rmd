@@ -20,9 +20,9 @@ In this chapter, we focus on how gendered power relations are constructed and re
 
 Foundational feminist theorists including Hélène Cixous, Luce Irigaray, and Monique Wittig each approach the politics of syntax from distinct angles. Cixous critiques conventional syntactic forms—such as subject-verb-object constructions—as mirroring the rigid hierarchies of patriarchal political order. She calls for forms of writing that defy linear structure and fixed meaning, arguing that fluid, disruptive syntax resists systems in which agency is centralized in a dominant (often male) subject and others are relegated to passive roles. Luce Irigaray, in contrast, interrogates the deeper structural logic of discourse itself. She argues that fundamentally masculine forms of discourse structure what we might call the “syntax” of social and political systems -- even structuring thinking itself. These systems reproduce the male subject as the universal norm and language and politics will remain systems of masculine self-reproduction. Monique Wittig argues that language doesn’t just reflect gendered hierarchies—it actively produces them. For Wittig, the very category of “woman” is a political fiction sustained through language and syntax that encode heterosexual norms. Rather than seek a “feminine” alternative, Wittig calls for the destruction of the linguistic structures that make gender seem natural. Language, she insists, must be politically rewritten to dismantle the binary logic on which patriarchy depends.
 
-These theories offer a powerful lens through which to understand the stakes of grammatical part-of-speech analysis in historical texts. The Nineteenth-century Hansard represents an enormous opportunity in this regard; as a collection of political debates between men, Hansard has been minimally engaged as a resource for understanding how gender norms were perpetuated. Yet as feminist historians have long understood, parliament played a massive role in structuring women's experience, from the Laws of Coverture to the Matrimonial Clauses Act (1857), the Married Women's Property Acts (1870-1882), the Contagious Disease Acts (1864-69) and women's right to vote in the UK (1918-28) (Rackley and Auchmuty 2019, Kent 1999, Griffin 2012). Feminist historians have shown how, in the debates around the Contagious Diseases Acts, women were portrayed as both powerless and degraded, yet also as potentially threatening (Walkowitz, 1970, p. 4). 
+These theories offer a powerful lens through which to understand the stakes of grammatical part-of-speech analysis in historical texts. The Nineteenth-century Hansard represents an enormous opportunity in this regard; as a collection of political debates between men, Hansard has been minimally engaged as a resource for understanding how gender norms were perpetuated. Yet as feminist historians have long understood, parliament played a massive role in structuring women's experience, from the Laws of Coverture to the Matrimonial Clauses Act (1857), the Married Women's Property Acts (1870-1882), the Contagious Disease Acts (1864-69) and women's right to vote in the UK (1918-28) (Rackley and Auchmuty 2019, Kent 1999, Griffin 2012). Feminist historians have shown how, in the debates around the Contagious Diseases Acts, women were portrayed as both powerless and degraded, yet also as potentially threatening (Walkowitz, 1970, p. 4). 
 
-Members of parliament in the ninteenth century regularly described a world where male subjects acted and female objects were acted upon. Cixous’s critique of rigid syntactic forms specifically targets the kinds of grammatical regularities we observe in mid-nineteenth-century Parliamentary discourse. Her call for a syntax that resists fixed meaning aligns with our aim to expose how stable grammatical roles naturalize uneven distributions of agency. Similarly, Irigaray argues that speech acts that assert a masculine subject as the universal norm represent a “political syntax” that reproduces political violence. With these insights, we can see that Hansard reveals an erasure of women as political actors. Wittig’s insistence that language produces the fiction of gender further illuminates how syntactic roles in Hansard reinforce the category of “woman” as passive, pathological, and other.
+Members of parliament in the nineteenth century regularly described a world where male subjects acted and female objects were acted upon. Cixous’s critique of rigid syntactic forms specifically targets the kinds of grammatical regularities we observe in mid-nineteenth-century Parliamentary discourse. Her call for a syntax that resists fixed meaning aligns with our aim to expose how stable grammatical roles naturalize uneven distributions of agency. Similarly, Irigaray argues that speech acts that assert a masculine subject as the universal norm represent a “political syntax” that reproduces political violence. With these insights, we can see that Hansard reveals an erasure of women as political actors. Wittig’s insistence that language produces the fiction of gender further illuminates how syntactic roles in Hansard reinforce the category of “woman” as passive, pathological, and other.
 
 Using text mining, we have an opportunity to amplify and extend the study of these dynamics on a wider scale. By examining the rhetoric used across time and debates in parliament, we can trace episodes where attitudes towards gender were shifting -- as well as moments when prejudices about women were reinforced.  We can identify the work of parliament as a collective in perpetuating or challenging gender norms.    
 
@@ -76,59 +76,27 @@ The spacyr package builds on top of the Python library spaCy. In this way, spacy
 
 By now, it should be clear that tokenization can be performed using a range of packages, such as Silge and Robinson’s `unnest_tokens()` or, as shown here, using `spacyr`. However, this is the first time we have engaged with more advanced natural language processing capabilities like named entity recognition, dependency parsing, and lemmatization. Taken together, these tools allow analysts to move beyond bag-of-words style text analysis, where words are counted without regard to grammar, and begin extracting structured information and identifying grammatical roles embedded in Hansard.  `spacyr` supports grammar-level analysis through a sequence of computational, data-processing steps known as a "linguistic pipeline." 
 
-## Getting ready for POS analysis
-
-POS analysis involves installing custom-made software libraries that require some configuration of your computer. The code that follows is designed to install the packages you will need.  
-
-You should only have to run the code below once.  
-
-```{r, eval=FALSE}
-# Install reticulate if not already installed
-if (!requireNamespace("reticulate", quietly = TRUE)) {
-  install.packages("reticulate")
-}
-library("reticulate")
-
-# Install Miniconda (cross-platform)
-install_miniconda()
-
-# Check which Python is being used
-py_config()
-
-# Optional: Create and activate a custom Python environment
-conda_create("r-spacy", packages = "python=3.9")
-use_condaenv("r-spacy", required = TRUE)
-
-# Install and load spacyr
-if (!requireNamespace("spacyr", quietly = TRUE)) {
-  install.packages("spacyr")
-}
-library(spacyr)
-
-# Install spaCy and the English model
-spacy_install()
-
-# Initialize spaCy with the small English model
-spacy_initialize(model = "en_core_web_sm")
-```
-
 ## Installing `spacyr`
 
 To install `spacyr`, we begin by using the standard `install.packages()` function. This gives us access to the `spacy_install()` function. Running `spacy_install()` sets up the required Python environment and installs the spaCy library along with its dependencies, integrating spaCy's capabilities within the R environment. 
 
-
 ```{r, eval=FALSE}
 # First time only -- installing spacyr on your computer
-install.packages("spacyr")
+install.packages("spacyr") 
+
 library(spacyr)
-spacy_install()
+
+# Install spaCy and the small English model
+spacy_install(lang_models = "en_core_web_sm", ask = FALSE)
+
+# Initialize spaCy
+spacy_initialize(model = "en_core_web_sm")
 ```
 
 ```{r, echo=FALSE, warning=FALSE}
 # After the first time, this will go quicker:
 library(spacyr)
 ```
-
 
 By default, spacyr installs an English language model that used to tag words with their parts-of-speech, called `en_core_web_sm`. This name provides specific information about the model:
 
@@ -140,7 +108,6 @@ By default, spacyr installs an English language model that used to tag words wit
 SpaCy supports many languages beyond English. These LMs can be downloaded using the `spacy_download_langmodel()` function. For example, the following code demonstrates how to download and initialize a small German model, which is specifically trained on a news corpus. For a complete list of available models and their details, visit the official spaCy models page: https://spacy.io/usage/models.
 
 ```{r, eval=FALSE}
-
 spacy_download_langmodel("de_core_news_sm") # load the German model
 ```
 
@@ -155,6 +122,7 @@ In each future session, we will need to not only load the spacyr library, but al
 ```{r, message=FALSE, warning=FALSE}
 # Entire startup for future sessions
 library(spacyr) # load the library
+
 spacy_initialize(model = "en_core_web_sm") # load the English model
 ```
 

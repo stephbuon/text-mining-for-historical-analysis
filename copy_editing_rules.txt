@@ -9,7 +9,8 @@ Make sure it displays: tf-idf
 
 in-text citations should be chicago style 
 
-
+new datasets: ``
+new functions: ``
 
 In the code use " 
 
@@ -33,3 +34,9 @@ Make sure comments are in regular case:
 # Load packages
 # Create vocabulary and term co-occurrence matrix
 # Fit GloVe model
+
+
+
+w not with 
+
+All headings should be ## 
